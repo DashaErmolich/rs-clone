@@ -17,9 +17,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - name: go to app folder
-      run: cd music-app
     - name: install modules
       run: npm install
     - name: build project
       run: npm run build
+defaults:
+  run:
+    working-directory: music-app
