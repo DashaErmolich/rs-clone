@@ -1,5 +1,7 @@
 # Music App
 
+## [Figma](https://www.figma.com/file/EC4QqfeyillNRkqodVpXIW/RS-Music-App?node-id=0%3A1&t=qQO01pa1f1ECGgjS-1)
+
 ## Header
 
 - Progress Bar (<https://material.angular.io/components/progress-bar/overview>)
@@ -10,7 +12,7 @@
     - User icon change
     - Log out button (<https://material.angular.io/components/button/overview>)
   - Settings
-    - language
+    - language (i18n) (<https://angular.io/guide/i18n-overview>)
       - EN/RU Select (<https://material.angular.io/components/form-field/overview>)
     - Theme:
       - angular materials themes select
@@ -39,10 +41,11 @@ Favorites
 
 ## Home Page
 
-- Greeting (good morning / afternoon ...) + date/time (??)
+- Greeting (good morning / afternoon ...) + date/time (??) + Username
   - Liked songs
   - Liked radios
   - User PlayLists (??)
+  - Go to top button (allows to go to top w/o scrolling, not displaying at the top of page)
 
 ## Search Page
 
@@ -53,6 +56,7 @@ Favorites
   - Radio
   - PlayLists
   - Charts (??)
+  - Go to top button (allows to go to top w/o scrolling, not displaying at the top of page)
 
 ## Player
 
@@ -73,3 +77,28 @@ Favorites
   - Lyrics (??)
   - Full screen playlist
   - Volume bar
+  - equalizer (<https://orangeable.com/javascript/equalizer-web-audio-api>)
+
+## PlayList / Artist / Radio view
+
+- Img
+- Title (PlayList / Artist / Radio)
+- PLay/pause button (sinc with player)
+- Add to favorites / subscribe
+- Track list (click on track -> play track -> style background)
+  - num
+  - img
+  - title
+  - artist
+  - album
+  - duration
+
+## View w/o auth
+
+- no like button
+- no add to favorites/subscribe btn
+- Aside
+  - only navigation
+- Header
+  - Sign up button
+  - Login button
