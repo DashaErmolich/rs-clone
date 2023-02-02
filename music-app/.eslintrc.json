@@ -9,7 +9,10 @@
         "*.ts"
       ],
       "parserOptions": {
-        "project": ["tsconfig.(app|spec).json"]
+        "project": [
+          "tsconfig.json"
+        ],
+        "createDefaultProgram": true
       },
       "extends": [
         //"eslint:recommended",
