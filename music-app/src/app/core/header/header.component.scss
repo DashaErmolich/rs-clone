@@ -1,0 +1,21 @@
+@import '../../../sass/variables/constants';
+
+header {
+  h1 {
+    margin: 0;
+  }
+  .flex-column-3 {
+    justify-content: start;
+    align-items: center;
+  }
+
+  .flex-column-9 {
+    justify-content: end;
+    align-items: center;
+    background-color: $bg-light-color-dark-theme;
+  }
+
+  .settings-container {
+    align-self: flex-end;
+  }
+}

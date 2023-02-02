@@ -1,0 +1,10 @@
+@import '../../../sass/variables/constants';
+
+.music-page-container {
+  height: calc(100% - $footer-height - 2 * $container-p-small - $container-p-small);
+
+  .flex-column-9 {
+    background-color: $bg-light-color-dark-theme;
+  }
+}
+
