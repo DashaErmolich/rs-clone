@@ -1,0 +1,19 @@
+@import '../../../sass/variables/constants';
+
+footer {
+  height: $footer-height;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  nav ul {
+    display: flex;
+    gap: $container-p-small;
+    align-items: center;
+  }
+
+  p {
+    margin: 0;
+  }
+}

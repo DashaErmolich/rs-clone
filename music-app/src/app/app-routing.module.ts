@@ -9,6 +9,7 @@ import { MusicPageComponent } from './music/music-page/music-page.component';
 import { HomeComponent } from './music/home/home.component';
 import { SearchComponent } from './music/search/search.component';
 import { LibraryComponent } from './music/library/library.component';
+import { PlayListComponent } from './music/play-list/play-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'search', component: SearchComponent },
       { path: 'library', component: LibraryComponent },
+      { path: 'play-list', component: PlayListComponent },
     ],
   },
   { path: 'settings', component: SettingsComponent },

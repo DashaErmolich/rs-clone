@@ -1,1 +1,18 @@
-<p>player works!</p>
+<div class="player-container player container flex-row">
+  <div class="player__items-group flex-column-3"></div>
+  <div class="player__items-group flex-column-6">
+    <div class="buttons-container">
+      <button mat-fab color="basic">
+        <mat-icon>skip_previous</mat-icon>
+      </button>
+      <button mat-fab color="warn">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+      <button mat-fab color="basic">
+        <mat-icon>skip_next</mat-icon>
+      </button>
+    </div>
+    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+  </div>
+  <div class="player__items-group flex-column-3"></div>
+</div>
