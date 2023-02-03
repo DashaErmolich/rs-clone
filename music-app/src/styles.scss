@@ -1,14 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import './sass/variables/constants';
+@import './sass/abstracts/constants';
+@import './sass/abstracts/mixins';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+
+* {
+  box-sizing: border-box;
+}
 
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 .app-container {
@@ -17,6 +26,7 @@ ul {
   color: $color-dark-theme;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .container {
@@ -28,30 +38,35 @@ ul {
 }
 
 .icon {
-  width: 25px;
-  height: 25px;
-  margin: .5em;
+  width: $icon-size;
+  height: $icon-size;
 }
 
 .flex-row {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
   .flex-column-3 {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% / 12 * 3);
+    @include flex-column(3);
   }
   .flex-column-6 {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% / 12 * 6);
+    @include flex-column(6);
   }
   .flex-column-9 {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% / 12 * 9);
+    @include flex-column(9);
   }
 }
 
 .height-100 {
   height: 100%;
+}
+
+.content-wrapper {
+  padding-top: $header-height;
+}
+
+.accent-wrapper {
+  background: $bg-light-color-dark-theme;
+  overflow-y: scroll;
 }

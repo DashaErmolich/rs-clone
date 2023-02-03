@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlayListComponent } from './play-list.component';
+import { SettingsThemeComponent } from './settings-theme.component';
 
-describe('PlayListComponent', () => {
-  let component: PlayListComponent;
-  let fixture: ComponentFixture<PlayListComponent>;
+describe('SettingsThemeComponent', () => {
+  let component: SettingsThemeComponent;
+  let fixture: ComponentFixture<SettingsThemeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PlayListComponent],
+      declarations: [SettingsThemeComponent],
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(PlayListComponent);
+    fixture = TestBed.createComponent(SettingsThemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

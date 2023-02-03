@@ -1,0 +1,5 @@
+@mixin flex-column($size) {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% / 12 * $size);
+}

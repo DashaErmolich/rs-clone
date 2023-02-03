@@ -1,21 +1,16 @@
-@import '../../../sass/variables/constants';
+@import '../../../sass/abstracts/constants';
 
 header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  height: $header-height;
+
   h1 {
     margin: 0;
-  }
-  .flex-column-3 {
-    justify-content: start;
-    align-items: center;
-  }
-
-  .flex-column-9 {
-    justify-content: end;
-    align-items: center;
-    background-color: $bg-light-color-dark-theme;
-  }
-
-  .settings-container {
-    align-self: flex-end;
   }
 }

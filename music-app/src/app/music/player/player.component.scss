@@ -1,7 +1,7 @@
-@import '../../../sass/variables/constants';
+@import '../../../sass/abstracts/constants';
 
 .player-container {
-  height: $footer-height;
+  height: $player-height;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
