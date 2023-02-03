@@ -17,7 +17,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService {
+export class RestApiService {
   constructor(private http: HttpClient) {}
 
   getTrack(id: number): Observable<TrackResponse> {
