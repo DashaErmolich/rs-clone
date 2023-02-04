@@ -2,6 +2,7 @@
 
 @import './sass/abstracts/constants';
 @import './sass/abstracts/mixins';
+@import './material-theme';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
@@ -18,6 +19,7 @@ ul {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 .app-container {
@@ -69,4 +71,8 @@ a {
 .accent-wrapper {
   background: $bg-light-color-dark-theme;
   overflow-y: scroll;
+}
+
+.full-page-container {
+  height: 100%;
 }

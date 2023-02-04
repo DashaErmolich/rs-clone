@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MusicModule } from './music/music.module';
 import { UserModule } from './user/user.module';
+import { ThemeService } from './core/services/theme.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { UserModule } from './user/user.module';
     MusicModule,
     UserModule,
   ],
-  providers: [],
+  providers: [
+    ThemeService,
+  ],
   bootstrap: [AppComponent],
 })
 export default class AppModule { }
