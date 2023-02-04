@@ -1,4 +1,4 @@
-export type TrackResponse = {
+export interface ITrackResponse {
   id: number;
   readable: boolean;
   title: string;
@@ -19,14 +19,14 @@ export type TrackResponse = {
   bpm: number;
   gain: number;
   available_countries: string[];
-  contributors: Contributor[];
+  contributors: IContributor[];
   md5_image: string;
-  artist: Partial<ArtistResponse>;
-  album: Partial<AlbumResponse>;
+  artist: Partial<IArtistResponse>;
+  album: Partial<IAlbumResponse>;
   type: string;
-};
+}
 
-export type ArtistResponse = {
+export interface IArtistResponse {
   id: number;
   name: string;
   link: string;
@@ -42,9 +42,9 @@ export type ArtistResponse = {
   tracklist: string;
   position: number;
   type: string;
-};
+}
 
-export type AlbumResponse = {
+export interface IAlbumResponse {
   id: number;
   title: string;
   upc: string;
@@ -58,7 +58,7 @@ export type AlbumResponse = {
   md5_image: string;
   genre_id: number;
   genres: {
-    data: Partial<GenreResponse>[];
+    data: Partial<IGenreResponse>[];
   };
   label: string;
   nb_tracks: number;
@@ -71,15 +71,15 @@ export type AlbumResponse = {
   explicit_lyrics: boolean;
   explicit_content_lyrics: number;
   explicit_content_cover: number;
-  contributors: Contributor[];
-  artist: Partial<ArtistResponse>;
+  contributors: IContributor[];
+  artist: Partial<IArtistResponse>;
   type: string;
   tracks: {
-    data: Partial<TrackResponse>[];
+    data: Partial<ITrackResponse>[];
   };
-};
+}
 
-export type EditorialResponse = {
+export interface IEditorialResponse {
   id: number;
   name: string;
   picture: string;
@@ -88,19 +88,19 @@ export type EditorialResponse = {
   picture_big: string;
   picture_xl: string;
   type: string;
-};
+}
 
-export type SearchResponse = {
-  data: Partial<TrackResponse>[];
+export interface ISearchResponse {
+  data: Partial<ITrackResponse>[];
   total: number;
   prev?: string;
   next?: string;
-};
+}
 
-export type ChartResponse = {
-  tracks: { data: Partial<TrackResponse>[]; total: number };
-  albums: { data: Partial<AlbumResponse>[]; total: number };
-  artists: { data: Partial<ArtistResponse>[]; total: number };
+export interface IChartResponse {
+  tracks: { data: Partial<ITrackResponse>[]; total: number };
+  albums: { data: Partial<IAlbumResponse>[]; total: number };
+  artists: { data: Partial<IArtistResponse>[]; total: number };
   playlists: {
     data: {
       id: number;
@@ -146,9 +146,9 @@ export type ChartResponse = {
     }[];
     total: number;
   };
-};
+}
 
-export type GenreResponse = {
+export interface IGenreResponse {
   id: number;
   name: string;
   picture: string;
@@ -157,9 +157,13 @@ export type GenreResponse = {
   picture_big: string;
   picture_xl: string;
   type: string;
-};
+}
 
-export type RadioResponse = {
+export interface IGenresResponse {
+  data: IGenreResponse[];
+}
+
+export interface IRadioResponse {
   id: number;
   title: string;
   description: string;
@@ -172,9 +176,9 @@ export type RadioResponse = {
   tracklist: string;
   md5_image: string;
   type: string;
-};
+}
 
-type Contributor = {
+interface IContributor {
   id: number;
   name: string;
   link: string;
@@ -188,4 +192,4 @@ type Contributor = {
   tracklist: string;
   type: string;
   role: string;
-};
+}

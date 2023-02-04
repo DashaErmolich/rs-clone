@@ -1,62 +1,67 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { baseUrl } from '../constants/constants';
+import { BASE_URL } from '../constants/constants';
 import { Endpoints } from '../enums/endpoints';
 import {
-  AlbumResponse,
-  ArtistResponse,
-  ChartResponse,
-  EditorialResponse,
-  GenreResponse,
-  RadioResponse,
-  SearchResponse,
-  TrackResponse,
+  IAlbumResponse,
+  IArtistResponse,
+  IChartResponse,
+  IEditorialResponse,
+  IGenreResponse,
+  IGenresResponse,
+  IRadioResponse,
+  ISearchResponse,
+  ITrackResponse,
 } from '../models/api-response.models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RestApiService {
+export class DeezerRestApiService {
   constructor(private http: HttpClient) {}
 
-  getTrack(id: number): Observable<TrackResponse> {
-    return this.http.get<TrackResponse>(`${baseUrl}${Endpoints.track}/${id}`);
+  getTrack(id: number): Observable<ITrackResponse> {
+    return this.http.get<ITrackResponse>(`${BASE_URL}${Endpoints.track}/${id}`);
   }
 
-  getArtist(id: number): Observable<ArtistResponse> {
-    return this.http.get<ArtistResponse>(`${baseUrl}${Endpoints.artist}/${id}`);
+  getArtist(id: number): Observable<IArtistResponse> {
+    return this.http.get<IArtistResponse>(`${BASE_URL}${Endpoints.artist}/${id}`);
   }
 
-  getAlbum(id: number): Observable<AlbumResponse> {
-    return this.http.get<AlbumResponse>(`${baseUrl}${Endpoints.album}/${id}`);
+  getAlbum(id: number): Observable<IAlbumResponse> {
+    return this.http.get<IAlbumResponse>(`${BASE_URL}${Endpoints.album}/${id}`);
   }
 
-  getEditorial(id: number): Observable<EditorialResponse> {
-    return this.http.get<EditorialResponse>(
-      `${baseUrl}${Endpoints.editorial}/${id}`,
+  getEditorial(id: number): Observable<IEditorialResponse> {
+    return this.http.get<IEditorialResponse>(
+      `${BASE_URL}${Endpoints.editorial}/${id}`,
     );
   }
 
   getSearch(
-    str: string,
+    searchValue: string,
     index: number,
     limit: number,
-  ): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(`${baseUrl}${Endpoints.search}`, {
-      params: { q: str, index, limit },
+  ): Observable<ISearchResponse> {
+    return this.http.get<ISearchResponse>(`${BASE_URL}${Endpoints.search}`, {
+      params: { q: searchValue, index, limit },
     });
   }
 
-  getChart(): Observable<ChartResponse> {
-    return this.http.get<ChartResponse>(`${baseUrl}${Endpoints.chart}`);
+  getChart(): Observable<IChartResponse> {
+    return this.http.get<IChartResponse>(`${BASE_URL}${Endpoints.chart}`);
   }
 
-  getGenre(id: number): Observable<GenreResponse> {
-    return this.http.get<GenreResponse>(`${baseUrl}${Endpoints.genre}/${id}`);
+  getGenre(id:number): Observable<IGenreResponse> {
+    return this.http.get<IGenreResponse>(`${BASE_URL}${Endpoints.genre}/${id}`);
   }
 
-  getRadio(id: number): Observable<RadioResponse> {
-    return this.http.get<RadioResponse>(`${baseUrl}${Endpoints.radio}/${id}`);
+  getGenres(): Observable<IGenresResponse> {
+    return this.http.get<IGenresResponse>(`${BASE_URL}${Endpoints.genre}`);
+  }
+
+  getRadio(id: number): Observable<IRadioResponse> {
+    return this.http.get<IRadioResponse>(`${BASE_URL}${Endpoints.radio}/${id}`);
   }
 }
