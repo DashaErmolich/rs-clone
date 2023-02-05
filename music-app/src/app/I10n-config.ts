@@ -1,7 +1,21 @@
-import { L10nConfig, L10nProvider, L10nTranslationLoader } from 'angular-l10n';
-import { Injectable, Optional } from '@angular/core';
+/* eslint-disable max-classes-per-file */
+import {
+  L10nConfig,
+  L10nLocale,
+  L10nProvider,
+  L10nStorage,
+  L10nTranslationLoader,
+} from 'angular-l10n';
+import {
+  Injectable,
+  Optional,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie';
+import { isPlatformBrowser } from '@angular/common';
 
 export const l10nConfig: L10nConfig = {
   format: 'language-region',
@@ -52,5 +66,22 @@ export const l10nConfig: L10nConfig = {
       params: new HttpParams().set('v', provider.options.version),
     };
     return this.http.get(url, options);
+  }
+}
+
+@Injectable() export class AppStorage implements L10nStorage {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cookieService: CookieService,
+  ) { }
+
+  public async read(): Promise<L10nLocale | null> {
+    return Promise.resolve(this.cookieService.getObject('locale') as L10nLocale);
+  }
+
+  public async write(locale: L10nLocale): Promise<void> {
+    if (isPlatformBrowser(this.platformId)) {
+      this.cookieService.putObject('locale', locale);
+    }
   }
 }
