@@ -1,0 +1,24 @@
+{
+  "aside": {
+    "nav": {
+      "home": "Домой",
+      "search": "Поиск",
+      "library": "Ваша библиотека"
+    },
+    "buttons": {
+      "createPlaylist": "Создать плейлист",
+      "likedSongs": "Понравившиеся песни",
+      "likedRadio": "Понравившиеся радио"
+    },
+    "favorites": "Favorites"
+  },
+  "settings": {
+    "language": "Язык",
+    "theme": "Тема",
+    "account": "Аккаунт"
+
+  },
+  "welcome": {
+    "greeting": "Добро пожаловать в RS Music App"
+  }
+}

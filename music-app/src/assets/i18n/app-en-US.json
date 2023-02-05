@@ -1,0 +1,24 @@
+{
+  "aside": {
+    "nav": {
+      "home": "Home",
+      "search": "Search",
+      "library": "Your Library"
+    },
+    "buttons": {
+      "createPlaylist": "Create playlist",
+      "likedSongs": "Liked songs",
+      "likedRadio": "Liked radio"
+    },
+    "favorites": "Favorites"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "account": "Account"
+
+  },
+  "welcome": {
+    "greeting": "Welcome to RS Music App"
+  }
+}
