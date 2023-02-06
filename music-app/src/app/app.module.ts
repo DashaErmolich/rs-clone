@@ -29,9 +29,7 @@ import { ThemeService } from './core/services/theme.service';
     UserModule,
     HttpClientModule,
   ],
-  providers: [
-    ThemeService,
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export default class AppModule {}

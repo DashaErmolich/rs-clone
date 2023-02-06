@@ -1,10 +1,10 @@
-<div [ngClass]="{'dark-theme': isDarkTheme | async}">
-  <div class="mat-app-background">
-    <mat-toolbar color="primary">
-      <mat-toolbar-row>
-        <h1>Theme Demo</h1>
-        <mat-slide-toggle [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">Dark theme</mat-slide-toggle>
-      </mat-toolbar-row>
-    </mat-toolbar>
-  </div>
+<div class="mat-app-background">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <h1>Theme Demo</h1>
+      <mat-slide-toggle
+      [checked]="isDarkTheme | async"
+      (change)="toggleDarkTheme($event.checked)">Dark theme</mat-slide-toggle>
+    </mat-toolbar-row>
+  </mat-toolbar>
 </div>

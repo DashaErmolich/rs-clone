@@ -1,3 +1,10 @@
-<p>settings-language works!</p>
-<button *ngFor="let item of schema" (click)="setLocale(item.locale)" [options]="{ type: 'language' }"
-l10nDisplayNames>{{ item.locale.language }}</button>
+<mat-radio-group aria-label="select-language" class="settings__language flex-column">
+  <mat-radio-button color="primary"
+  *ngFor="let item of schema"
+  (change)="setLocale(item.locale)"
+  [checked]="isChecked(item.locale.language)"
+  [value]="item.locale.language"
+  [options]="{ type: 'language', style: 'short' }"
+  l10nDisplayNames>{{ item.locale.language }}
+  </mat-radio-button>
+</mat-radio-group>

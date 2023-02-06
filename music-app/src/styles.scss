@@ -76,3 +76,12 @@ a {
 .full-page-container {
   height: 100%;
 }
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  text-transform: capitalize !important;
+}
