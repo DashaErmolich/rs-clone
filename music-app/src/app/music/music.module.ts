@@ -5,6 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
+
 import { NotFoundComponent } from '../core/not-found/not-found.component';
 import { LibraryComponent } from './library/library.component';
 import { HomeComponent } from './home/home.component';
@@ -32,6 +35,8 @@ import { PlayListComponent } from './play-list/play-list.component';
     MatButtonModule,
     MatProgressBarModule,
     MatSidenavModule,
+    L10nTranslationModule,
+    L10nIntlModule,
   ],
   exports: [
     MusicPageComponent,

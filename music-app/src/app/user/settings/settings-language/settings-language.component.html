@@ -1,1 +1,3 @@
 <p>settings-language works!</p>
+<button *ngFor="let item of schema" (click)="setLocale(item.locale)" [options]="{ type: 'language' }"
+l10nDisplayNames>{{ item.locale.language }}</button>
