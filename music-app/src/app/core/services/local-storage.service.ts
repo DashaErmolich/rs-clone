@@ -13,4 +13,12 @@ export class LocalStorageService {
   getLanguage(): string | null {
     return localStorage.getItem('lang');
   }
+
+  setTheme(theme: string): void {
+    localStorage.setItem('theme', theme);
+  }
+
+  getTheme(): string | null {
+    return localStorage.getItem('theme');
+  }
 }

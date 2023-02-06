@@ -8,12 +8,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
 
+import { CookieModule } from 'ngx-cookie';
 import { SettingsAsideComponent } from './settings-aside/settings-aside.component';
 import { SettingsLanguageComponent } from './settings-language/settings-language.component';
 import { SettingsThemeComponent } from './settings-theme/settings-theme.component';
 import { SettingsAccountComponent } from './settings-account/settings-account.component';
 import { SettingsPageComponent } from './settings-page/settings-page.component';
-import { l10nConfig, HttpTranslationLoader } from '../../I10n-config';
+import { l10nConfig, HttpTranslationLoader, AppStorage } from '../../I10n-config';
 import { ThemeService } from '../../core/services/theme.service';
 import { LocalStorageService } from '../../core/services/local-storage.service';
 
@@ -34,8 +35,10 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
       l10nConfig,
       {
         translationLoader: HttpTranslationLoader,
+        storage: AppStorage,
       },
     ),
+    CookieModule.withOptions(),
     L10nIntlModule,
     MatRadioModule,
     FormsModule,

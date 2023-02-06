@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterContentChecked } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ThemeService } from './core/services/theme.service';
 
@@ -7,14 +7,16 @@ import { ThemeService } from './core/services/theme.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+
+export class AppComponent implements AfterContentChecked {
   title = 'music-app';
 
   isDarkTheme: Observable<boolean> | undefined;
 
   constructor(private themeService: ThemeService) { }
 
-  ngOnInit() {
+  ngAfterContentChecked(): void {
+    this.themeService.checkTheme();
     this.isDarkTheme = this.themeService.isDarkTheme;
   }
 }
