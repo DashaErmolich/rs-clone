@@ -1,4 +1,4 @@
-<div [ngClass]="getClass() | async">
+<div [ngClass]="getClass() | async" [class]="getStartClass()">
     <mat-drawer-container class="app-container">
       <app-header></app-header>
       <div class="app-content">

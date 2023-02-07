@@ -19,14 +19,15 @@ export class ThemeService {
 
   activeCssClass$ = this.activeCssClass.asObservable();
 
+  activeTheme: string;
+
   constructor(
     private localStorage: LocalStorageService,
   ) {
     this.activeThemeCssClass = this.getUserTheme().cssClass;
     this.isThemeDark = this.getUserTheme().isDark;
+    this.activeTheme = this.getActiveTheme();
   }
-
-  activeTheme: string = '';
 
   themes: string[] = [
     'deeppurple-amber',
@@ -68,9 +69,16 @@ export class ThemeService {
   getUserTheme(): IUserTheme {
     const userTheme = this.localStorage.getTheme();
     const defaultTheme: IUserTheme = {
-      cssClass: this.themes[0],
+      cssClass: this.themes[0] + THEME_DARKNESS_SUFFIX,
       isDark: true,
     };
+    if (userTheme === null) {
+      this.localStorage.setTheme(defaultTheme.cssClass, defaultTheme.isDark);
+    }
     return userTheme === null ? defaultTheme : userTheme;
+  }
+
+  getActiveTheme(): string {
+    return this.activeThemeCssClass.split(THEME_DARKNESS_SUFFIX).join('');
   }
 }

@@ -19,4 +19,8 @@ export class AppComponent {
   getClass() {
     return this.themeService.activeCssClass$;
   }
+
+  getStartClass() {
+    return this.themeService.activeThemeCssClass;
+  }
 }
