@@ -15,7 +15,8 @@
   "settings": {
     "language": "Language",
     "theme": "Theme",
-    "account": "Account"
+    "account": "Account",
+    "dark-mode": "Dark Mode"
 
   },
   "welcome": {

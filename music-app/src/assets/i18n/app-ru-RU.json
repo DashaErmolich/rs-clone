@@ -15,8 +15,8 @@
   "settings": {
     "language": "Язык",
     "theme": "Тема",
-    "account": "Аккаунт"
-
+    "account": "Аккаунт",
+    "dark-mode": "Темная тема"
   },
   "welcome": {
     "greeting": "Добро пожаловать в RS Music App"

@@ -1,13 +1,17 @@
-<nav>
-  <ul>
-    <li>
-      <a routerLink="/settings/language" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>settings.language</a>
-    </li>
-    <li>
-      <a routerLink="/settings/theme" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>settings.theme</a>
-    </li>
-    <li>
-      <a routerLink="/settings/account" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>settings.account</a>
-    </li>
-  </ul>
-</nav>
+<mat-nav-list>
+  <a routerLink="/settings/language" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>
+    <mat-list-item>
+      settings.language
+    </mat-list-item>
+  </a>
+  <a routerLink="/settings/theme" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>
+    <mat-list-item>
+      settings.theme
+    </mat-list-item>
+  </a>
+  <a routerLink="/settings/account" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>
+    <mat-list-item>
+      settings.account
+    </mat-list-item>
+  </a>
+</mat-nav-list>

@@ -6,6 +6,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
@@ -47,6 +49,8 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
     ReactiveFormsModule,
     MatSidenavModule,
     MatIconModule,
+    MatListModule,
+    MatChipsModule,
   ],
   exports: [
     SettingsPageComponent,

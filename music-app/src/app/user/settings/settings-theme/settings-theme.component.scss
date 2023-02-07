@@ -1,0 +1,28 @@
+@mixin size($width, $height: null) {
+  width: $width;
+  height: if($height==null, $width, $height);
+}
+
+button.theme-selector {
+  @include size(80px);
+}
+
+div.theme-primary {
+  position: relative;
+  @include size(70px);
+}
+
+div.theme-accent {
+  @include size(25px);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+div.theme-warn {
+  @include size(15px);
+  position: absolute;
+  bottom: 7%;
+  left: 7%;
+  transform: rotate(45deg);
+}

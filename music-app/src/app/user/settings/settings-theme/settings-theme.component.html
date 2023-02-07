@@ -1,14 +1,21 @@
-<div class="">
+<mat-toolbar color="primary" class="mb-small">
   <mat-slide-toggle
   [checked]="isDarkTheme()"
   (click)="$event.stopPropagation()"
-  (change)="toggleDarkness()">Dark
+  (change)="toggleDarkness()" l10nTranslate>settings.dark-mode
   </mat-slide-toggle>
-  <mat-radio-group aria-label="select-theme" class="flex-column">
-    <mat-radio-button
-      *ngFor="let theme of themes"
-      (click)="$event.stopPropagation(); setActiveTheme(theme)"
-      [value]="theme"
-      [checked]="isThemeChecked(theme)">{{ getThemeName(theme) }}</mat-radio-button>
-  </mat-radio-group>
-</div>
+</mat-toolbar>
+<mat-radio-group aria-label="select-theme" class="flex-column">
+  <mat-radio-button
+    class="mb-small"
+    *ngFor="let theme of themes"
+    (click)="$event.stopPropagation(); setActiveTheme(theme)"
+    [value]="theme"
+    [checked]="isThemeChecked(theme)"
+    >
+    <div [attr.class]="theme + ' theme-primary center'">
+      <div [attr.class]="theme + ' theme-accent'"></div>
+      <div [attr.class]="theme + ' theme-warn'"></div>
+    </div>
+  </mat-radio-button>
+</mat-radio-group>
