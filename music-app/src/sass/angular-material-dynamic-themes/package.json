@@ -1,0 +1,47 @@
+{
+  "name": "angular-material-dynamic-themes",
+  "version": "1.0.4",
+  "description": "Making able the app to switch between material themes at run-time",
+  "scripts": {
+    "README.md-TOC": "node markdown-toc.js -f README.md",
+    "commit": "git-cz",
+    "semantic-release": "npx semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirismaili/angular-material-dynamic-themes.git"
+  },
+  "keywords": [
+    "angular",
+    "angular-material",
+    "angular-material-theme",
+    "angular-material-themes",
+    "theme",
+    "themes",
+    "dynamic-theme",
+    "dynamic-themes",
+    "runtime-theme-change",
+    "runtime-change-themes",
+    "sass",
+    "scss"
+  ],
+  "author": "S. M. Mir-Ismaili <s.m.mirismaili@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mirismaili/angular-material-dynamic-themes/issues"
+  },
+  "homepage": "https://github.com/mirismaili/angular-material-dynamic-themes#readme",
+  "devDependencies": {
+    "@angular/material": "^8.1.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "yargs": "^13.3.0"
+  },
+  "peerDependencies": {
+    "@angular/material": "^7.0.0 || ^8.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
