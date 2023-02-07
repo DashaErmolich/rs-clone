@@ -2,7 +2,7 @@
 
 @import './sass/abstracts/constants';
 @import './sass/abstracts/mixins';
-@import './material-theme';
+@import './sass/abstracts/material-theme';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
@@ -24,8 +24,8 @@ a {
 
 .app-container {
   height: 100vh;
-  background-color: $bg-color-dark-theme;
-  color: $color-dark-theme;
+  // background-color: $bg-color-dark-theme;
+  // color: $color-dark-theme;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -69,7 +69,7 @@ a {
 }
 
 .accent-wrapper {
-  background: $bg-light-color-dark-theme;
+  // background: $bg-light-color-dark-theme;
   overflow-y: scroll;
 }
 

@@ -1,9 +1,7 @@
-<div [ngClass]="{'dark-theme': isDarkTheme | async}">
-  <div class="app-container">
+<div [ngClass]="getClass() | async">
+  <mat-drawer-container class="app-container">
     <app-header></app-header>
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
+    <router-outlet class="content"></router-outlet>
     <app-footer></app-footer>
-  </div>
+  </mat-drawer-container>
 </div>

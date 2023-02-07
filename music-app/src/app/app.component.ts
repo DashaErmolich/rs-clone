@@ -1,5 +1,4 @@
-import { Component, AfterContentChecked } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 import { ThemeService } from './core/services/theme.service';
 
 @Component({
@@ -8,15 +7,16 @@ import { ThemeService } from './core/services/theme.service';
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent implements AfterContentChecked {
+export class AppComponent {
   title = 'music-app';
 
-  isDarkTheme: Observable<boolean> | undefined;
+  constructor(
+    private themeService: ThemeService,
+  ) {
+    this.themeService.setActiveTheme(this.themeService.themes[0], true);
+  }
 
-  constructor(private themeService: ThemeService) { }
-
-  ngAfterContentChecked(): void {
-    this.themeService.checkTheme();
-    this.isDarkTheme = this.themeService.isDarkTheme;
+  getClass() {
+    return this.themeService.activeCssClass$;
   }
 }

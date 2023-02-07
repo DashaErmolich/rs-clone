@@ -1,30 +1,29 @@
-import { AfterContentChecked, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
 import { ThemeService } from '../../../core/services/theme.service';
-import { LocalStorageService } from '../../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-settings-theme',
   templateUrl: './settings-theme.component.html',
   styleUrls: ['./settings-theme.component.scss'],
 })
-export class SettingsThemeComponent implements AfterContentChecked {
+
+export class SettingsThemeComponent {
   isDarkTheme: Observable<boolean> | undefined;
+
+  themes: string[] = this.themeService.themes;
 
   constructor(
     private themeService: ThemeService,
-    private localStorage: LocalStorageService,
   ) { }
 
-  ngAfterContentChecked(): void {
-    this.themeService.checkTheme();
-    this.isDarkTheme = this.themeService.isDarkTheme;
+  setActiveTheme(theme: string, darkness: boolean | null = null) {
+    this.themeService.setActiveTheme(theme, darkness);
   }
 
-  toggleDarkTheme(checked: boolean) {
-    this.themeService.setDarkTheme(checked);
-    this.localStorage.setTheme(checked ? 'dark' : 'light');
+  toggleDarkness() {
+    this.themeService.toggleDarkness();
   }
 }

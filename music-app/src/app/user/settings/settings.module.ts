@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -43,6 +44,7 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSidenavModule,
   ],
   exports: [
     SettingsPageComponent,
