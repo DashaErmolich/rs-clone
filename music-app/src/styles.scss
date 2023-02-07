@@ -98,6 +98,10 @@ label {
   .icon {
     fill: #fff;
   }
+
+  .active {
+    background: rgba(128, 128, 128, 0.3) !important;
+  }
 }
 
 .deeppurple-amber,
@@ -107,9 +111,15 @@ label {
   .accent-wrapper {
     background: $bg-light-color-light-theme;
   }
+
   .icon {
     fill: rgba(0, 0, 0, 0.87);
   }
+
+  .active {
+    background: rgba(128, 128, 128, 0.3) !important;
+  }
+
 }
 
 .mb-small {
