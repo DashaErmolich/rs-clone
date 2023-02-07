@@ -115,3 +115,8 @@ label {
 .mb-small {
   margin-bottom: $container-p-small;
 }
+
+.navigation-link {
+  display: flex !important;
+  justify-content: start !important;
+}

@@ -1,17 +1,14 @@
-<mat-nav-list>
-  <a routerLink="/settings/language" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>
-    <mat-list-item>
-      settings.language
-    </mat-list-item>
+<nav class="flex-column mb-small">
+  <a mat-button color="basic" routerLink="/settings/language" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>language</mat-icon>
+    <span l10nTranslate>settings.language</span>
   </a>
-  <a routerLink="/settings/theme" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>
-    <mat-list-item>
-      settings.theme
-    </mat-list-item>
+  <a mat-button color="basic" routerLink="/settings/theme" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>format_color_fill</mat-icon>
+    <span l10nTranslate>settings.theme</span>
   </a>
-  <a routerLink="/settings/account" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>
-    <mat-list-item>
-      settings.account
-    </mat-list-item>
+  <a mat-button color="basic" routerLink="/settings/account" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>account_box</mat-icon>
+    <span l10nTranslate>settings.account</span>
   </a>
-</mat-nav-list>
+</nav>

@@ -6,9 +6,9 @@
       "library": "Your Library"
     },
     "buttons": {
-      "createPlaylist": "Create playlist",
-      "likedSongs": "Liked songs",
-      "likedRadio": "Liked radio"
+      "create-play-list": "Create playlist",
+      "liked-songs": "Liked songs",
+      "liked-radio": "Liked radio"
     },
     "favorites": "Favorites"
   },

@@ -6,9 +6,9 @@
       "library": "Ваша библиотека"
     },
     "buttons": {
-      "createPlaylist": "Создать плейлист",
-      "likedSongs": "Понравившиеся песни",
-      "likedRadio": "Понравившиеся радио"
+      "create-play-list": "Создать плейлист",
+      "liked-songs": "Понравившиеся песни",
+      "liked-radio": "Понравившиеся радио"
     },
     "favorites": "Избранное"
   },

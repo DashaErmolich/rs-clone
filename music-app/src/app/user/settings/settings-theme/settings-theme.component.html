@@ -1,10 +1,12 @@
-<mat-toolbar color="primary" class="mb-small">
+<div class="mb-small">
   <mat-slide-toggle
+  class="mb-small"
   [checked]="isDarkTheme()"
   (click)="$event.stopPropagation()"
   (change)="toggleDarkness()" l10nTranslate>settings.dark-mode
-  </mat-slide-toggle>
-</mat-toolbar>
+</mat-slide-toggle>
+<mat-divider class="mb-small"></mat-divider>
+</div>
 <mat-radio-group aria-label="select-theme" class="flex-column">
   <mat-radio-button
     class="mb-small"
