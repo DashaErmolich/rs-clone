@@ -24,8 +24,6 @@ a {
 
 .app-container {
   height: 100vh;
-  // background-color: $bg-color-dark-theme;
-  // color: $color-dark-theme;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -35,7 +33,7 @@ a {
   padding: $container-p-small $container-p-large;
 }
 
-.content {
+.flex-1 {
   flex: 1;
 }
 
@@ -60,10 +58,6 @@ a {
   }
 }
 
-.height-100 {
-  height: 100%;
-}
-
 .content-wrapper {
   padding-top: $header-height;
 }
@@ -73,10 +67,6 @@ a {
   overflow-y: scroll;
 }
 
-.full-page-container {
-  height: 100%;
-}
-
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -84,4 +74,34 @@ a {
 
 label {
   text-transform: capitalize !important;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.app-content {
+  height: calc(100% - $footer-height - $header-progress-bar-height);
+  app-settings-page {
+    display: block;
+    height: 100%;
+  }
+}
+
+.deeppurple-amber-dark,
+.indigo-pink-dark,
+.pink-bluegrey-dark,
+.purple-green-dark {
+  .accent-wrapper {
+    background: $bg-light-color-dark-theme;
+  }
+}
+
+.deeppurple-amber,
+.indigo-pink,
+.pink-bluegrey,
+.purple-green {
+  .accent-wrapper {
+    background: $bg-light-color-light-theme;
+  }
 }

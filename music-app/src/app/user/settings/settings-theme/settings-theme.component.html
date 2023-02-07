@@ -1,25 +1,13 @@
-<div class="mat-app-background">
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <h1>Theme Demo</h1>
-      <!-- <mat-slide-toggle
-      [checked]="isDarkTheme | async"
-      (change)="setActiveTheme('pink-bluegrey')">Dark theme</mat-slide-toggle> -->
-    </mat-toolbar-row>
-  </mat-toolbar>
-</div>
-
-<mat-drawer-container>
+<div class="">
   <mat-slide-toggle
-  [checked]="isDarkTheme | async"
+  [checked]=""
   (click)="$event.stopPropagation()"
   (change)="toggleDarkness()">Dark
   </mat-slide-toggle>
-
   <mat-radio-group aria-label="select-theme" class="flex-column">
     <mat-radio-button
-    *ngFor="let theme of themes"
-    (click)="$event.stopPropagation(); setActiveTheme(theme)"
-    [checked]="isDarkTheme | async">{{ theme }}</mat-radio-button>
+      *ngFor="let theme of themes"
+      (click)="$event.stopPropagation(); setActiveTheme(theme)"
+      [checked]="">{{ getThemeName(theme) }}</mat-radio-button>
   </mat-radio-group>
-</mat-drawer-container>
+</div>

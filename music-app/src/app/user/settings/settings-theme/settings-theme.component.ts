@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { Observable } from 'rxjs';
-
 import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
@@ -11,13 +9,11 @@ import { ThemeService } from '../../../core/services/theme.service';
 })
 
 export class SettingsThemeComponent {
-  isDarkTheme: Observable<boolean> | undefined;
-
-  themes: string[] = this.themeService.themes;
-
   constructor(
     private themeService: ThemeService,
   ) { }
+
+  themes: string[] = this.themeService.themes;
 
   setActiveTheme(theme: string, darkness: boolean | null = null) {
     this.themeService.setActiveTheme(theme, darkness);
@@ -25,5 +21,10 @@ export class SettingsThemeComponent {
 
   toggleDarkness() {
     this.themeService.toggleDarkness();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getThemeName(theme: string): string {
+    return theme.split('-').join(' ');
   }
 }
