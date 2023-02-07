@@ -95,6 +95,9 @@ label {
   .accent-wrapper {
     background: $bg-light-color-dark-theme;
   }
+  .icon {
+    fill: #fff;
+  }
 }
 
 .deeppurple-amber,
@@ -103,5 +106,8 @@ label {
 .purple-green {
   .accent-wrapper {
     background: $bg-light-color-light-theme;
+  }
+  .icon {
+    fill: rgba(0, 0, 0, 0.87);
   }
 }

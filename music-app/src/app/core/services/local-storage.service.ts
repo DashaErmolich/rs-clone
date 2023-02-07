@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Injectable } from '@angular/core';
+import { IUserTheme } from '../../models/theme.models';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +15,17 @@ export class LocalStorageService {
     return localStorage.getItem('lang');
   }
 
-  setTheme(theme: string): void {
-    localStorage.setItem('theme', theme);
+  setTheme(theme: string, darkness: boolean): void {
+    const userTheme: IUserTheme = {
+      cssClass: theme,
+      isDark: darkness,
+    };
+
+    localStorage.setItem('theme', JSON.stringify(userTheme));
   }
 
-  getTheme(): string | null {
-    return localStorage.getItem('theme');
+  getTheme(): IUserTheme {
+    const userTheme = localStorage.getItem('theme');
+    return userTheme === null ? null : JSON.parse(userTheme);
   }
 }

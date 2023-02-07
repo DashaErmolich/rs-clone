@@ -27,4 +27,12 @@ export class SettingsThemeComponent {
   getThemeName(theme: string): string {
     return theme.split('-').join(' ');
   }
+
+  isDarkTheme(): boolean {
+    return this.themeService.isThemeDark;
+  }
+
+  isThemeChecked(theme: string): boolean {
+    return this.themeService.activeThemeCssClass.split('-dark').join('') === theme;
+  }
 }

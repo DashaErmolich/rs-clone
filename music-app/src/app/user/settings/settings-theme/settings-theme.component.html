@@ -1,6 +1,6 @@
 <div class="">
   <mat-slide-toggle
-  [checked]=""
+  [checked]="isDarkTheme()"
   (click)="$event.stopPropagation()"
   (change)="toggleDarkness()">Dark
   </mat-slide-toggle>
@@ -8,6 +8,7 @@
     <mat-radio-button
       *ngFor="let theme of themes"
       (click)="$event.stopPropagation(); setActiveTheme(theme)"
-      [checked]="">{{ getThemeName(theme) }}</mat-radio-button>
+      [value]="theme"
+      [checked]="isThemeChecked(theme)">{{ getThemeName(theme) }}</mat-radio-button>
   </mat-radio-group>
 </div>

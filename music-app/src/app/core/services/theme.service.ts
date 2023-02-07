@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
+import { IUserTheme } from '../../models/theme.models';
 
 const THEME_DARKNESS_SUFFIX = '-dark';
 
@@ -10,17 +11,20 @@ const THEME_DARKNESS_SUFFIX = '-dark';
 })
 
 export class ThemeService {
-  constructor(
-    private localStorage: LocalStorageService,
-  ) { }
+  activeThemeCssClass: string;
+
+  isThemeDark: boolean;
 
   private activeCssClass = new Subject<string>();
 
   activeCssClass$ = this.activeCssClass.asObservable();
 
-  activeThemeCssClass: string = '';
-
-  isThemeDark = true;
+  constructor(
+    private localStorage: LocalStorageService,
+  ) {
+    this.activeThemeCssClass = this.getUserTheme().cssClass;
+    this.isThemeDark = this.getUserTheme().isDark;
+  }
 
   activeTheme: string = '';
 
@@ -50,6 +54,7 @@ export class ThemeService {
 
     this.activeThemeCssClass = cssClass;
     this.setActiveCssClass(cssClass);
+    this.localStorage.setTheme(this.activeThemeCssClass, isDark);
   }
 
   toggleDarkness() {
@@ -58,5 +63,14 @@ export class ThemeService {
 
   setActiveCssClass(value: string): void {
     this.activeCssClass.next(value);
+  }
+
+  getUserTheme(): IUserTheme {
+    const userTheme = this.localStorage.getTheme();
+    const defaultTheme: IUserTheme = {
+      cssClass: this.themes[0],
+      isDark: true,
+    };
+    return userTheme === null ? defaultTheme : userTheme;
   }
 }
