@@ -24,7 +24,7 @@
     </div>
     <span>{{ currentTime }}</span>
     <mat-progress-bar mode="determinate" [value]=""></mat-progress-bar>
-    <span>{{ totalTime }}</span>
+    <span>{{ getTotalTime() }}</span>
   </div>
   <div class="player__items-group flex-column-3">
     <mat-slider min="0" max="1" step="0.01" (input)="setVolume($event)" (click)="setVolume($event)">

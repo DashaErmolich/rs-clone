@@ -21,7 +21,7 @@ export class PlayerComponent implements OnInit {
 
   currentTime: number = 0;
 
-  totalTime: string = this.getTime(30);
+  totalTime: string = '';
 
   audioObject = new Audio();
 
@@ -45,6 +45,7 @@ export class PlayerComponent implements OnInit {
     if (url) {
       this.streamObserver(url).subscribe(() => {});
       console.log(url);
+      this.getTotalTime();
     }
   }
 
@@ -72,6 +73,7 @@ export class PlayerComponent implements OnInit {
       this.audioObject.src = url;
       this.audioObject.load();
       this.audioObject.play();
+      console.log(this.audioObject);
 
       // const handler = (event: Event) => {
       //   console.log(event);
@@ -97,4 +99,12 @@ export class PlayerComponent implements OnInit {
   // getTimeProgress(): string {
 
   // }
+
+  getTotalTime() {
+    const result = this.audioObject.duration;
+    if (!result) {
+      return this.getTime(0);
+    }
+    return this.getTime(result);
+  }
 }
