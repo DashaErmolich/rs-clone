@@ -7,10 +7,10 @@
   </div>
   <div>
     <ng-container *ngIf="isSearchRoute">
-      <mat-form-field class="example-form-field">
+      <mat-form-field class="search-input">
         <input matInput type="text" placeholder="Search" [(ngModel)]="searchValue" [formControl]="searchControl">
-        <mat-icon *ngIf="!searchValue" matSuffix>search</mat-icon>
-        <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchValue=''">close</mat-icon>
+        <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
+        <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchValue=''" class="search-btn">close</mat-icon>
       </mat-form-field>
     </ng-container>
   </div>
@@ -18,9 +18,9 @@
     <a routerLink="/settings" ariaCurrentWhenActive="page">
       <button mat-fab extended="" color="basic">
         <mat-icon>
-          <!-- <svg class="icon">
+          <svg class="icon">
             <use xlink:href="../../../assets/icons/user-icons-sprite.svg#icons8-jake"></use>
-          </svg> -->
+          </svg>
         </mat-icon>
         Jake
       </button>

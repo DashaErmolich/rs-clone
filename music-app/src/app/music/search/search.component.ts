@@ -37,6 +37,8 @@ export class SearchComponent implements OnInit {
 
   genres: IGenreResponse[] = [];
 
+  playlistsFromChart: Partial<IPlayListResponse>[] = [];
+
   loading = false;
 
   searchParam: string = '';
@@ -60,11 +62,11 @@ export class SearchComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
       if (this.searchParam) {
-        this.renderTracks();
+        this.checkTypeOfSearch();
       } else {
         this.loading = true;
-        this.deezerRestApiService.getChart().subscribe((playLists) => {
-          this.playlists = playLists.playlists.data;
+        this.deezerRestApiService.getChart().subscribe((playlists) => {
+          this.playlistsFromChart = playlists.playlists.data;
           this.loading = false;
         });
         this.deezerRestApiService.getGenres().subscribe((genres) => {
@@ -80,7 +82,9 @@ export class SearchComponent implements OnInit {
       this.searchParam = param['q'];
       this.deezerRestApiService
         .getSearch(this.searchParam, this.index, this.limitTracks)
-        .subscribe((res) => { this.tracks = res.data; });
+        .subscribe((res) => {
+          this.tracks = res.data;
+        });
     });
   }
 
@@ -117,24 +121,36 @@ export class SearchComponent implements OnInit {
   getMore(searchType: string) {
     if (searchType === SearchType.playlists) {
       this.limitPlaylists += 10;
-      this.renderPlaylists();
     }
     if (searchType === SearchType.tracks) {
       this.limitTracks += 25;
-      this.renderTracks();
     }
     if (searchType === SearchType.albums) {
       this.limitAlbums += 10;
-      this.renderAlbums();
     }
     if (searchType === SearchType.artists) {
       this.limitArtists += 10;
-      this.renderArtists();
     }
+    this.checkTypeOfSearch();
   }
 
   randomColor(i: number) {
     const index = i % this.colors.length;
     return this.colors[index];
+  }
+
+  checkTypeOfSearch() {
+    if (this.searchType === SearchType.playlists) {
+      this.renderPlaylists();
+    }
+    if (this.searchType === SearchType.tracks) {
+      this.renderTracks();
+    }
+    if (this.searchType === SearchType.albums) {
+      this.renderAlbums();
+    }
+    if (this.searchType === SearchType.artists) {
+      this.renderArtists();
+    }
   }
 }
