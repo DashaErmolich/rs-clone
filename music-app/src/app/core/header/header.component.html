@@ -5,6 +5,15 @@
       <h1>RS Music App</h1>
     </a>
   </div>
+  <div class="search-container">
+    <ng-container *ngIf="isSearchRoute">
+      <mat-form-field class="example-form-field">
+        <input matInput type="text" placeholder="Search" [(ngModel)]="searchValue" [formControl]="searchControl">
+        <mat-icon *ngIf="!searchValue" matSuffix>search</mat-icon>
+        <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchValue=''">close</mat-icon>
+      </mat-form-field>
+    </ng-container>
+  </div>
   <div>
     <a routerLink="/settings" ariaCurrentWhenActive="page">
       <button mat-fab extended="" color="basic">

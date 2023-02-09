@@ -5,14 +5,19 @@ import { BASE_URL } from '../constants/constants';
 import { Endpoints } from '../enums/endpoints';
 import {
   IAlbumResponse,
+  IArtistsResponse,
+  IAlbumsResponse,
   IArtistResponse,
   IChartResponse,
   IEditorialResponse,
   IGenreResponse,
   IGenresResponse,
+  IPlayListResponse,
   IRadioResponse,
-  ISearchResponse,
   ITrackResponse,
+  ITracksByArtist,
+  IPlayListsResponse,
+  ITracksResponse,
 } from '../models/api-response.models';
 
 @Injectable({
@@ -26,7 +31,9 @@ export class DeezerRestApiService {
   }
 
   getArtist(id: number): Observable<IArtistResponse> {
-    return this.http.get<IArtistResponse>(`${BASE_URL}${Endpoints.artist}/${id}`);
+    return this.http.get<IArtistResponse>(
+      `${BASE_URL}${Endpoints.artist}/${id}`,
+    );
   }
 
   getAlbum(id: number): Observable<IAlbumResponse> {
@@ -43,18 +50,69 @@ export class DeezerRestApiService {
     searchValue: string,
     index: number,
     limit: number,
-  ): Observable<ISearchResponse> {
-    return this.http.get<ISearchResponse>(`${BASE_URL}${Endpoints.search}`, {
+  ): Observable<ITracksResponse> {
+    return this.http.get<ITracksResponse>(`${BASE_URL}${Endpoints.search}`, {
       params: { q: searchValue, index, limit },
     });
+  }
+
+  getSearchAlbums(
+    searchValue: string,
+    index: number,
+    limit: number,
+  ): Observable<IAlbumsResponse> {
+    return this.http.get<IAlbumsResponse>(
+      `${BASE_URL}${Endpoints.search}${Endpoints.album}`,
+      {
+        params: { q: searchValue, index, limit },
+      },
+    );
+  }
+
+  getSearchArtists(
+    searchValue: string,
+    index: number,
+    limit: number,
+  ): Observable<IArtistsResponse> {
+    return this.http.get<IArtistsResponse>(
+      `${BASE_URL}${Endpoints.search}${Endpoints.artist}`,
+      {
+        params: { q: searchValue, index, limit },
+      },
+    );
+  }
+
+  getSearchPlayLists(
+    searchValue: string,
+    index: number,
+    limit: number,
+  ): Observable<IPlayListsResponse> {
+    return this.http.get<IPlayListsResponse>(
+      `${BASE_URL}${Endpoints.search}${Endpoints.playlist}`,
+      {
+        params: { q: searchValue, index, limit },
+      },
+    );
   }
 
   getChart(): Observable<IChartResponse> {
     return this.http.get<IChartResponse>(`${BASE_URL}${Endpoints.chart}`);
   }
 
-  getGenre(id:number): Observable<IGenreResponse> {
+  getGenre(id: number): Observable<IGenreResponse> {
     return this.http.get<IGenreResponse>(`${BASE_URL}${Endpoints.genre}/${id}`);
+  }
+
+  getArtistByGenre(id: number): Observable<IArtistsResponse> {
+    return this.http.get<IArtistsResponse>(
+      `${BASE_URL}${Endpoints.genre}/${id}${Endpoints.artists}`,
+    );
+  }
+
+  getTracksByArtist(id: number): Observable<ITracksByArtist> {
+    return this.http.get<ITracksByArtist>(
+      `${BASE_URL}${Endpoints.artist}/${id}/top?limit=50`,
+    );
   }
 
   getGenres(): Observable<IGenresResponse> {
@@ -64,4 +122,15 @@ export class DeezerRestApiService {
   getRadio(id: number): Observable<IRadioResponse> {
     return this.http.get<IRadioResponse>(`${BASE_URL}${Endpoints.radio}/${id}`);
   }
+
+  getPlayListTracks(id: number): Observable<IPlayListResponse> {
+    return this.http.get<IPlayListResponse>(
+      `${BASE_URL}${Endpoints.playlist}/${id}`,
+    );
+  }
+
+  // get(path: any): Observable<any> {
+  //   console.log('path', path);
+  //   return this.http.get<any>(path);
+  // }
 }
