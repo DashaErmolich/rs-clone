@@ -1,10 +1,11 @@
+/* eslint-disable no-debugger */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { AudioService } from '../../services/audio.service';
@@ -19,16 +20,21 @@ export class PlayerComponent implements OnInit {
 
   initialValue: number = 0.5;
 
-  currentTime: number = 0;
+  defaultState = {
+    progress: 0,
+    time: this.getTime(0),
+    duration: this.getTime(0),
+  };
 
-  totalTime: string = '';
+  state$ = new BehaviorSubject(this.defaultState);
 
-  audioObject = new Audio();
+  currentProgress = this.defaultState.progress;
 
-  audioEvents = [
-    'ended',
-    'play',
-  ];
+  currentTime = this.defaultState.time;
+
+  durationTime: string = this.defaultState.duration;
+
+  audio = new Audio();
 
   constructor(
     private deezerRestApiService: DeezerRestApiService,
@@ -36,72 +42,72 @@ export class PlayerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.deezerRestApiService.getSearch('metallica', 0, 5).subscribe((response) => {
+    this.deezerRestApiService.getSearch('queen', 0, 5).subscribe((response) => {
       this.tracks = response.data;
     });
   }
 
   playTrack(url: string | undefined) {
+    this.state$.next(this.defaultState);
+
     if (url) {
-      this.streamObserver(url).subscribe(() => {});
-      console.log(url);
-      this.getTotalTime();
+      this.audio.src = url;
+      this.audio.load();
+      this.audio.play();
+      this.state$.subscribe(() => {
+        this.currentProgress = this.state$.value.progress;
+        this.currentTime = this.state$.value.time;
+        this.durationTime = this.state$.value.duration;
+      });
+
+      this.audio.addEventListener('timeupdate', () => {
+        this.updateProgress();
+      });
+
+      this.audio.addEventListener('ended', () => {
+        this.state$.next(this.defaultState);
+      });
     }
   }
 
+  updateProgress() {
+    this.state$.next({
+      progress: this.getPercent(this.audio.currentTime, this.audio.duration),
+      time: this.getTime(this.audio.currentTime),
+      duration: this.getTotalTime(),
+    });
+  }
+
   play() {
-    this.audioObject.play();
+    this.audio.play();
   }
 
   pause() {
-    this.audioObject.pause();
+    this.audio.pause();
   }
 
   setVolume(event: Event) {
     const volume = (event.target as HTMLElement).getAttribute('aria-valuetext');
     if (volume) {
-      this.audioObject.volume = Number(volume);
+      this.audio.volume = Number(volume);
     }
+  }
+
+  setProgress(event: Event) {
+    console.log(event.target);
   }
 
   getTime(sec: number, format: string = 'mm:ss') {
     return moment.utc(sec * 1000).format(format);
   }
 
-  streamObserver(url: string) {
-    return new Observable((observer) => {
-      this.audioObject.src = url;
-      this.audioObject.load();
-      this.audioObject.play();
-      console.log(this.audioObject);
-
-      // const handler = (event: Event) => {
-      //   console.log(event);
-      // };
-
-      // this.addEvent(handler);
-
-      return () => {
-        this.audioObject.pause();
-        this.audioObject.currentTime = 0;
-      };
-    });
+  getPercent(currentValue: number, totalValue: number): number {
+    const result = (currentValue / totalValue) * 100;
+    return result || 0;
   }
-
-  // addEvent(cb: (event: Event) => void) {
-  //   cb();
-  // }
-
-  removeEvent() {
-
-  }
-
-  // getTimeProgress(): string {
-
-  // }
 
   getTotalTime() {
-    const result = this.audioObject.duration;
+    const result = this.audio.duration;
     if (!result) {
       return this.getTime(0);
     }

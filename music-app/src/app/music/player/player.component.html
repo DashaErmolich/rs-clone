@@ -1,11 +1,5 @@
 <div class="player-container player container flex-row">
   <div class="player__items-group flex-column-3">
-    <mat-card *ngFor="let track of tracks" class="card">
-      <mat-card-content>{{track.title}}</mat-card-content>
-      <mat-card-content>{{track.artist?.name}}</mat-card-content>
-      <mat-card-content>{{track.album?.title}}</mat-card-content>
-      <img mat-card-image class="card-img" src={{track.album?.cover_small}} alt={{track.title}} (click)="playTrack(track.preview)">
-    </mat-card>
   </div>
   <div class="player__items-group flex-column-6">
     <div class="buttons-container">
@@ -22,13 +16,20 @@
         <mat-icon>skip_next</mat-icon>
       </button>
     </div>
-    <span>{{ currentTime }}</span>
-    <mat-progress-bar mode="determinate" [value]=""></mat-progress-bar>
-    <span>{{ getTotalTime() }}</span>
+    <span>{{ currentTime}} / {{ durationTime }}</span>
+    <mat-progress-bar mode="determinate" [value]="currentProgress" (click)="setProgress($event)"></mat-progress-bar>
   </div>
   <div class="player__items-group flex-column-3">
     <mat-slider min="0" max="1" step="0.01" (input)="setVolume($event)" (click)="setVolume($event)">
       <input matSliderThumb>
     </mat-slider>
   </div>
+</div>
+<div class="flex-row">
+  <mat-card *ngFor="let track of tracks" class="card">
+    <mat-card-content>{{track.title}}</mat-card-content>
+    <mat-card-content>{{track.artist?.name}}</mat-card-content>
+    <mat-card-content>{{track.album?.title}}</mat-card-content>
+    <img mat-card-image class="card-img" src={{track.album?.cover_small}} alt={{track.title}} (click)="playTrack(track.preview)">
+  </mat-card>
 </div>
