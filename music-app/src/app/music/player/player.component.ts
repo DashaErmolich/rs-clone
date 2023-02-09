@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-debugger */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
@@ -5,7 +6,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { AudioService } from '../../services/audio.service';
@@ -45,7 +46,13 @@ export class PlayerComponent implements OnInit {
 
   isMute = false;
 
+  isRepeatOn = false;
+
   currentTrackIndex: number | null = null;
+
+  isFirstTrack = false;
+
+  isLastTrack = false;
 
   audio = new Audio();
 
@@ -148,25 +155,63 @@ export class PlayerComponent implements OnInit {
 
   setTrackIndex(index: number) {
     this.currentTrackIndex = index;
+    if (this.currentTrackIndex === 0 && !this.isRepeatOn) {
+      this.isFirstTrack = true;
+      this.isLastTrack = false;
+    } else if (this.currentTrackIndex === this.tracks.length - 1 && !this.isRepeatOn) {
+      this.isLastTrack = true;
+      this.isFirstTrack = false;
+    } else {
+      this.isLastTrack = false;
+      this.isFirstTrack = false;
+    }
   }
 
   next() {
     if (this.currentTrackIndex !== null) {
       this.currentTrackIndex += 1;
       if (this.currentTrackIndex >= this.tracks.length) {
-        this.currentTrackIndex = 0;
+        if (this.isRepeatOn) {
+          this.currentTrackIndex = 0;
+        } else {
+          this.isLastTrack = true;
+        }
       }
+      this.setTrackIndex(this.currentTrackIndex);
       this.playTrack(this.tracks[this.currentTrackIndex].preview);
     }
   }
 
   prev() {
+    console.log(this.currentTrackIndex);
     if (this.currentTrackIndex !== null) {
       this.currentTrackIndex -= 1;
-      if (this.currentTrackIndex <= 0) {
-        this.currentTrackIndex = this.tracks.length - 1;
+      if (this.currentTrackIndex < 0) {
+        if (this.isRepeatOn) {
+          this.currentTrackIndex = this.tracks.length - 1;
+        } else {
+          this.isFirstTrack = true;
+        }
       }
+      this.setTrackIndex(this.currentTrackIndex);
       this.playTrack(this.tracks[this.currentTrackIndex].preview);
+    }
+  }
+
+  toggleRepeat() {
+    this.isRepeatOn = !this.isRepeatOn;
+    if (this.isRepeatOn) {
+      this.isFirstTrack = false;
+      this.isLastTrack = false;
+    } else if (this.currentTrackIndex === 0) {
+      this.isFirstTrack = true;
+      this.isLastTrack = false;
+    } else if (this.currentTrackIndex === this.tracks.length - 1) {
+      this.isFirstTrack = false;
+      this.isLastTrack = true;
+    } else {
+      this.isFirstTrack = false;
+      this.isLastTrack = false;
     }
   }
 }
