@@ -1,21 +1,23 @@
 /* eslint-disable max-classes-per-file */
 import {
+  Injectable,
+  Optional,
+  PLATFORM_ID,
+  Inject,
+} from '@angular/core';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie';
+import { isPlatformBrowser } from '@angular/common';
+
+import {
   L10nConfig,
   L10nLocale,
   L10nProvider,
   L10nStorage,
   L10nTranslationLoader,
 } from 'angular-l10n';
-import {
-  Injectable,
-  Optional,
-  Inject,
-  PLATFORM_ID,
-} from '@angular/core';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
-import { isPlatformBrowser } from '@angular/common';
 
 export const l10nConfig: L10nConfig = {
   format: 'language-region',
@@ -33,9 +35,6 @@ export const l10nConfig: L10nConfig = {
     {
       locale: {
         language: 'en-US',
-        currency: 'USD',
-        timeZone: 'America/Los_Angeles',
-        units: { length: 'mile' },
       },
       dir: 'ltr',
       text: 'United States',
@@ -43,9 +42,6 @@ export const l10nConfig: L10nConfig = {
     {
       locale: {
         language: 'ru-RU',
-        currency: 'RUB',
-        timeZone: 'Europe/Moscow',
-        units: { length: 'kilometer' },
       },
       dir: 'ltr',
       text: 'Russia',

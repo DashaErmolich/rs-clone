@@ -1,13 +1,29 @@
-<nav>
-  <ul>
-    <li>
-      <a routerLink="/music/home" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>aside.nav.home</a>
-    </li>
-    <li>
-      <a routerLink="/music/search" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>aside.nav.search</a>
-    </li>
-    <li>
-      <a routerLink="/music/library" routerLinkActive="active" ariaCurrentWhenActive="page" l10nTranslate>aside.nav.library</a>
-    </li>
-  </ul>
+<nav class="flex-column mb-small">
+  <a mat-button color="basic" routerLink="/music/home" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>home</mat-icon>
+    <span l10nTranslate>aside.nav.home</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/search" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>search</mat-icon>
+    <span l10nTranslate>aside.nav.search</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/library" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>library_music</mat-icon>
+    <span l10nTranslate>aside.nav.library</span>
+  </a>
 </nav>
+
+<div class="flex-column">
+  <a mat-button color="basic" routerLink="/music/home" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon>library_add</mat-icon>
+    <span l10nTranslate>aside.buttons.create-play-list</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/search" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon color="primary">favorite</mat-icon>
+    <span l10nTranslate>aside.buttons.liked-songs</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/library" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
+    <mat-icon color="warn">favorite</mat-icon>
+    <span l10nTranslate>aside.buttons.liked-radio</span>
+  </a>
+</div>

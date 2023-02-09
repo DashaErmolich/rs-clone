@@ -1,0 +1,23 @@
+@import '../../../sass/abstracts/constants';
+
+.welcome-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .welcome-page__title {
+    text-align: center;
+  }
+
+  .welcome-page__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $container-p-small;
+
+    button {
+      display: block;
+    }
+  }
+}
