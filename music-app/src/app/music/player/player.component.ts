@@ -45,6 +45,8 @@ export class PlayerComponent implements OnInit {
 
   isMute = false;
 
+  currentTrackIndex: number | null = null;
+
   audio = new Audio();
 
   constructor(
@@ -91,7 +93,6 @@ export class PlayerComponent implements OnInit {
       durationTime: this.getTotalTime(),
       duration: this.audio.duration,
     });
-    console.log(this.state$);
   }
 
   playPause() {
@@ -143,5 +144,29 @@ export class PlayerComponent implements OnInit {
       return this.getTime(0);
     }
     return this.getTime(result);
+  }
+
+  setTrackIndex(index: number) {
+    this.currentTrackIndex = index;
+  }
+
+  next() {
+    if (this.currentTrackIndex !== null) {
+      this.currentTrackIndex += 1;
+      if (this.currentTrackIndex >= this.tracks.length) {
+        this.currentTrackIndex = 0;
+      }
+      this.playTrack(this.tracks[this.currentTrackIndex].preview);
+    }
+  }
+
+  prev() {
+    if (this.currentTrackIndex !== null) {
+      this.currentTrackIndex -= 1;
+      if (this.currentTrackIndex <= 0) {
+        this.currentTrackIndex = this.tracks.length - 1;
+      }
+      this.playTrack(this.tracks[this.currentTrackIndex].preview);
+    }
   }
 }

@@ -3,13 +3,13 @@
   </div>
   <div class="player__items-group flex-column-6">
     <div class="buttons-container">
-      <button mat-fab color="basic">
+      <button mat-fab color="basic" (click)="prev()">
         <mat-icon>skip_previous</mat-icon>
       </button>
       <button mat-fab color="primary" (click)="playPause()">
         <mat-icon>{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
       </button>
-      <button mat-fab color="basic">
+      <button mat-fab color="basic" (click)="next()">
         <mat-icon>skip_next</mat-icon>
       </button>
     </div>
@@ -28,10 +28,10 @@
   </div>
 </div>
 <div class="flex-row">
-  <mat-card *ngFor="let track of tracks" class="card">
+  <mat-card *ngFor="let track of tracks, index as i" class="card">
     <mat-card-content>{{track.title}}</mat-card-content>
     <mat-card-content>{{track.artist?.name}}</mat-card-content>
     <mat-card-content>{{track.album?.title}}</mat-card-content>
-    <img mat-card-image class="card-img" src={{track.album?.cover_small}} alt={{track.title}} (click)="playTrack(track.preview)">
+    <img mat-card-image class="card-img" src={{track.album?.cover}} alt={{track.title}} (click)="playTrack(track.preview); setTrackIndex(i)">
   </mat-card>
 </div>
