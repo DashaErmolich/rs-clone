@@ -6,7 +6,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
 
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';

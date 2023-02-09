@@ -6,22 +6,24 @@
       <button mat-fab color="basic">
         <mat-icon>skip_previous</mat-icon>
       </button>
-      <button mat-fab color="primary" (click)="play()">
-        <mat-icon>play_arrow</mat-icon>
-      </button>
-      <button mat-fab color="warn" (click)="pause()">
-        <mat-icon>pause</mat-icon>
+      <button mat-fab color="primary" (click)="playPause()">
+        <mat-icon>{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
       </button>
       <button mat-fab color="basic">
         <mat-icon>skip_next</mat-icon>
       </button>
     </div>
     <span>{{ currentTime}} / {{ durationTime }}</span>
-    <mat-progress-bar mode="determinate" [value]="currentProgress" (click)="setProgress($event)"></mat-progress-bar>
+    <mat-slider min="0" [max]="maxTimeValue" step="0.01" (input)="setProgress($event)" (click)="setProgress($event)">
+      <input matSliderThumb [value]="currentProgress">
+    </mat-slider>
   </div>
   <div class="player__items-group flex-column-3">
-    <mat-slider min="0" max="1" step="0.01" (input)="setVolume($event)" (click)="setVolume($event)">
-      <input matSliderThumb>
+    <button mat-mini-fab color="basic" (click)="toggleMute()">
+      <mat-icon>{{ !isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
+    </button>
+    <mat-slider min="0" max="1" step="0.01">
+      <input matSliderThumb [value]="currentVolume" (input)="setVolume($event)" (click)="setVolume($event)">
     </mat-slider>
   </div>
 </div>

@@ -23,7 +23,8 @@ export class PlayerComponent implements OnInit {
   defaultState = {
     progress: 0,
     time: this.getTime(0),
-    duration: this.getTime(0),
+    durationTime: this.getTime(0),
+    duration: 0,
   };
 
   state$ = new BehaviorSubject(this.defaultState);
@@ -32,7 +33,17 @@ export class PlayerComponent implements OnInit {
 
   currentTime = this.defaultState.time;
 
-  durationTime: string = this.defaultState.duration;
+  durationTime: string = this.defaultState.durationTime;
+
+  maxTimeValue = this.defaultState.duration;
+
+  currentVolume = 1;
+
+  volumeSaver: number | null = null;
+
+  isPlay = false;
+
+  isMute = false;
 
   audio = new Audio();
 
@@ -49,6 +60,7 @@ export class PlayerComponent implements OnInit {
 
   playTrack(url: string | undefined) {
     this.state$.next(this.defaultState);
+    this.isPlay = true;
 
     if (url) {
       this.audio.src = url;
@@ -57,7 +69,8 @@ export class PlayerComponent implements OnInit {
       this.state$.subscribe(() => {
         this.currentProgress = this.state$.value.progress;
         this.currentTime = this.state$.value.time;
-        this.durationTime = this.state$.value.duration;
+        this.durationTime = this.state$.value.durationTime;
+        this.maxTimeValue = this.state$.value.duration;
       });
 
       this.audio.addEventListener('timeupdate', () => {
@@ -66,44 +79,62 @@ export class PlayerComponent implements OnInit {
 
       this.audio.addEventListener('ended', () => {
         this.state$.next(this.defaultState);
+        this.isPlay = false;
       });
     }
   }
 
   updateProgress() {
     this.state$.next({
-      progress: this.getPercent(this.audio.currentTime, this.audio.duration),
+      progress: this.audio.currentTime,
       time: this.getTime(this.audio.currentTime),
-      duration: this.getTotalTime(),
+      durationTime: this.getTotalTime(),
+      duration: this.audio.duration,
     });
+    console.log(this.state$);
   }
 
-  play() {
-    this.audio.play();
-  }
-
-  pause() {
-    this.audio.pause();
+  playPause() {
+    if (this.isPlay) {
+      this.audio.pause();
+    } else {
+      this.audio.play();
+    }
+    this.isPlay = !this.isPlay;
   }
 
   setVolume(event: Event) {
-    const volume = (event.target as HTMLElement).getAttribute('aria-valuetext');
-    if (volume) {
-      this.audio.volume = Number(volume);
+    const volume = (event.target as HTMLInputElement).value;
+    this.audio.volume = Number(volume);
+    if (this.audio.volume === 0) {
+      this.isMute = true;
+    } else {
+      this.isMute = false;
     }
   }
 
+  toggleMute(): void {
+    let volume = 0;
+    if (!this.isMute) {
+      this.volumeSaver = this.audio.volume;
+    } else if (this.volumeSaver !== null) {
+      volume = this.volumeSaver;
+    }
+    this.audio.volume = volume;
+    this.currentVolume = this.audio.volume;
+    this.isMute = !this.isMute;
+  }
+
   setProgress(event: Event) {
-    console.log(event.target);
+    const progress = (event.target as HTMLElement).getAttribute('aria-valuetext');
+    if (progress) {
+      this.audio.currentTime = Number(progress);
+      this.updateProgress();
+    }
   }
 
   getTime(sec: number, format: string = 'mm:ss') {
     return moment.utc(sec * 1000).format(format);
-  }
-
-  getPercent(currentValue: number, totalValue: number): number {
-    const result = (currentValue / totalValue) * 100;
-    return result || 0;
   }
 
   getTotalTime() {
