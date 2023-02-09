@@ -17,11 +17,11 @@ import { LibraryComponent } from './library/library.component';
 import { HomeComponent } from './home/home.component';
 import { AsideComponent } from './aside/aside.component';
 import { PlayerComponent } from './player/player.component';
-// import { SearchComponent } from './search/search.component';
+import { SearchComponent } from './search/search.component';
 import { MusicPageComponent } from './music-page/music-page.component';
 import { PlayListComponent } from './play-list/play-list.component';
-// import { GenreComponent } from './genre/genre.component';
-// import { ArtistComponent } from './artist/artist.component';
+import { GenreComponent } from './genre/genre.component';
+import { ArtistComponent } from './artist/artist.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +30,11 @@ import { PlayListComponent } from './play-list/play-list.component';
     HomeComponent,
     AsideComponent,
     PlayerComponent,
-    // SearchComponent,
+    SearchComponent,
     MusicPageComponent,
     PlayListComponent,
-    // GenreComponent,
-    // ArtistComponent,
+    GenreComponent,
+    ArtistComponent,
   ],
   imports: [
     CommonModule,
