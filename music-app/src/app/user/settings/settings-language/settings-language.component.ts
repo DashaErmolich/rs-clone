@@ -1,18 +1,20 @@
 import { Component, Inject } from '@angular/core';
+
 import {
-  L10nLocale,
-  L10N_LOCALE,
   L10N_CONFIG,
+  L10N_LOCALE,
+  L10nLocale,
   L10nConfig,
   L10nTranslationService,
 } from 'angular-l10n';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss'],
+  selector: 'app-settings-language',
+  templateUrl: './settings-language.component.html',
+  styleUrls: ['./settings-language.component.scss'],
 })
-export class SettingsComponent {
+
+export class SettingsLanguageComponent {
   schema = this.l10nConfig.schema;
 
   constructor(
@@ -23,5 +25,9 @@ export class SettingsComponent {
 
   setLocale(locale: L10nLocale): void {
     this.translation.setLocale(locale);
+  }
+
+  isChecked(value: string): boolean {
+    return value === this.locale.language;
   }
 }

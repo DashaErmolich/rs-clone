@@ -2,13 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {
-} from '@angular/material';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
-import {
-  L10nTranslationModule,
-  L10nIntlModule,
-} from 'angular-l10n';
+import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
+
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,6 +38,7 @@ import { PlayListComponent } from './play-list/play-list.component';
     CommonModule,
     RouterModule,
     MatProgressBarModule,
+    MatSidenavModule,
     L10nTranslationModule,
     L10nIntlModule,
     MatButtonModule,
@@ -49,6 +47,7 @@ import { PlayListComponent } from './play-list/play-list.component';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
+    MatListModule,
   ],
   exports: [
     MusicPageComponent,

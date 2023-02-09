@@ -1,34 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
-import { CookieModule } from 'ngx-cookie';
+import { RouterModule } from '@angular/router';
+
 import { SignInComponent } from './sign-in/sign-in.component';
+import { SettingsPageComponent } from './settings/settings-page/settings-page.component';
+import { SettingsModule } from './settings/settings.module';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SettingsComponent } from './settings/settings.component';
-import { l10nConfig, HttpTranslationLoader, AppStorage } from '../I10n-config';
 
 @NgModule({
   declarations: [
     SignInComponent,
     SignUpComponent,
-    SettingsComponent,
   ],
   imports: [
     CommonModule,
-    L10nTranslationModule.forRoot(
-      l10nConfig,
-      {
-        translationLoader: HttpTranslationLoader,
-        storage: AppStorage,
-      },
-    ),
-    L10nIntlModule,
-    CookieModule.withOptions(),
+    RouterModule,
+    SettingsModule,
   ],
   exports: [
     SignInComponent,
     SignUpComponent,
-    SettingsComponent,
+    SettingsPageComponent,
   ],
 })
 export class UserModule { }

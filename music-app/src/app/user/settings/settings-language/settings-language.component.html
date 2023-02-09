@@ -1,0 +1,11 @@
+<mat-radio-group aria-label="select-language" class="settings__language flex-column">
+  <mat-radio-button color="primary"
+  *ngFor="let item of schema"
+  [value]="item.locale.language"
+  (click)="$event.stopPropagation()"
+  (change)="setLocale(item.locale)"
+  [checked]="isChecked(item.locale.language)"
+  [options]="{ type: 'language', style: 'short' }"
+  l10nDisplayNames>{{ item.locale.language }}
+  </mat-radio-button>
+</mat-radio-group>

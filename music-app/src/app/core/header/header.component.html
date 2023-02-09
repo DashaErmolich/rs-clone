@@ -1,15 +1,20 @@
 <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-<header class="flex-row">
-  <div class="flex-column-3 container">
-    <div class="logo-container">
-      <a routerLink="/music/home" routerLinkActive="active" ariaCurrentWhenActive="page">
-        <h1>RS Music App</h1>
-      </a>
-    </div>
+<header class="header container">
+  <div>
+    <a routerLink="/music/home" ariaCurrentWhenActive="page">
+      <h1>RS Music App</h1>
+    </a>
   </div>
-  <div class="flex-column-9 container">
-    <div class="settings-container">
-      <a routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page">Settings</a>
-    </div>
+  <div>
+    <a routerLink="/settings" ariaCurrentWhenActive="page">
+      <button mat-fab extended="" color="basic">
+        <mat-icon>
+          <svg class="icon">
+            <use xlink:href="../../../assets/icons/user-icons-sprite.svg#icons8-jake"></use>
+          </svg>
+        </mat-icon>
+        Jake
+      </button>
+    </a>
   </div>
 </header>

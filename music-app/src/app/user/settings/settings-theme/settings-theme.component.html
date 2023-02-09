@@ -1,0 +1,25 @@
+<div class="mb-small">
+  <mat-slide-toggle
+  class="mb-small"
+  [checked]="isDarkTheme()"
+  (click)="$event.stopPropagation()"
+  (change)="toggleDarkness()" l10nTranslate>settings.theme.dark-mode
+</mat-slide-toggle>
+<mat-divider class="mb-small"></mat-divider>
+</div>
+<mat-radio-group aria-label="select-theme" class="flex-column">
+  <mat-radio-button
+    class="mb-small"
+    *ngFor="let theme of themesCssClasses, index as i"
+    (click)="$event.stopPropagation(); setActiveTheme(theme)"
+    [value]="theme"
+    [checked]="isThemeChecked(theme)">
+    <div class="theme-preview-container">
+      <div [attr.class]="theme + ' theme-primary'">
+        <div [attr.class]="theme + ' theme-accent'"></div>
+        <div [attr.class]="theme + ' theme-warn'"></div>
+      </div>
+      <span l10nTranslate>{{ themesTitles[i] }}</span>
+    </div>
+  </mat-radio-button>
+</mat-radio-group>

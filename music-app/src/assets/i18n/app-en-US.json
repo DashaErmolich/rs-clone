@@ -6,15 +6,24 @@
       "library": "Your Library"
     },
     "buttons": {
-      "createPlaylist": "Create playlist",
-      "likedSongs": "Liked songs",
-      "likedRadio": "Liked radio"
+      "create-play-list": "Create playlist",
+      "liked-songs": "Liked songs",
+      "liked-radio": "Liked radio"
     },
     "favorites": "Favorites"
   },
   "settings": {
     "language": "Language",
-    "theme": "Theme",
+    "theme": {
+      "title": "Theme",
+      "dark-mode": "Dark Mode",
+      "variants": {
+        "deep-purple-amber": "Deep Purple Amber",
+        "indigo-pink": "Indigo Pink",
+        "pink-blue-berry": "Pink Blueberry",
+        "purple-green": "Purple Green"
+      }
+    },
     "account": "Account"
 
   },

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -16,6 +18,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     CommonModule,
     RouterModule,
     MatProgressBarModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   exports: [
     HeaderComponent,
