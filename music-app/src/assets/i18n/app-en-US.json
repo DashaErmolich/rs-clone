@@ -14,9 +14,17 @@
   },
   "settings": {
     "language": "Language",
-    "theme": "Theme",
-    "account": "Account",
-    "dark-mode": "Dark Mode"
+    "theme": {
+      "title": "Theme",
+      "dark-mode": "Dark Mode",
+      "variants": {
+        "deep-purple-amber": "Deep Purple Amber",
+        "indigo-pink": "Indigo Pink",
+        "pink-blueberry": "Pink Blueberry",
+        "purple-green": "Purple Green"
+      }
+    },
+    "account": "Account"
 
   },
   "welcome": {

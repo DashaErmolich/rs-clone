@@ -3,21 +3,23 @@
   class="mb-small"
   [checked]="isDarkTheme()"
   (click)="$event.stopPropagation()"
-  (change)="toggleDarkness()" l10nTranslate>settings.dark-mode
+  (change)="toggleDarkness()" l10nTranslate>settings.theme.dark-mode
 </mat-slide-toggle>
 <mat-divider class="mb-small"></mat-divider>
 </div>
 <mat-radio-group aria-label="select-theme" class="flex-column">
   <mat-radio-button
     class="mb-small"
-    *ngFor="let theme of themes"
+    *ngFor="let theme of themes, index as i"
     (click)="$event.stopPropagation(); setActiveTheme(theme)"
     [value]="theme"
     [checked]="isThemeChecked(theme)"
-    >
+    l10nTranslate=>
+    settings.theme.variants.purple-green
     <div [attr.class]="theme + ' theme-primary center'">
       <div [attr.class]="theme + ' theme-accent'"></div>
       <div [attr.class]="theme + ' theme-warn'"></div>
     </div>
+    <span l10nTranslate></span>
   </mat-radio-button>
 </mat-radio-group>

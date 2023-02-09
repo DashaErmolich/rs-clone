@@ -14,9 +14,17 @@
   },
   "settings": {
     "language": "Язык",
-    "theme": "Тема",
-    "account": "Аккаунт",
-    "dark-mode": "Темная тема"
+    "theme": {
+      "title": "Тема",
+      "dark-mode": "Темная тема",
+      "variants": {
+        "deep-purple-amber": "Глубокий фиолетовый с янтарем",
+        "indigo-pink": "Индиго с розовым",
+        "pink-blueberry": "Розовый с голубым",
+        "purple-green": "Фиолетовый с зеленым"
+      }
+    },
+    "account": "Аккаунт"
   },
   "welcome": {
     "greeting": "Добро пожаловать в RS Music App"

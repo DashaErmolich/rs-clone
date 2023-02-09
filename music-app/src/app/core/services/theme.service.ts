@@ -51,7 +51,11 @@ export class ThemeService {
 
     this.activeTheme = theme;
 
-    const cssClass = isDark === true ? theme + THEME_DARKNESS_SUFFIX : theme;
+    let cssClass = theme;
+
+    if (isDark === true) {
+      cssClass += THEME_DARKNESS_SUFFIX;
+    }
 
     this.activeThemeCssClass = cssClass;
     this.setActiveCssClass(cssClass);
@@ -62,8 +66,8 @@ export class ThemeService {
     this.setActiveTheme(this.activeTheme, !this.isThemeDark);
   }
 
-  setActiveCssClass(value: string): void {
-    this.activeCssClass.next(value);
+  setActiveCssClass(chosenTheme: string): void {
+    this.activeCssClass.next(chosenTheme);
   }
 
   getUserTheme(): IUserTheme {
