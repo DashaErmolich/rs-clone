@@ -10,16 +10,16 @@
 <mat-radio-group aria-label="select-theme" class="flex-column">
   <mat-radio-button
     class="mb-small"
-    *ngFor="let theme of themes, index as i"
+    *ngFor="let theme of themesCssClasses, index as i"
     (click)="$event.stopPropagation(); setActiveTheme(theme)"
     [value]="theme"
-    [checked]="isThemeChecked(theme)"
-    l10nTranslate=>
-    settings.theme.variants.purple-green
-    <div [attr.class]="theme + ' theme-primary center'">
-      <div [attr.class]="theme + ' theme-accent'"></div>
-      <div [attr.class]="theme + ' theme-warn'"></div>
+    [checked]="isThemeChecked(theme)">
+    <div class="theme-preview-container">
+      <div [attr.class]="theme + ' theme-primary'">
+        <div [attr.class]="theme + ' theme-accent'"></div>
+        <div [attr.class]="theme + ' theme-warn'"></div>
+      </div>
+      <span l10nTranslate>{{ themesTitles[i] }}</span>
     </div>
-    <span l10nTranslate></span>
   </mat-radio-button>
 </mat-radio-group>

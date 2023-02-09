@@ -1,28 +1,32 @@
+@import '../../../../sass/abstracts/constants';
+
 @mixin size($width, $height: null) {
   width: $width;
   height: if($height==null, $width, $height);
 }
 
-button.theme-selector {
-  @include size(80px);
-}
-
 div.theme-primary {
   position: relative;
-  @include size(70px);
+  @include size(35px);
 }
 
 div.theme-accent {
-  @include size(25px);
+  @include size(15px);
   position: absolute;
   bottom: 0;
   left: 0;
 }
 
 div.theme-warn {
-  @include size(15px);
+  @include size(10px);
   position: absolute;
   bottom: 7%;
-  left: 7%;
+  left: 30%;
   transform: rotate(45deg);
+}
+
+.theme-preview-container {
+  display: flex;
+  align-items: center;
+  gap: $container-p-small;
 }

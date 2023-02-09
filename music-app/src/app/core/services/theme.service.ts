@@ -29,12 +29,28 @@ export class ThemeService {
     this.activeTheme = this.getActiveTheme();
   }
 
-  themes: string[] = [
-    'deeppurple-amber',
-    'indigo-pink',
-    'pink-bluegrey',
-    'purple-green',
+  themesData = [
+    {
+      title: 'settings.theme.variants.deep-purple-amber',
+      cssClass: 'deep-purple-amber',
+    },
+    {
+      title: 'settings.theme.variants.indigo-pink',
+      cssClass: 'indigo-pink',
+    },
+    {
+      title: 'settings.theme.variants.pink-blue-berry',
+      cssClass: 'pink-blue-grey',
+    },
+    {
+      title: 'settings.theme.variants.purple-green',
+      cssClass: 'purple-green',
+    },
   ];
+
+  themesTitles: string[] = this.themesData.map((themeData) => themeData.title);
+
+  themesCssClasses: string[] = this.themesData.map((themeData) => themeData.cssClass);
 
   setActiveTheme(theme: string, darkness: boolean | null = null) {
     let isDark: boolean | null = darkness;
@@ -73,7 +89,7 @@ export class ThemeService {
   getUserTheme(): IUserTheme {
     const userTheme = this.localStorage.getTheme();
     const defaultTheme: IUserTheme = {
-      cssClass: this.themes[0] + THEME_DARKNESS_SUFFIX,
+      cssClass: this.themesCssClasses[0] + THEME_DARKNESS_SUFFIX,
       isDark: true,
     };
     if (userTheme === null) {

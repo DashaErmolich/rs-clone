@@ -13,7 +13,9 @@ export class SettingsThemeComponent {
     private themeService: ThemeService,
   ) { }
 
-  themes: string[] = this.themeService.themes;
+  themesCssClasses: string[] = this.themeService.themesCssClasses;
+
+  themesTitles: string[] = this.themeService.themesTitles;
 
   setActiveTheme(theme: string, darkness: boolean | null = null) {
     this.themeService.setActiveTheme(theme, darkness);
