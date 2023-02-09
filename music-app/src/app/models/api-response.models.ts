@@ -26,6 +26,13 @@ export interface ITrackResponse {
   type: string;
 }
 
+export interface ITracksByArtist {
+  data: ITrackResponse[],
+  total: number,
+  next?: string,
+  prev?: string,
+}
+
 export interface IArtistResponse {
   id: number;
   name: string;
@@ -42,6 +49,12 @@ export interface IArtistResponse {
   tracklist: string;
   position: number;
   type: string;
+}
+export interface IArtistsResponse {
+  data: IArtistResponse[];
+  total: number;
+  next?: string;
+  prev?: string;
 }
 
 export interface IAlbumResponse {
@@ -79,6 +92,13 @@ export interface IAlbumResponse {
   };
 }
 
+export interface IAlbumsResponse {
+  data: IAlbumResponse[];
+  total: number;
+  next?: string;
+  prev?: string;
+}
+
 export interface IEditorialResponse {
   id: number;
   name: string;
@@ -90,7 +110,7 @@ export interface IEditorialResponse {
   type: string;
 }
 
-export interface ISearchResponse {
+export interface ITracksResponse {
   data: Partial<ITrackResponse>[];
   total: number;
   prev?: string;
@@ -101,33 +121,7 @@ export interface IChartResponse {
   tracks: { data: Partial<ITrackResponse>[]; total: number };
   albums: { data: Partial<IAlbumResponse>[]; total: number };
   artists: { data: Partial<IArtistResponse>[]; total: number };
-  playlists: {
-    data: {
-      id: number;
-      title: string;
-      public: boolean;
-      nb_tracks: number;
-      link: string;
-      picture: string;
-      picture_small: string;
-      picture_medium: string;
-      picture_big: string;
-      picture_xl: string;
-      checksum: string;
-      tracklist: string;
-      creation_date: string;
-      md5_image: string;
-      picture_type: string;
-      user: {
-        id: number;
-        name: string;
-        tracklist: string;
-        type: string;
-      };
-      type: string;
-    }[];
-    total: number;
-  };
+  playlists: { data: Partial<IPlayListResponse>[]; total: number };
   podcasts: {
     data: {
       id: number;
@@ -146,6 +140,48 @@ export interface IChartResponse {
     }[];
     total: number;
   };
+}
+
+export interface IPlayListResponse {
+  id: number,
+  title: string;
+  description: string;
+  duration: number;
+  public: boolean;
+  is_loved_track: boolean;
+  collaborative: boolean;
+  nb_tracks: number;
+  fans: number;
+  link: string;
+  share: string;
+  picture: string;
+  picture_small: string;
+  picture_medium: string;
+  picture_big: string;
+  picture_xl: string;
+  checksum: string;
+  tracklist: string;
+  creation_date: string;
+  md5_image: string;
+  picture_type: string;
+  creator: {
+    id: number;
+    name: string;
+    tracklist: string;
+    type: string;
+  },
+  type: string;
+  tracks: {
+    data: ITrackResponse[],
+    checksum: string;
+  }
+}
+
+export interface IPlayListsResponse {
+  data: IPlayListResponse[];
+  total: number;
+  next?: string;
+  prev?: string;
 }
 
 export interface IGenreResponse {
