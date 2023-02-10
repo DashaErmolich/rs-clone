@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   IGenreResponse,
@@ -10,14 +10,14 @@ import {
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
-import { delay } from 'rxjs';
+import { delay, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   colors: string[] = COLORS;
 
   defaultImg: string = DEFAULT_SRC;
@@ -44,8 +44,6 @@ export class SearchComponent implements OnInit {
 
   searchParam: string = '';
 
-  length: number | undefined;
-
   tracks: Partial<ITrackResponse>[] = [];
 
   artists: Partial<IArtistResponse>[] = [];
@@ -54,7 +52,19 @@ export class SearchComponent implements OnInit {
 
   playlists: Partial<IPlayListResponse>[] = [];
 
-  isSelected: boolean = true;
+  queryParams$!: Subscription;
+
+  genres$!: Subscription;
+
+  playlistsFromChart$!: Subscription;
+
+  tracks$!: Subscription;
+
+  artists$!: Subscription;
+
+  albums$!: Subscription;
+
+  playlists$!: Subscription;
 
   constructor(
     private deezerRestApiService: DeezerRestApiService,
@@ -62,94 +72,97 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((param) => {
+    this.queryParams$ = this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
       if (this.searchParam) {
-        this.renderTracks();
+        this.checkTypeOfSearch();
       } else {
         this.loading = true;
-        this.deezerRestApiService.getChart().subscribe((playlists) => {
-          this.playlistsFromChart = playlists.playlists.data;
+        this.genres$ = this.deezerRestApiService.getGenres().subscribe((genres) => {
+          this.genres = genres.data.filter((genre) => genre.id !== 0);
           this.loading = false;
         });
-        this.deezerRestApiService.getGenres().subscribe((genres) => {
-          this.genres = genres.data.filter((genre) => genre.id !== 0);
+        this.playlistsFromChart$ = this.deezerRestApiService.getChart().subscribe((playlists) => {
+          this.playlistsFromChart = playlists.playlists.data;
         });
+        this.searchType = SearchType.tracks;
       }
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.queryParams$) this.queryParams$.unsubscribe();
+    if (this.genres$) this.genres$.unsubscribe();
+    if (this.playlistsFromChart$) this.playlistsFromChart$.unsubscribe();
+    if (this.tracks$) this.tracks$.unsubscribe();
+    if (this.artists$) this.artists$.unsubscribe();
+    if (this.albums$) this.albums$.unsubscribe();
+    if (this.playlists$) this.playlists$.unsubscribe();
+  }
+
   renderTracks() {
-    this.route.queryParams.subscribe((param) => {
-      this.searchParam = param['q'];
-      if (!this.tracks.length) this.loading = true;
-      this.deezerRestApiService
-        .getSearch(this.searchParam, this.index, this.limitTracks)
-        .pipe(delay(2000))
-        .subscribe((res) => {
-          this.tracks = res.data;
-          this.loading = false;
-        });
-    });
+    this.searchType = SearchType.tracks;
+    if (!this.tracks || this.tracks.length === 0) this.loading = true;
+    this.tracks$ = this.deezerRestApiService
+      .getSearch(this.searchParam, this.index, this.limitTracks)
+      .pipe(delay(1500))
+      .subscribe((res) => {
+        this.tracks = res.data;
+        this.loading = false;
+      });
   }
 
   renderArtists() {
-    this.route.queryParams.subscribe((param) => {
-      this.searchParam = param['q'];
-      if (!this.artists.length) this.loading = true;
-      this.deezerRestApiService
-        .getSearchArtists(this.searchParam, this.index, this.limitArtists)
-        .pipe(delay(2000))
-        .subscribe((res) => {
-          this.artists = res.data;
-          this.loading = false;
-        });
-    });
+    this.searchType = SearchType.artists;
+    if (!this.artists || this.artists.length === 0) this.loading = true;
+    this.artists$ = this.deezerRestApiService
+      .getSearchArtists(this.searchParam, this.index, this.limitArtists)
+      .pipe(delay(1500))
+      .subscribe((res) => {
+        this.artists = res.data;
+        this.loading = false;
+      });
   }
 
   renderAlbums() {
-    this.route.queryParams.subscribe((param) => {
-      this.searchParam = param['q'];
-      if (!this.albums.length) this.loading = true;
-      this.deezerRestApiService
-        .getSearchAlbums(this.searchParam, this.index, this.limitAlbums)
-        .pipe(delay(2000))
-        .subscribe((res) => {
-          this.albums = res.data;
-          this.loading = false;
-        });
-    });
+    this.searchType = SearchType.albums;
+    if (!this.albums || this.albums.length === 0) this.loading = true;
+    this.deezerRestApiService
+      .getSearchAlbums(this.searchParam, this.index, this.limitAlbums)
+      .pipe(delay(1500))
+      .subscribe((res) => {
+        this.albums = res.data;
+        this.loading = false;
+      });
   }
 
   renderPlaylists() {
-    this.route.queryParams.subscribe((param) => {
-      this.searchParam = param['q'];
-      if (!this.playlists.length) this.loading = true;
-      this.deezerRestApiService
-        .getSearchPlayLists(this.searchParam, this.index, this.limitPlaylists)
-        .pipe(delay(2000))
-        .subscribe((res) => {
-          this.playlists = res.data;
-          this.loading = false;
-        });
-    });
+    this.searchType = SearchType.playlists;
+    if (!this.playlists || this.playlists.length === 0) this.loading = true;
+    this.playlists$ = this.deezerRestApiService
+      .getSearchPlayLists(this.searchParam, this.index, this.limitPlaylists)
+      .pipe(delay(1500))
+      .subscribe((res) => {
+        this.playlists = res.data;
+        this.loading = false;
+      });
   }
 
   getMore(searchType: string) {
     if (searchType === SearchType.playlists) {
-      this.limitPlaylists += 10;
+      this.limitPlaylists += Limits.playlists;
       this.renderPlaylists();
     }
     if (searchType === SearchType.tracks) {
-      this.limitTracks += 25;
+      this.limitTracks += Limits.tracks;
       this.renderTracks();
     }
     if (searchType === SearchType.albums) {
-      this.limitAlbums += 10;
+      this.limitAlbums += Limits.albums;
       this.renderAlbums();
     }
     if (searchType === SearchType.artists) {
-      this.limitArtists += 10;
+      this.limitArtists += Limits.artists;
       this.renderArtists();
     }
   }
@@ -159,20 +172,18 @@ export class SearchComponent implements OnInit {
     return this.colors[index];
   }
 
-  checkTypeOfSearch(typeOfSearch: string) {
-    if (this.searchType === typeOfSearch) return;
-    this.searchType = typeOfSearch;
-    if (typeOfSearch === SearchType.playlists) {
-      this.renderPlaylists();
-    }
-    if (typeOfSearch === SearchType.tracks) {
+  checkTypeOfSearch() {
+    if (this.searchType === SearchType.tracks) {
       this.renderTracks();
     }
-    if (typeOfSearch === SearchType.albums) {
+    if (this.searchType === SearchType.albums) {
       this.renderAlbums();
     }
-    if (typeOfSearch === SearchType.artists) {
+    if (this.searchType === SearchType.artists) {
       this.renderArtists();
+    }
+    if (this.searchType === SearchType.playlists) {
+      this.renderPlaylists();
     }
   }
 }

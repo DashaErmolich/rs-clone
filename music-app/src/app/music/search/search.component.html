@@ -22,10 +22,10 @@
 <div *ngIf="searchParam" class="search-page">
   <div class="chips-container">
     <mat-chip-listbox aria-label="Search selection">
-      <mat-chip-option (click)="checkTypeOfSearch('tracks')" selected>Tracks</mat-chip-option>
-      <mat-chip-option (click)="checkTypeOfSearch('artists')">Artists</mat-chip-option>
-      <mat-chip-option (click)="checkTypeOfSearch('albums')">Albums</mat-chip-option>
-      <mat-chip-option (click)="checkTypeOfSearch('playlists')">Playlists</mat-chip-option>
+      <mat-chip-option (click)="renderTracks()" selected>Tracks</mat-chip-option>
+      <mat-chip-option (click)="renderArtists()">Artists</mat-chip-option>
+      <mat-chip-option (click)="renderAlbums()">Albums</mat-chip-option>
+      <mat-chip-option (click)="renderPlaylists()">Playlists</mat-chip-option>
     </mat-chip-listbox>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
@@ -33,7 +33,7 @@
   <div [ngSwitch]="searchType">
 
     <div *ngSwitchCase="'tracks'">
-      <div class="tracks-container">
+      <div *ngIf="!loading" class="tracks-container">
 
         <mat-card *ngFor="let track of tracks; let i=index">
           <mat-card-content class="track">
