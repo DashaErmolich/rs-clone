@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
 import { ITrackResponse } from '../../models/api-response.models';
-import { StateService } from './state.service';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 
@@ -43,6 +42,8 @@ export class AudioService {
 
   state$ = new BehaviorSubject(this.defaultState);
 
+  controls$ = new BehaviorSubject(this.controlsState);
+
   currentVolume = DEFAULT_PLAYER_VOLUME;
 
   volumeSaver: number | null = null;
@@ -50,10 +51,6 @@ export class AudioService {
   currentTrackIndex: number | null = null;
 
   audio = new Audio();
-
-  constructor(
-    private trackListState: StateService,
-  ) { }
 
   playTrack(url: string | undefined): void {
     this.controlsState.isTrackReady = false;
@@ -63,11 +60,11 @@ export class AudioService {
     if (url) {
       this.audio.src = url;
       this.audio.load();
-      this.bindListeners();
+      this.bindListeners(url);
     }
   }
 
-  bindListeners(): void {
+  bindListeners(url: string): void {
     this.audio.addEventListener('loadedmetadata', () => {
       this.controlsState.isTrackReady = true;
       this.audio.play();
@@ -76,6 +73,17 @@ export class AudioService {
         this.currentState.time = this.state$.value.time;
         this.currentState.durationTime = this.state$.value.durationTime;
         this.currentState.duration = this.state$.value.duration;
+      });
+      this.controls$.subscribe(() => {
+        this.controlsState.isFirstTrack = this.controls$.value.isFirstTrack;
+        this.controlsState.isLastTrack = this.controls$.value.isLastTrack;
+        this.controlsState.isLiked = this.controls$.value.isLiked;
+        this.controlsState.isMute = this.controls$.value.isMute;
+        this.controlsState.isPlay = this.controls$.value.isPlay;
+        this.controlsState.isRepeatAllOn = this.controls$.value.isRepeatAllOn;
+        this.controlsState.isRepeatOneOn = this.controls$.value.isRepeatOneOn;
+        this.controlsState.isShuffleOn = this.controls$.value.isShuffleOn;
+        this.controlsState.isTrackReady = this.controls$.value.isTrackReady;
       });
     });
 
@@ -87,7 +95,7 @@ export class AudioService {
       if (
         this.controlsState.isRepeatOneOn
         && this.currentTrackIndex !== null) {
-        this.playTrack(this.trackList[this.currentTrackIndex].preview);
+        this.playTrack(url);
       } else if (
         !this.controlsState.isRepeatAllOn
         && this.controlsState.isLastTrack) {
@@ -270,6 +278,8 @@ export class AudioService {
   }
 
   shuffleTracks(): void {
+    // eslint-disable-next-line no-debugger
+    debugger;
     if (this.trackList.length && this.currentTrackIndex) {
       const shuffledTracks = [...this.trackList];
       let lastTrackIndex = shuffledTracks.length - 1;
