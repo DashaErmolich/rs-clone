@@ -128,9 +128,4 @@ export class DeezerRestApiService {
       `${BASE_URL}${Endpoints.playlist}/${id}`,
     );
   }
-
-  // get(path: any): Observable<any> {
-  //   console.log('path', path);
-  //   return this.http.get<any>(path);
-  // }
 }

@@ -10,6 +10,7 @@ import {
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -53,6 +54,8 @@ export class SearchComponent implements OnInit {
 
   playlists: Partial<IPlayListResponse>[] = [];
 
+  isSelected: boolean = true;
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private route: ActivatedRoute,
@@ -62,7 +65,7 @@ export class SearchComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
       if (this.searchParam) {
-        this.checkTypeOfSearch();
+        this.renderTracks();
       } else {
         this.loading = true;
         this.deezerRestApiService.getChart().subscribe((playlists) => {
@@ -77,61 +80,78 @@ export class SearchComponent implements OnInit {
   }
 
   renderTracks() {
-    this.searchType = SearchType.tracks;
     this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
+      if (!this.tracks.length) this.loading = true;
       this.deezerRestApiService
         .getSearch(this.searchParam, this.index, this.limitTracks)
+        .pipe(delay(2000))
         .subscribe((res) => {
           this.tracks = res.data;
+          this.loading = false;
         });
     });
   }
 
   renderArtists() {
-    this.searchType = SearchType.artists;
     this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
+      if (!this.artists.length) this.loading = true;
       this.deezerRestApiService
         .getSearchArtists(this.searchParam, this.index, this.limitArtists)
-        .subscribe((res) => { this.artists = res.data; });
+        .pipe(delay(2000))
+        .subscribe((res) => {
+          this.artists = res.data;
+          this.loading = false;
+        });
     });
   }
 
   renderAlbums() {
-    this.searchType = SearchType.albums;
     this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
+      if (!this.albums.length) this.loading = true;
       this.deezerRestApiService
         .getSearchAlbums(this.searchParam, this.index, this.limitAlbums)
-        .subscribe((res) => { this.albums = res.data; });
+        .pipe(delay(2000))
+        .subscribe((res) => {
+          this.albums = res.data;
+          this.loading = false;
+        });
     });
   }
 
   renderPlaylists() {
-    this.searchType = SearchType.playlists;
     this.route.queryParams.subscribe((param) => {
       this.searchParam = param['q'];
+      if (!this.playlists.length) this.loading = true;
       this.deezerRestApiService
         .getSearchPlayLists(this.searchParam, this.index, this.limitPlaylists)
-        .subscribe((res) => { this.playlists = res.data; });
+        .pipe(delay(2000))
+        .subscribe((res) => {
+          this.playlists = res.data;
+          this.loading = false;
+        });
     });
   }
 
   getMore(searchType: string) {
     if (searchType === SearchType.playlists) {
       this.limitPlaylists += 10;
+      this.renderPlaylists();
     }
     if (searchType === SearchType.tracks) {
       this.limitTracks += 25;
+      this.renderTracks();
     }
     if (searchType === SearchType.albums) {
       this.limitAlbums += 10;
+      this.renderAlbums();
     }
     if (searchType === SearchType.artists) {
       this.limitArtists += 10;
+      this.renderArtists();
     }
-    this.checkTypeOfSearch();
   }
 
   randomColor(i: number) {
@@ -139,17 +159,19 @@ export class SearchComponent implements OnInit {
     return this.colors[index];
   }
 
-  checkTypeOfSearch() {
-    if (this.searchType === SearchType.playlists) {
+  checkTypeOfSearch(typeOfSearch: string) {
+    if (this.searchType === typeOfSearch) return;
+    this.searchType = typeOfSearch;
+    if (typeOfSearch === SearchType.playlists) {
       this.renderPlaylists();
     }
-    if (this.searchType === SearchType.tracks) {
+    if (typeOfSearch === SearchType.tracks) {
       this.renderTracks();
     }
-    if (this.searchType === SearchType.albums) {
+    if (typeOfSearch === SearchType.albums) {
       this.renderAlbums();
     }
-    if (this.searchType === SearchType.artists) {
+    if (typeOfSearch === SearchType.artists) {
       this.renderArtists();
     }
   }

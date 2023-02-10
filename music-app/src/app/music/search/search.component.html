@@ -22,10 +22,10 @@
 <div *ngIf="searchParam" class="search-page">
   <div class="chips-container">
     <mat-chip-listbox aria-label="Search selection">
-      <mat-chip-option (click)="renderTracks()" selected>Tracks</mat-chip-option>
-      <mat-chip-option (click)="renderArtists()">Artists</mat-chip-option>
-      <mat-chip-option (click)="renderAlbums()">Albums</mat-chip-option>
-      <mat-chip-option (click)="renderPlaylists()">Playlists</mat-chip-option>
+      <mat-chip-option (click)="checkTypeOfSearch('tracks')" selected>Tracks</mat-chip-option>
+      <mat-chip-option (click)="checkTypeOfSearch('artists')">Artists</mat-chip-option>
+      <mat-chip-option (click)="checkTypeOfSearch('albums')">Albums</mat-chip-option>
+      <mat-chip-option (click)="checkTypeOfSearch('playlists')">Playlists</mat-chip-option>
     </mat-chip-listbox>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
@@ -89,5 +89,5 @@
       </div>
     </div>
   </div>
-  <button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">MORE</button>
+  <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
 </div>

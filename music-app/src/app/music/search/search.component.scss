@@ -2,7 +2,8 @@
 
 .search-page {
   position: relative;
-  padding-top: $header-height;
+  display: flex;
+  flex-direction: column;
 }
 
 .search-container,
@@ -16,9 +17,9 @@
 }
 
 .tracks-container {
-display: flex;
-flex-direction: column;
-gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .card {
@@ -28,11 +29,12 @@ gap: 2px;
   aspect-ratio: 1 / 1;
   border-radius: $card-border-radius-small;
   cursor: pointer;
+
   &:hover {
-    .card-img{
-    transform: scale(1.1) rotate(25deg) translate(18%, -2%);
+    .card-img {
+      transform: scale(1.1) rotate(25deg) translate(18%, -2%);
     }
-    
+
   }
 }
 
@@ -49,9 +51,6 @@ gap: 2px;
 .spinner {
   margin: 0 auto;
   max-width: 3rem;
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
 }
 
 .chips-container {
@@ -67,7 +66,7 @@ gap: 2px;
   cursor: pointer;
 
   &:hover {
-    background: #888d947d;
+    background: $hover-color-card;
   }
 }
 
@@ -102,6 +101,7 @@ gap: 2px;
 }
 
 .track {
+  flex: 1 1 0;
   display: flex;
   padding: 0.5rem 2rem !important;
   justify-content: space-between;
@@ -109,15 +109,15 @@ gap: 2px;
   gap: $container-p-large;
 
   &:hover {
-    background: #888d9421;
+    background: $hover-color-track;
 
-    .track-img{
-    transform: scale(1.1);
+    .track-img {
+      transform: scale(1.1);
     }
 
     .track-number {
       color: transparent;
-      
+
     }
 
     .track-play {
@@ -132,9 +132,11 @@ gap: 2px;
   }
 
 }
-.track-img-wrapper{
-overflow: hidden;
+
+.track-img-wrapper {
+  overflow: hidden;
 }
+
 .track-description {
   flex: 2 1 0;
   display: flex;
