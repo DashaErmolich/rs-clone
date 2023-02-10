@@ -263,7 +263,7 @@ export class PlayerComponent implements OnInit {
   }
 
   shuffleTracks(): void {
-    const shuffledTracks = this.tracks;
+    const shuffledTracks = [...this.tracks];
     let lastTrackIndex = shuffledTracks.length - 1;
     let randomNum = 0;
     let tmp;
@@ -275,6 +275,11 @@ export class PlayerComponent implements OnInit {
       shuffledTracks[randomNum] = tmp;
       lastTrackIndex -= 1;
     }
+
+    const newCurrentTrackIndex = shuffledTracks
+      .findIndex((track) => track.id === this.tracks[this.currentTrackIndex!].id);
+
+    this.currentTrackIndex = newCurrentTrackIndex;
     this.tracks = shuffledTracks;
   }
 }
