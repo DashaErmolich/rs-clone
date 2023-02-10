@@ -93,7 +93,7 @@ label {
 .pink-blue-grey-dark,
 .purple-green-dark {
   .accent-wrapper {
-    background: $bg-light-color-dark-theme;
+    background: $bg-color-dark-theme;
   }
   .icon {
     fill: #fff;
@@ -102,6 +102,14 @@ label {
   .active {
     background: rgba(128, 128, 128, 0.3) !important;
   }
+
+  .accent-section {
+    background: $bg-accent-dark-theme;
+  }
+
+  footer {
+    border-top: 1px solid #121212;
+  }
 }
 
 .deep-purple-amber,
@@ -109,7 +117,7 @@ label {
 .pink-blue-grey,
 .purple-green {
   .accent-wrapper {
-    background: $bg-light-color-light-theme;
+    background: $bg-color-light-theme;
   }
 
   .icon {
@@ -118,6 +126,14 @@ label {
 
   .active {
     background: rgba(128, 128, 128, 0.3) !important;
+  }
+
+  .accent-section {
+    background: $bg-accent-light-theme;
+  }
+
+  footer {
+    border-top: 1px solid #fff;
   }
 
 }
@@ -129,4 +145,12 @@ label {
 .navigation-link {
   display: flex !important;
   justify-content: start !important;
+}
+
+.one-line-text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

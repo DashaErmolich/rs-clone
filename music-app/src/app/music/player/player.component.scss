@@ -8,14 +8,79 @@
   align-items: center;
   justify-content: space-between;
 
-  .buttons-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: $container-p-small;
-  }
+  // .buttons-container {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   margin-bottom: $container-p-small;
+  // }
  }
 
  .tmp {
   margin-bottom: 50px;
  }
+
+ .track-data {
+  display: flex;
+  flex-direction: row;
+  gap: $container-p-small;
+ }
+
+ .track-data__titles {
+  display: flex;
+  flex-direction: column;
+  gap: $container-p-small;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.track-data__image {
+  height: calc($player-height - 2 * $container-p-small);
+  width: calc($player-height - 2 * $container-p-small);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    height: calc($player-height - 2 * $container-p-small);
+    width: calc($player-height - 2 * $container-p-small);
+    object-fit: cover;
+  }
+
+  svg {
+    width: 30%;
+    height: 30%;
+  }
+}
+
+.volume-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $container-p-small;
+}
+
+.player-slider {
+  width: 100%;
+}
+
+.player-controls {
+  align-items: center;
+  justify-content: center;
+  gap: $container-p-large;
+}
+
+.player-buttons-group {
+  gap: calc($container-p-small / 2);
+}
+
+.time-progress-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: $container-p-small;
+}

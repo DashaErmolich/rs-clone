@@ -1,120 +1,6 @@
-// import { Component, OnInit } from '@angular/core';
-// import { Observable } from 'rxjs';
-// import { AudioService } from '../../services/audio.service';
-// import { ITrackResponse } from '../../models/api-response.models';
-// import { DeezerRestApiService } from '../../services/deezer-api.service';
-
-// @Component({
-//   selector: 'app-player',
-//   templateUrl: './player.component.html',
-//   styleUrls: ['./player.component.scss'],
-// })
-// export class PlayerComponent implements OnInit {
-//   isLiked!: Observable<boolean>;
-
-//   isFirstTrack!: boolean;
-
-//   isPlay!: boolean;
-
-//   isLastTrack!: boolean;
-
-//   currentTime!: string;
-
-//   durationTime!: string;
-
-//   maxTimeValue!: number;
-
-//   currentProgress!: number;
-
-//   isMute!: boolean;
-
-//   isRepeatAllOn!: boolean;
-
-//   isRepeatOneOn!: boolean;
-
-//   currentVolume!: number;
-
-//   tracks!: Partial<ITrackResponse>[];
-
-//   constructor(
-//     private audioService: AudioService,
-//     private deezerRestApiService: DeezerRestApiService,
-//   ) {}
-
-//   ngOnInit(): void {
-//     this.isFirstTrack = this.audioService.isFirstTrack;
-//     this.isPlay = this.audioService.isPlay;
-//     this.isLastTrack = this.audioService.isLastTrack;
-//     this.currentTime = this.audioService.currentTime;
-//     this.durationTime = this.audioService.durationTime;
-//     this.maxTimeValue = this.audioService.maxTimeValue;
-//     this.currentProgress = this.audioService.currentProgress;
-//     this.isMute = this.audioService.isMute;
-//     this.isRepeatAllOn = this.audioService.isRepeatAllOn;
-//     this.isRepeatOneOn = this.audioService.isRepeatOneOn;
-//     this.currentVolume = this.audioService.currentVolume;
-//     this.deezerRestApiService.getSearch('queen', 0, 5).subscribe((response) => {
-//       this.tracks = response.data;
-//     });
-//   }
-
-//   playTrack(url: string | undefined) {
-//     this.audioService.tracks = this.tracks;
-//     this.audioService.playTrack(url);
-//   }
-
-//   playPause() {
-//     this.audioService.playPause();
-//   }
-
-//   setVolume(event: Event) {
-//     this.audioService.setVolume(event);
-//   }
-
-//   toggleMute(): void {
-//     this.audioService.toggleMute();
-//   }
-
-//   setProgress(event: Event) {
-//     this.audioService.setProgress(event);
-//   }
-
-//   setTrackIndex(index: number) {
-//     this.audioService.setTrackIndex(index);
-//   }
-
-//   next() {
-//     this.audioService.next();
-//   }
-
-//   prev() {
-//     this.audioService.prev();
-//   }
-
-//   toggleRepeat() {
-//     this.audioService.toggleRepeat();
-//   }
-
-//   toggleRepeatOne() {
-//     this.audioService.toggleRepeatOne();
-//   }
-
-//   likeTrack() {
-//     this.audioService.likeTrack();
-//   }
-
-//   getValue() {
-//     return this.audioService.isLiked$;
-//   }
-// }
-
-/* eslint-disable max-len */
-/* eslint-disable no-debugger */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { DeezerRestApiService } from '../../services/deezer-api.service';
@@ -162,11 +48,15 @@ export class PlayerComponent implements OnInit {
 
   currentTrackIndex: number | null = null;
 
+  tmpTrackIndex: number | null = null;
+
   isFirstTrack = false;
 
   isLastTrack = false;
 
   isLiked = false;
+
+  isShuffleOn = false;
 
   audio = new Audio();
 
@@ -182,10 +72,6 @@ export class PlayerComponent implements OnInit {
   }
 
   playTrack(url: string | undefined) {
-    // eslint-disable-next-line no-debugger
-    // debugger;
-    // eslint-disable-next-line no-console
-    console.log(this.tracks);
     this.state$.next(this.defaultState);
     this.isPlay = true;
 
@@ -347,5 +233,48 @@ export class PlayerComponent implements OnInit {
 
   likeTrack() {
     this.isLiked = !this.isLiked;
+  }
+
+  getTrackAlbumImageSrc(): string {
+    const imageSrcPlaceholder = '../../../assets/icons/user-icons-sprite.svg#jack';
+    let imageSrc = imageSrcPlaceholder;
+    if (this.currentTrackIndex !== null) {
+      imageSrc = this.tracks[this.currentTrackIndex].album?.cover!;
+    }
+    return imageSrc;
+  }
+
+  getTrackTitle(): string {
+    const trackTitlePlaceholder = '';
+    let trackTitle = trackTitlePlaceholder;
+    if (this.currentTrackIndex !== null) {
+      trackTitle = this.tracks[this.currentTrackIndex].title!;
+    }
+    return trackTitle;
+  }
+
+  getTrackAlbumTitle(): string {
+    const trackAlbumTitlePlaceholder = '';
+    let trackAlbumTitle = trackAlbumTitlePlaceholder;
+    if (this.currentTrackIndex !== null) {
+      trackAlbumTitle = this.tracks[this.currentTrackIndex].album?.title!;
+    }
+    return trackAlbumTitle;
+  }
+
+  shuffleTracks(): void {
+    const shuffledTracks = this.tracks;
+    let lastTrackIndex = shuffledTracks.length - 1;
+    let randomNum = 0;
+    let tmp;
+
+    while (lastTrackIndex) {
+      randomNum = Math.floor(Math.random() * (lastTrackIndex + 1));
+      tmp = shuffledTracks[lastTrackIndex];
+      shuffledTracks[lastTrackIndex] = shuffledTracks[randomNum];
+      shuffledTracks[randomNum] = tmp;
+      lastTrackIndex -= 1;
+    }
+    this.tracks = shuffledTracks;
   }
 }
