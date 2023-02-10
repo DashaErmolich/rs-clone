@@ -1,11 +1,14 @@
+<!-- Temporary cards for player testing -->
+<!-- START -->
 <div class="flex-row tmp">
-  <mat-card *ngFor="let track of tracks, index as i" class="card">
+  <mat-card *ngFor="let track of trackList, index as i" class="card">
     <mat-card-content>{{track.title}}</mat-card-content>
     <mat-card-content>{{track.artist?.name}}</mat-card-content>
     <mat-card-content>{{track.album?.title}}</mat-card-content>
     <img mat-card-image class="card-img" src={{track.album?.cover}} alt={{track.title}} (click)="playTrack(track.preview); setTrackIndex(i)">
   </mat-card>
 </div>
+<!-- END -->
 <div class="player-container player container flex-row accent-section">
   <div class="player__items-group flex-column-3">
     <div class="track-data">
@@ -30,14 +33,14 @@
     <div class="flex-row player-controls">
       <div class="flex-row player-buttons-group">
         <button mat-mini-fab color="basic" (click)="likeTrack()">
-          <mat-icon [color]="playerControlsState.isLiked ? 'warn' : 'basic'">favorite</mat-icon>
+          <mat-icon [color]="controlsState.isLiked ? 'warn' : 'basic'">favorite</mat-icon>
         </button>
         <button mat-mini-fab color="basic" (click)="shuffleTracks()">
           <mat-icon>shuffle</mat-icon>
         </button>
       </div>
       <div class="flex-row player-buttons-group">
-        <button mat-fab color="basic" (click)="prev()" [disabled]="playerControlsState.isFirstTrack">
+        <button mat-fab color="basic" (click)="prev()" [disabled]="controlsState.isFirstTrack">
           <mat-icon>skip_previous</mat-icon>
         </button>
         <button mat-fab color="primary" (click)="playPause()">
@@ -45,21 +48,21 @@
             mode="indeterminate"
             class="player-spinner-container"
             color="accent"
-            *ngIf="!playerControlsState.isTrackReady && currentTrackIndex !== null"
+            *ngIf="!controlsState.isTrackReady && currentTrackIndex !== null"
           ></mat-spinner>
           <mat-icon
-            *ngIf="playerControlsState.isTrackReady || currentTrackIndex === null"
-          >{{ !playerControlsState.isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
+            *ngIf="controlsState.isTrackReady || currentTrackIndex === null"
+          >{{ !controlsState.isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
         </button>
-        <button mat-fab color="basic" (click)="next()" [disabled]="playerControlsState.isLastTrack">
+        <button mat-fab color="basic" (click)="next()" [disabled]="controlsState.isLastTrack">
           <mat-icon>skip_next</mat-icon>
         </button>
       </div>
       <div class="flex-row player-buttons-group">
-        <button mat-mini-fab [color]="playerControlsState.isRepeatAllOn ? 'primary' : 'basic'" (click)="toggleRepeat()">
+        <button mat-mini-fab [color]="controlsState.isRepeatAllOn ? 'primary' : 'basic'" (click)="toggleRepeat()">
           <mat-icon>repeat</mat-icon>
         </button>
-        <button mat-mini-fab [color]="playerControlsState.isRepeatOneOn ? 'primary' : 'basic'" (click)="toggleRepeatOne()">
+        <button mat-mini-fab [color]="controlsState.isRepeatOneOn ? 'primary' : 'basic'" (click)="toggleRepeatOne()">
           <mat-icon>repeat_one</mat-icon>
         </button>
       </div>
@@ -82,7 +85,7 @@
   <div class="player__items-group flex-column-3">
     <div class="volume-container">
       <button mat-mini-fab color="basic" (click)="toggleMute()">
-        <mat-icon>{{ !playerControlsState.isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
+        <mat-icon>{{ !controlsState.isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
       </button>
       <mat-slider min="0" max="1" step="0.01">
         <input matSliderThumb [value]="currentVolume" (input)="setVolume($event)" (click)="setVolume($event)">

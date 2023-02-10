@@ -1,21 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
-import { BehaviorSubject } from 'rxjs';
-import { StateService } from 'src/app/core/services/state.service';
-import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
-import { AudioService } from '../../core/services/audio.service';
+import { ITrackResponse } from '../../models/api-response.models';
+import { StateService } from './state.service';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 
-@Component({
-  selector: 'app-player',
-  templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
-export class PlayerComponent implements OnInit {
+
+export class AudioService {
   trackList!: Partial<ITrackResponse>[];
 
   defaultState: IAudioPlayerState = {
@@ -56,18 +53,7 @@ export class PlayerComponent implements OnInit {
 
   constructor(
     private trackListState: StateService,
-    private myAudio: AudioService,
   ) { }
-
-  ngOnInit(): void {
-    this.trackListState.trackList.subscribe((data: Partial<ITrackResponse>[]) => {
-      this.trackList = data;
-    });
-    this.trackListState.playingTrackIndex.subscribe((data: number) => {
-      this.currentTrackIndex = data;
-      // this.playTrack(this.trackList[this.currentTrackIndex].preview);
-    });
-  }
 
   playTrack(url: string | undefined): void {
     this.controlsState.isTrackReady = false;
