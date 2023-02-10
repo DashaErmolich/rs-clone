@@ -30,51 +30,59 @@
     <div class="flex-row player-controls">
       <div class="flex-row player-buttons-group">
         <button mat-mini-fab color="basic" (click)="likeTrack()">
-          <mat-icon [color]="isLiked ? 'warn' : 'basic'">favorite</mat-icon>
+          <mat-icon [color]="playerControlsState.isLiked ? 'warn' : 'basic'">favorite</mat-icon>
         </button>
         <button mat-mini-fab color="basic" (click)="shuffleTracks()">
           <mat-icon>shuffle</mat-icon>
         </button>
       </div>
       <div class="flex-row player-buttons-group">
-        <button mat-fab color="basic" (click)="prev()" [disabled]="isFirstTrack">
+        <button mat-fab color="basic" (click)="prev()" [disabled]="playerControlsState.isFirstTrack">
           <mat-icon>skip_previous</mat-icon>
         </button>
         <button mat-fab color="primary" (click)="playPause()">
-          <mat-icon>{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
+          <mat-spinner
+            mode="indeterminate"
+            class="player-spinner-container"
+            color="accent"
+            *ngIf="!playerControlsState.isTrackReady && currentTrackIndex !== null"
+          ></mat-spinner>
+          <mat-icon
+            *ngIf="playerControlsState.isTrackReady || currentTrackIndex === null"
+          >{{ !playerControlsState.isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
         </button>
-        <button mat-fab color="basic" (click)="next()" [disabled]="isLastTrack">
+        <button mat-fab color="basic" (click)="next()" [disabled]="playerControlsState.isLastTrack">
           <mat-icon>skip_next</mat-icon>
         </button>
       </div>
       <div class="flex-row player-buttons-group">
-        <button mat-mini-fab [color]="isRepeatAllOn ? 'primary' : 'basic'" (click)="toggleRepeat()">
+        <button mat-mini-fab [color]="playerControlsState.isRepeatAllOn ? 'primary' : 'basic'" (click)="toggleRepeat()">
           <mat-icon>repeat</mat-icon>
         </button>
-        <button mat-mini-fab [color]="isRepeatOneOn ? 'primary' : 'basic'" (click)="toggleRepeatOne()">
+        <button mat-mini-fab [color]="playerControlsState.isRepeatOneOn ? 'primary' : 'basic'" (click)="toggleRepeatOne()">
           <mat-icon>repeat_one</mat-icon>
         </button>
       </div>
     </div>
     <div class="time-progress-container">
-      <span>{{ currentTime}}</span>
+      <span>{{ currentState.time }}</span>
       <mat-slider
         min="0"
-        [max]="maxTimeValue"
+        [max]="currentState.duration"
         step="0.01"
         (input)="setProgress($event)"
         (click)="setProgress($event)"
         class="player-slider"
         >
-        <input matSliderThumb [value]="currentProgress">
+        <input matSliderThumb [value]="currentState.progress">
       </mat-slider>
-      <span>{{ durationTime }}</span>
+      <span>{{ currentState.durationTime }}</span>
     </div>
   </div>
   <div class="player__items-group flex-column-3">
     <div class="volume-container">
       <button mat-mini-fab color="basic" (click)="toggleMute()">
-        <mat-icon>{{ !isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
+        <mat-icon>{{ !playerControlsState.isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
       </button>
       <mat-slider min="0" max="1" step="0.01">
         <input matSliderThumb [value]="currentVolume" (input)="setVolume($event)" (click)="setVolume($event)">

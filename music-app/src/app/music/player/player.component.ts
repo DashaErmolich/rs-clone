@@ -5,7 +5,9 @@ import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { ITrackResponse } from '../../models/api-response.models';
-import { AudioService } from '../../services/audio.service';
+import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
+
+const DEFAULT_PLAYER_VOLUME = 1;
 
 @Component({
   selector: 'app-player',
@@ -17,52 +19,44 @@ export class PlayerComponent implements OnInit {
 
   initialValue: number = 0.5;
 
-  defaultState = {
+  defaultState: IAudioPlayerState = {
     progress: 0,
     time: this.getTime(0),
     durationTime: this.getTime(0),
     duration: 0,
   };
 
+  currentState: IAudioPlayerState = {
+    progress: this.defaultState.progress,
+    time: this.defaultState.time,
+    durationTime: this.defaultState.durationTime,
+    duration: this.defaultState.duration,
+  };
+
+  playerControlsState: IPlayerControlsState = {
+    isPlay: false,
+    isMute: false,
+    isRepeatAllOn: false,
+    isRepeatOneOn: false,
+    isFirstTrack: false,
+    isLastTrack: false,
+    isLiked: false,
+    isShuffleOn: false,
+    isTrackReady: false,
+  };
+
   state$ = new BehaviorSubject(this.defaultState);
 
-  currentProgress = this.defaultState.progress;
-
-  currentTime = this.defaultState.time;
-
-  durationTime: string = this.defaultState.durationTime;
-
-  maxTimeValue = this.defaultState.duration;
-
-  currentVolume = 1;
+  currentVolume = DEFAULT_PLAYER_VOLUME;
 
   volumeSaver: number | null = null;
 
-  isPlay = false;
-
-  isMute = false;
-
-  isRepeatAllOn = false;
-
-  isRepeatOneOn = false;
-
   currentTrackIndex: number | null = null;
-
-  tmpTrackIndex: number | null = null;
-
-  isFirstTrack = false;
-
-  isLastTrack = false;
-
-  isLiked = false;
-
-  isShuffleOn = false;
 
   audio = new Audio();
 
   constructor(
     private deezerRestApiService: DeezerRestApiService,
-    private audioService: AudioService,
   ) {}
 
   ngOnInit(): void {
@@ -72,18 +66,23 @@ export class PlayerComponent implements OnInit {
   }
 
   playTrack(url: string | undefined) {
+    this.playerControlsState.isTrackReady = false;
     this.state$.next(this.defaultState);
-    this.isPlay = true;
+    this.playerControlsState.isPlay = true;
 
     if (url) {
       this.audio.src = url;
       this.audio.load();
-      this.audio.play();
-      this.state$.subscribe(() => {
-        this.currentProgress = this.state$.value.progress;
-        this.currentTime = this.state$.value.time;
-        this.durationTime = this.state$.value.durationTime;
-        this.maxTimeValue = this.state$.value.duration;
+
+      this.audio.addEventListener('loadedmetadata', () => {
+        this.playerControlsState.isTrackReady = true;
+        this.audio.play();
+        this.state$.subscribe(() => {
+          this.currentState.progress = this.state$.value.progress;
+          this.currentState.time = this.state$.value.time;
+          this.currentState.durationTime = this.state$.value.durationTime;
+          this.currentState.duration = this.state$.value.duration;
+        });
       });
 
       this.audio.addEventListener('timeupdate', () => {
@@ -91,11 +90,15 @@ export class PlayerComponent implements OnInit {
       });
 
       this.audio.addEventListener('ended', () => {
-        if (this.isRepeatOneOn && this.currentTrackIndex !== null) {
+        if (
+          this.playerControlsState.isRepeatOneOn
+          && this.currentTrackIndex !== null) {
           this.playTrack(this.tracks[this.currentTrackIndex].preview);
-        } else if (!this.isRepeatAllOn && this.isLastTrack) {
+        } else if (
+          !this.playerControlsState.isRepeatAllOn
+          && this.playerControlsState.isLastTrack) {
           this.state$.next(this.defaultState);
-          this.isPlay = false;
+          this.playerControlsState.isPlay = false;
         } else {
           this.next();
         }
@@ -113,34 +116,36 @@ export class PlayerComponent implements OnInit {
   }
 
   playPause() {
-    if (this.isPlay) {
-      this.audio.pause();
-    } else {
-      this.audio.play();
+    if (this.playerControlsState.isTrackReady) {
+      if (this.playerControlsState.isPlay) {
+        this.audio.pause();
+      } else {
+        this.audio.play();
+      }
+      this.playerControlsState.isPlay = !this.playerControlsState.isPlay;
     }
-    this.isPlay = !this.isPlay;
   }
 
   setVolume(event: Event) {
     const volume = (event.target as HTMLInputElement).value;
     this.audio.volume = Number(volume);
     if (this.audio.volume === 0) {
-      this.isMute = true;
+      this.playerControlsState.isMute = true;
     } else {
-      this.isMute = false;
+      this.playerControlsState.isMute = false;
     }
   }
 
   toggleMute(): void {
     let volume = 0;
-    if (!this.isMute) {
+    if (!this.playerControlsState.isMute) {
       this.volumeSaver = this.audio.volume;
     } else if (this.volumeSaver !== null) {
       volume = this.volumeSaver;
     }
     this.audio.volume = volume;
     this.currentVolume = this.audio.volume;
-    this.isMute = !this.isMute;
+    this.playerControlsState.isMute = !this.playerControlsState.isMute;
   }
 
   setProgress(event: Event) {
@@ -166,15 +171,19 @@ export class PlayerComponent implements OnInit {
 
   setTrackIndex(index: number) {
     this.currentTrackIndex = index;
-    if (this.currentTrackIndex === 0 && !this.isRepeatAllOn) {
-      this.isFirstTrack = true;
-      this.isLastTrack = false;
-    } else if (this.currentTrackIndex === this.tracks.length - 1 && !this.isRepeatAllOn) {
-      this.isLastTrack = true;
-      this.isFirstTrack = false;
+    if (
+      this.currentTrackIndex === 0
+      && !this.playerControlsState.isRepeatAllOn) {
+      this.playerControlsState.isFirstTrack = true;
+      this.playerControlsState.isLastTrack = false;
+    } else if (
+      this.currentTrackIndex === this.tracks.length - 1
+      && !this.playerControlsState.isRepeatAllOn) {
+      this.playerControlsState.isLastTrack = true;
+      this.playerControlsState.isFirstTrack = false;
     } else {
-      this.isLastTrack = false;
-      this.isFirstTrack = false;
+      this.playerControlsState.isLastTrack = false;
+      this.playerControlsState.isFirstTrack = false;
     }
   }
 
@@ -182,10 +191,10 @@ export class PlayerComponent implements OnInit {
     if (this.currentTrackIndex !== null) {
       this.currentTrackIndex += 1;
       if (this.currentTrackIndex >= this.tracks.length) {
-        if (this.isRepeatAllOn) {
+        if (this.playerControlsState.isRepeatAllOn) {
           this.currentTrackIndex = 0;
         } else {
-          this.isLastTrack = true;
+          this.playerControlsState.isLastTrack = true;
         }
       }
       this.setTrackIndex(this.currentTrackIndex);
@@ -197,10 +206,10 @@ export class PlayerComponent implements OnInit {
     if (this.currentTrackIndex !== null) {
       this.currentTrackIndex -= 1;
       if (this.currentTrackIndex < 0) {
-        if (this.isRepeatAllOn) {
+        if (this.playerControlsState.isRepeatAllOn) {
           this.currentTrackIndex = this.tracks.length - 1;
         } else {
-          this.isFirstTrack = true;
+          this.playerControlsState.isFirstTrack = true;
         }
       }
       this.setTrackIndex(this.currentTrackIndex);
@@ -209,34 +218,34 @@ export class PlayerComponent implements OnInit {
   }
 
   toggleRepeat() {
-    this.isRepeatAllOn = !this.isRepeatAllOn;
-    this.isRepeatOneOn = false;
-    if (this.isRepeatAllOn) {
-      this.isFirstTrack = false;
-      this.isLastTrack = false;
+    this.playerControlsState.isRepeatAllOn = !this.playerControlsState.isRepeatAllOn;
+    this.playerControlsState.isRepeatOneOn = false;
+    if (this.playerControlsState.isRepeatAllOn) {
+      this.playerControlsState.isFirstTrack = false;
+      this.playerControlsState.isLastTrack = false;
     } else if (this.currentTrackIndex === 0) {
-      this.isFirstTrack = true;
-      this.isLastTrack = false;
+      this.playerControlsState.isFirstTrack = true;
+      this.playerControlsState.isLastTrack = false;
     } else if (this.currentTrackIndex === this.tracks.length - 1) {
-      this.isFirstTrack = false;
-      this.isLastTrack = true;
+      this.playerControlsState.isFirstTrack = false;
+      this.playerControlsState.isLastTrack = true;
     } else {
-      this.isFirstTrack = false;
-      this.isLastTrack = false;
+      this.playerControlsState.isFirstTrack = false;
+      this.playerControlsState.isLastTrack = false;
     }
   }
 
   toggleRepeatOne() {
-    this.isRepeatAllOn = false;
-    this.isRepeatOneOn = !this.isRepeatOneOn;
+    this.playerControlsState.isRepeatAllOn = false;
+    this.playerControlsState.isRepeatOneOn = !this.playerControlsState.isRepeatOneOn;
   }
 
   likeTrack() {
-    this.isLiked = !this.isLiked;
+    this.playerControlsState.isLiked = !this.playerControlsState.isLiked;
   }
 
   getTrackAlbumImageSrc(): string {
-    const imageSrcPlaceholder = '../../../assets/icons/user-icons-sprite.svg#jack';
+    const imageSrcPlaceholder = '';
     let imageSrc = imageSrcPlaceholder;
     if (this.currentTrackIndex !== null) {
       imageSrc = this.tracks[this.currentTrackIndex].album?.cover!;
@@ -263,23 +272,25 @@ export class PlayerComponent implements OnInit {
   }
 
   shuffleTracks(): void {
-    const shuffledTracks = [...this.tracks];
-    let lastTrackIndex = shuffledTracks.length - 1;
-    let randomNum = 0;
-    let tmp;
+    if (this.tracks.length && this.currentTrackIndex) {
+      const shuffledTracks = [...this.tracks];
+      let lastTrackIndex = shuffledTracks.length - 1;
+      let randomNum = 0;
+      let tmp;
 
-    while (lastTrackIndex) {
-      randomNum = Math.floor(Math.random() * (lastTrackIndex + 1));
-      tmp = shuffledTracks[lastTrackIndex];
-      shuffledTracks[lastTrackIndex] = shuffledTracks[randomNum];
-      shuffledTracks[randomNum] = tmp;
-      lastTrackIndex -= 1;
+      while (lastTrackIndex) {
+        randomNum = Math.floor(Math.random() * (lastTrackIndex + 1));
+        tmp = shuffledTracks[lastTrackIndex];
+        shuffledTracks[lastTrackIndex] = shuffledTracks[randomNum];
+        shuffledTracks[randomNum] = tmp;
+        lastTrackIndex -= 1;
+      }
+
+      const newCurrentTrackIndex = shuffledTracks
+        .findIndex((track) => track.id === this.tracks[this.currentTrackIndex!].id);
+
+      this.currentTrackIndex = newCurrentTrackIndex;
+      this.tracks = shuffledTracks;
     }
-
-    const newCurrentTrackIndex = shuffledTracks
-      .findIndex((track) => track.id === this.tracks[this.currentTrackIndex!].id);
-
-    this.currentTrackIndex = newCurrentTrackIndex;
-    this.tracks = shuffledTracks;
   }
 }

@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NotFoundComponent } from '../core/not-found/not-found.component';
 import { LibraryComponent } from './library/library.component';
@@ -47,6 +48,7 @@ import { PlayListComponent } from './play-list/play-list.component';
     MatToolbarModule,
     MatCardModule,
     MatListModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MusicPageComponent,

@@ -7,13 +7,6 @@
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-
-  // .buttons-container {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   margin-bottom: $container-p-small;
-  // }
  }
 
  .tmp {
@@ -51,6 +44,11 @@
     width: 30%;
     height: 30%;
   }
+}
+
+.player-spinner-container {
+  height: 30px !important;
+  width: 30px !important;
 }
 
 .volume-container {
