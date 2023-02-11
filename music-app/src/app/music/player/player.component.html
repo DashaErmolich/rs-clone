@@ -1,5 +1,5 @@
 <div class="player-container player container flex-row accent-section">
-  <div class="player__items-group flex-column-2">
+  <div class="player__items-group flex-column-3">
     <div class="track-data">
       <div *ngIf="getCurrentTrackIndex() !== null" class="track-data__image">
         <img
@@ -71,7 +71,7 @@
       <span>{{ currentState.durationTime }}</span>
     </div>
   </div>
-  <div class="player__items-group flex-column-2">
+  <div class="player__items-group flex-column-3">
     <div class="volume-container">
       <button mat-mini-fab color="basic" (click)="toggleMute()">
         <mat-icon>{{ !isMute ? 'volume_up' : 'volume_off' }}</mat-icon>

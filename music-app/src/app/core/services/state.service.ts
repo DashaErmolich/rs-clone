@@ -8,14 +8,6 @@ import { LocalStorageService } from './local-storage.service';
 })
 
 export class StateService {
-  // trackList = new Subject<Partial<ITrackResponse>[]>();
-
-  // playingTrackIndex = new Subject<number>();
-
-  // trackList$ = this.trackList.asObservable();
-
-  // playingTrackIndex$ = this.playingTrackIndex.asObservable();
-
   trackList$ = new BehaviorSubject<Partial<ITrackResponse>[]>([]);
 
   playingTrackIndex$ = new BehaviorSubject<number | null>(0);
