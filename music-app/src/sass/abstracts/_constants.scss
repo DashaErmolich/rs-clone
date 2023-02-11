@@ -4,8 +4,16 @@ $footer-height: 50px;
 $player-height: 100px;
 $icon-size: 24px;
 
-$container-p-small: 1rem;
-$container-p-large: 2rem;
+$container-p-small: 1.6rem;
+$container-p-large: 3.2rem;
 
 $bg-light-color-dark-theme: linear-gradient(180deg, #222222 0%, #1F1F1F 11.64%, #171717 25.66%, #161616 32.94%, #151515 35.98%, #131313 44.89%, #121212 55.22%, #121212 75.34%, #121212 85.45%, rgba(18, 18, 18, 0) 100%);
 $bg-light-color-light-theme: linear-gradient(0, rgb(250, 250, 250) 0%, rgba(218, 219, 220, 0.513) 90%);
+
+$hover-color-card: #888d947d;
+$hover-color-track: #888d9421;
+
+$card-border-radius-large: 10%;
+$card-border-radius-small: 5%;
+
+$count-cart-in-row: 5;

@@ -6,6 +6,15 @@
     </a>
   </div>
   <div>
+    <ng-container *ngIf="isSearchRoute">
+      <mat-form-field class="search-input">
+        <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+        <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
+        <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
+      </mat-form-field>
+    </ng-container>
+  </div>
+  <div>
     <a routerLink="/settings" ariaCurrentWhenActive="page">
       <button mat-fab extended="" color="basic">
         <mat-icon>
