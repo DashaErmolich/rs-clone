@@ -26,7 +26,7 @@ export class LocalStorageService {
     localStorage.setItem('theme', JSON.stringify(userTheme));
   }
 
-  getTheme(): IUserTheme {
+  getTheme(): IUserTheme | null {
     const userTheme = localStorage.getItem('theme');
     return userTheme === null ? null : JSON.parse(userTheme);
   }
@@ -43,8 +43,17 @@ export class LocalStorageService {
     localStorage.setItem('trackList', JSON.stringify(trackListInfo));
   }
 
-  getTrackListInfo(): ITrackListInfo {
+  getTrackListInfo(): ITrackListInfo | null {
     const trackListInfo = localStorage.getItem('trackList');
     return trackListInfo === null ? null : JSON.parse(trackListInfo);
+  }
+
+  setPlayerVolume(volume: number) {
+    localStorage.setItem('volume', String(volume));
+  }
+
+  getPlayerVolume(): number | null {
+    const volume = localStorage.getItem('volume');
+    return volume === null ? null : Number(volume);
   }
 }

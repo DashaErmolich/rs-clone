@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
 import { IAudioPlayerState } from '../../models/audio-player.models';
+import { LocalStorageService } from './local-storage.service';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 
@@ -11,12 +12,20 @@ const DEFAULT_PLAYER_VOLUME = 1;
 })
 
 export class AudioService {
+  storageVolume: number | null = this.storage.getPlayerVolume();
+
+  constructor(
+    private storage: LocalStorageService,
+  ) {
+    this.audio.volume = this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume;
+  }
+
   defaultState: IAudioPlayerState = {
     progress: 0,
     time: this.getFormattedTime(0),
     durationTime: this.getFormattedTime(0),
     duration: 0,
-    volume: DEFAULT_PLAYER_VOLUME,
+    volume: this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume,
   };
 
   currentState: IAudioPlayerState = {
@@ -96,6 +105,7 @@ export class AudioService {
       this.isMute$.next(false);
     }
     this.updateProgress();
+    this.storage.setPlayerVolume(this.audio.volume);
   }
 
   setCurrentTime(currentTime: number): void {
