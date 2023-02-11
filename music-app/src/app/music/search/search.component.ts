@@ -10,7 +10,7 @@ import {
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
-import { delay, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -105,7 +105,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!this.tracks || this.tracks.length === 0) this.loading = true;
     this.tracks$ = this.deezerRestApiService
       .getSearch(this.searchParam, this.index, this.limitTracks)
-      .pipe(delay(1500))
       .subscribe((res) => {
         this.tracks = res.data;
         this.loading = false;
@@ -117,7 +116,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!this.artists || this.artists.length === 0) this.loading = true;
     this.artists$ = this.deezerRestApiService
       .getSearchArtists(this.searchParam, this.index, this.limitArtists)
-      .pipe(delay(1500))
       .subscribe((res) => {
         this.artists = res.data;
         this.loading = false;
@@ -129,7 +127,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!this.albums || this.albums.length === 0) this.loading = true;
     this.deezerRestApiService
       .getSearchAlbums(this.searchParam, this.index, this.limitAlbums)
-      .pipe(delay(1500))
       .subscribe((res) => {
         this.albums = res.data;
         this.loading = false;
@@ -141,7 +138,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!this.playlists || this.playlists.length === 0) this.loading = true;
     this.playlists$ = this.deezerRestApiService
       .getSearchPlayLists(this.searchParam, this.index, this.limitPlaylists)
-      .pipe(delay(1500))
       .subscribe((res) => {
         this.playlists = res.data;
         this.loading = false;

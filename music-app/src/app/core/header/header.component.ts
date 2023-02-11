@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -11,17 +11,17 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  searchControl!: FormControl;
+  searchControl: FormControl = new FormControl();
 
   isSearchRoute: boolean = false;
 
-  searchValue!: string;
+  searchValue: string = '';
 
-  queryParams$!: Subscription;
+  queryParams$: Subscription = new Subscription();
 
-  searchControl$!: Subscription;
+  searchControl$: Subscription = new Subscription();
 
-  events$!: Subscription;
+  events$: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -29,12 +29,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.searchControl = new FormControl();
     this.queryParams$ = this.route.queryParams.subscribe((param) => this.searchControl.setValue(param['q']));
-    this.searchControl$ = this.searchControl.valueChanges.subscribe((res) => {
-      this.searchValue = res;
-      this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
-    });
+    this.searchControl$ = this.searchControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((res) => {
+        this.searchValue = res;
+        this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
+      });
 
     this.events$ = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
