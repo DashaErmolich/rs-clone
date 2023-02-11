@@ -31,8 +31,6 @@ export class AudioService {
 
   isPlay$ = new BehaviorSubject(false);
 
-  isEnded$ = new BehaviorSubject(false);
-
   isMute$ = new BehaviorSubject(false);
 
   state$ = new BehaviorSubject(this.defaultState);
@@ -55,7 +53,6 @@ export class AudioService {
     this.audio.addEventListener('loadedmetadata', () => {
       this.isTrackReady$.next(true);
       this.isPlay$.next(true);
-      this.isEnded$.next(false);
       this.audio.play();
       this.state$.subscribe(() => {
         this.currentState.progress = this.state$.value.progress;
@@ -68,10 +65,6 @@ export class AudioService {
 
     this.audio.addEventListener('timeupdate', () => {
       this.updateProgress();
-    });
-
-    this.audio.addEventListener('ended', () => {
-      this.isEnded$.next(false);
     });
   }
 

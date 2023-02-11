@@ -47,6 +47,7 @@ export class PlayerComponent implements OnInit {
     });
     this.myState.playingTrackIndex$.subscribe((data: number) => {
       this.currentTrackIndex = data;
+      this.checkTrackPosition();
     });
     this.myAudio.state$.subscribe((data) => {
       this.currentState = data;
@@ -54,20 +55,25 @@ export class PlayerComponent implements OnInit {
     this.myAudio.isPlay$.subscribe((data) => {
       this.isPlay = data;
     });
-    this.myAudio.audio.addEventListener('ended', () => {
-      this.playNext();
-    });
     this.myAudio.isTrackReady$.subscribe((data) => {
       this.isTrackReady = data;
     });
     this.myAudio.isMute$.subscribe((data) => {
       this.isMute = data;
     });
+    this.myAudio.audio.addEventListener('ended', () => {
+      this.playNext();
+    });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   playNext(): void {
-    console.log('next');
+    if (this.controlsState.isRepeatOneOn && this.currentTrackIndex !== null) {
+      this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
+    } else if (!this.controlsState.isRepeatOneOn && this.controlsState.isLastTrack) {
+      this.myAudio.pause();
+    } else {
+      this.next();
+    }
   }
 
   playPause(): void {
@@ -110,13 +116,10 @@ export class PlayerComponent implements OnInit {
   next(): void {
     if (this.currentTrackIndex !== null) {
       let nextTrackIndex = this.currentTrackIndex + 1;
-      if (nextTrackIndex >= this.trackList.length) {
-        if (this.controlsState.isRepeatAllOn) {
-          nextTrackIndex = 0;
-        } else {
-          this.controlsState.isLastTrack = true;
-        }
+      if (nextTrackIndex >= this.trackList.length && this.controlsState.isRepeatAllOn) {
+        nextTrackIndex = 0;
       }
+      this.checkTrackPosition();
       this.myState.setPlayingTrackIndex(nextTrackIndex);
       this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
     }
@@ -125,35 +128,19 @@ export class PlayerComponent implements OnInit {
   prev(): void {
     if (this.currentTrackIndex !== null) {
       let prevTrackIndex = this.currentTrackIndex - 1;
-      if (prevTrackIndex < 0) {
-        if (this.controlsState.isRepeatAllOn) {
-          prevTrackIndex = this.trackList.length - 1;
-        } else {
-          this.controlsState.isFirstTrack = true;
-        }
+      if (prevTrackIndex < 0 && this.controlsState.isRepeatAllOn) {
+        prevTrackIndex = this.trackList.length - 1;
       }
+      this.checkTrackPosition();
       this.myState.setPlayingTrackIndex(prevTrackIndex);
       this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
     }
   }
 
-  toggleRepeat(): void {
+  toggleRepeatAll(): void {
     this.controlsState.isRepeatAllOn = !this.controlsState.isRepeatAllOn;
     this.controlsState.isRepeatOneOn = false;
-
-    if (this.controlsState.isRepeatAllOn) {
-      this.controlsState.isFirstTrack = false;
-      this.controlsState.isLastTrack = false;
-    } else if (this.currentTrackIndex === 0) {
-      this.controlsState.isFirstTrack = true;
-      this.controlsState.isLastTrack = false;
-    } else if (this.currentTrackIndex === this.trackList.length - 1) {
-      this.controlsState.isFirstTrack = false;
-      this.controlsState.isLastTrack = true;
-    } else {
-      this.controlsState.isFirstTrack = false;
-      this.controlsState.isLastTrack = false;
-    }
+    this.checkTrackPosition();
   }
 
   toggleRepeatOne(): void {
@@ -197,7 +184,7 @@ export class PlayerComponent implements OnInit {
   }
 
   shuffleTracks(): void {
-    if (this.trackList.length && this.currentTrackIndex) {
+    if (this.trackList.length && this.currentTrackIndex !== null) {
       const shuffledTracks = [...this.trackList];
       let lastTrackIndex = shuffledTracks.length - 1;
       let randomNum = 0;
@@ -214,8 +201,29 @@ export class PlayerComponent implements OnInit {
       const newCurrentTrackIndex = shuffledTracks
         .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
 
-      this.myState.playingTrackIndex.next(newCurrentTrackIndex);
-      this.myState.trackList.next(shuffledTracks);
+      this.myState.setPlayingTrackIndex(newCurrentTrackIndex);
+      this.myState.setTrackList(shuffledTracks);
+      this.checkTrackPosition();
+    }
+  }
+
+  checkTrackPosition() {
+    const currentIndex = this.currentTrackIndex;
+    const isCurrentFirstTrack = currentIndex === 0;
+    const isCurrentLastTrack = currentIndex === this.trackList.length - 1;
+
+    if (this.controlsState.isRepeatAllOn) {
+      this.controlsState.isFirstTrack = false;
+      this.controlsState.isLastTrack = false;
+    } else if (isCurrentFirstTrack) {
+      this.controlsState.isFirstTrack = true;
+      this.controlsState.isLastTrack = false;
+    } else if (isCurrentLastTrack) {
+      this.controlsState.isFirstTrack = false;
+      this.controlsState.isLastTrack = true;
+    } else {
+      this.controlsState.isFirstTrack = false;
+      this.controlsState.isLastTrack = false;
     }
   }
 
