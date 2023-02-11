@@ -16,6 +16,7 @@ export class AudioService {
     time: this.getFormattedTime(0),
     durationTime: this.getFormattedTime(0),
     duration: 0,
+    volume: DEFAULT_PLAYER_VOLUME,
   };
 
   currentState: IAudioPlayerState = {
@@ -23,17 +24,18 @@ export class AudioService {
     time: this.defaultState.time,
     durationTime: this.defaultState.durationTime,
     duration: this.defaultState.duration,
+    volume: this.defaultState.volume,
   };
 
   isTrackReady$ = new BehaviorSubject(false);
 
   isPlay$ = new BehaviorSubject(false);
 
+  isEnded$ = new BehaviorSubject(false);
+
   isMute$ = new BehaviorSubject(false);
 
   state$ = new BehaviorSubject(this.defaultState);
-
-  currentVolume = DEFAULT_PLAYER_VOLUME;
 
   audio = new Audio();
 
@@ -52,12 +54,15 @@ export class AudioService {
   bindListeners(): void {
     this.audio.addEventListener('loadedmetadata', () => {
       this.isTrackReady$.next(true);
+      this.isPlay$.next(true);
+      this.isEnded$.next(false);
       this.audio.play();
       this.state$.subscribe(() => {
         this.currentState.progress = this.state$.value.progress;
         this.currentState.time = this.state$.value.time;
         this.currentState.durationTime = this.state$.value.durationTime;
         this.currentState.duration = this.state$.value.duration;
+        this.currentState.volume = this.state$.value.volume;
       });
     });
 
@@ -66,7 +71,7 @@ export class AudioService {
     });
 
     this.audio.addEventListener('ended', () => {
-      this.isPlay$.next(false);
+      this.isEnded$.next(false);
     });
   }
 
@@ -76,6 +81,7 @@ export class AudioService {
       time: this.getFormattedTime(this.audio.currentTime),
       durationTime: this.getTotalTime(),
       duration: this.audio.duration,
+      volume: this.audio.volume,
     });
   }
 
@@ -96,6 +102,7 @@ export class AudioService {
     } else {
       this.isMute$.next(false);
     }
+    this.updateProgress();
   }
 
   setCurrentTime(currentTime: number): void {

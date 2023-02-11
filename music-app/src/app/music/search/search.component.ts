@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     // temporary data for player testing
-    this.deezerApi.getSearch('metallica', 0, 6).subscribe((response) => {
+    this.deezerApi.getSearch('Kata Ton Daimona Eaytoy', 0, 6).subscribe((response) => {
       this.trackList = response.data;
       this.myState.trackList.next(response.data);
     });

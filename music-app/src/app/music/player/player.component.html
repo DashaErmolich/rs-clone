@@ -38,7 +38,7 @@
             class="player-spinner-container"
             color="accent"
             *ngIf="!isTrackReady && getCurrentTrackIndex() !== null"
-          ></mat-spinner>
+          ></mat-spinner >
           <mat-icon
             *ngIf="isTrackReady || getCurrentTrackIndex() === null"
           >{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
@@ -77,7 +77,7 @@
         <mat-icon>{{ !isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
       </button>
       <mat-slider min="0" max="1" step="0.01">
-        <input matSliderThumb [value]="currentVolume" (input)="setVolume($event)" (click)="setVolume($event)">
+        <input matSliderThumb [value]="currentState.volume" (input)="setVolume($event)" (click)="setVolume($event)">
       </mat-slider>
     </div>
     </div>

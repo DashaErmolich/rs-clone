@@ -3,6 +3,7 @@ export interface IAudioPlayerState {
   duration: number,
   time: string,
   durationTime: string,
+  volume: number,
 }
 
 export interface IPlayerControlsState {
