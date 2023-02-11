@@ -1,13 +1,13 @@
 <div class="player-container player container flex-row accent-section">
   <div class="player__items-group flex-column-3">
     <div class="track-data">
-      <div *ngIf="currentTrackIndex !== null" class="track-data__image">
+      <div *ngIf="getCurrentTrackIndex() !== null" class="track-data__image">
         <img
         [src]="getTrackAlbumImageSrc()"
         [alt]="getTrackTitle() | titlecase"
         >
       </div>
-      <div *ngIf="currentTrackIndex === null" class="track-data__image">
+      <div *ngIf="getCurrentTrackIndex() === null" class="track-data__image">
         <svg class="icon">
           <use xlink:href="../../../assets/icons/sprite.svg#musical-note"></use>
         </svg>
@@ -37,11 +37,11 @@
             mode="indeterminate"
             class="player-spinner-container"
             color="accent"
-            *ngIf="!controlsState.isTrackReady && currentTrackIndex !== null"
+            *ngIf="!isTrackReady && getCurrentTrackIndex() !== null"
           ></mat-spinner>
           <mat-icon
-            *ngIf="controlsState.isTrackReady || currentTrackIndex === null"
-          >{{ !controlsState.isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
+            *ngIf="isTrackReady || getCurrentTrackIndex() === null"
+          >{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
         </button>
         <button mat-fab color="basic" (click)="next()" [disabled]="controlsState.isLastTrack">
           <mat-icon>skip_next</mat-icon>
@@ -74,7 +74,7 @@
   <div class="player__items-group flex-column-3">
     <div class="volume-container">
       <button mat-mini-fab color="basic" (click)="toggleMute()">
-        <mat-icon>{{ !controlsState.isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
+        <mat-icon>{{ !isMute ? 'volume_up' : 'volume_off' }}</mat-icon>
       </button>
       <mat-slider min="0" max="1" step="0.01">
         <input matSliderThumb [value]="currentVolume" (input)="setVolume($event)" (click)="setVolume($event)">

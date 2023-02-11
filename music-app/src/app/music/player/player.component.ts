@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
-import { BehaviorSubject } from 'rxjs';
 import { StateService } from 'src/app/core/services/state.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
 import { AudioService } from '../../core/services/audio.service';
-
-const DEFAULT_PLAYER_VOLUME = 1;
 
 @Component({
   selector: 'app-player',
@@ -18,105 +15,110 @@ const DEFAULT_PLAYER_VOLUME = 1;
 export class PlayerComponent implements OnInit {
   trackList!: Partial<ITrackResponse>[];
 
-  defaultState: IAudioPlayerState = {
-    progress: 0,
-    time: this.getFormattedTime(0),
-    durationTime: this.getFormattedTime(0),
-    duration: 0,
-  };
+  // defaultState: IAudioPlayerState = {
+  //   progress: 0,
+  //   time: this.getFormattedTime(0),
+  //   durationTime: this.getFormattedTime(0),
+  //   duration: 0,
+  // };
 
-  currentState: IAudioPlayerState = {
-    progress: this.defaultState.progress,
-    time: this.defaultState.time,
-    durationTime: this.defaultState.durationTime,
-    duration: this.defaultState.duration,
-  };
+  // currentState: IAudioPlayerState = {
+  //   progress: this.defaultState.progress,
+  //   time: this.defaultState.time,
+  //   durationTime: this.defaultState.durationTime,
+  //   duration: this.defaultState.duration,
+  // };
+
+  currentState!: IAudioPlayerState;
 
   controlsState: IPlayerControlsState = {
-    isPlay: false,
-    isMute: false,
     isRepeatAllOn: false,
     isRepeatOneOn: false,
     isFirstTrack: false,
     isLastTrack: false,
     isLiked: false,
     isShuffleOn: false,
-    isTrackReady: false,
   };
 
-  state$ = new BehaviorSubject(this.defaultState);
+  // state$ = new BehaviorSubject(this.defaultState);
 
-  currentVolume = DEFAULT_PLAYER_VOLUME;
+  isPlay!: boolean;
+
+  isMute!: boolean;
+
+  isTrackReady!: boolean;
+
+  currentVolume = this.myAudio.audio.volume;
 
   volumeSaver: number | null = null;
 
   currentTrackIndex: number | null = null;
 
   constructor(
-    private trackListState: StateService,
+    private myState: StateService,
     private myAudio: AudioService,
   ) { }
 
   ngOnInit(): void {
-    this.trackListState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {
+    this.myState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {
       this.trackList = data;
     });
-    this.trackListState.playingTrackIndex$.subscribe((data: number) => {
+    this.myState.playingTrackIndex$.subscribe((data: number) => {
       this.currentTrackIndex = data;
-    });
-    this.myAudio.controls$.subscribe((data) => {
-      this.controlsState = data;
     });
     this.myAudio.state$.subscribe((data) => {
       this.currentState = data;
     });
+    this.myAudio.isPlay$.subscribe((data) => {
+      this.isPlay = data;
+    });
+    this.myAudio.isTrackReady$.subscribe((data) => {
+      this.isTrackReady = data;
+    });
+    this.myAudio.isMute$.subscribe((data) => {
+      this.isMute = data;
+    });
   }
 
   playTrack(url: string | undefined): void {
-    this.myAudio.controlsState.isTrackReady = false;
-    this.state$.next(this.defaultState);
-    this.myAudio.controlsState.isPlay = true;
+    this.myAudio.isTrackReady$.next(false);
+    this.myAudio.state$.next(this.myAudio.defaultState);
+    this.myAudio.isPlay$.next(true);
 
     if (url) {
       this.myAudio.audio.src = url;
       this.myAudio.audio.load();
-      this.myAudio.bindListeners(url);
+      this.myAudio.bindListeners();
     }
   }
 
   playPause(): void {
-    if (this.myAudio.controlsState.isTrackReady) {
-      if (this.myAudio.controlsState.isPlay) {
+    if (this.isTrackReady) {
+      if (this.isPlay) {
         this.myAudio.audio.pause();
       } else {
         this.myAudio.audio.play();
       }
-      this.myAudio.controlsState.isPlay = !this.myAudio.controlsState.isPlay;
+      this.myAudio.isPlay$.next(!this.myAudio.isPlay$.value);
     }
   }
 
   setVolume(event: Event): void {
     const volumeBar = event.currentTarget;
     if (volumeBar instanceof HTMLInputElement) {
-      this.myAudio.audio.volume = Number(volumeBar.value);
-      if (this.myAudio.audio.volume === 0) {
-        this.myAudio.controlsState.isMute = true;
-      } else {
-        this.myAudio.controlsState.isMute = false;
-      }
+      this.myAudio.setVolume(Number(volumeBar.value));
     }
   }
 
   toggleMute(): void {
     let volume = 0;
-    if (!this.myAudio.controlsState.isMute) {
-      this.myAudio.volumeSaver = this.myAudio.audio.volume;
-    } else if (this.myAudio.volumeSaver !== null) {
-      volume = this.myAudio.volumeSaver;
+    if (!this.isMute) {
+      this.volumeSaver = this.myAudio.audio.volume;
+    } else if (this.volumeSaver !== null) {
+      volume = this.volumeSaver;
     }
-    this.myAudio.audio.volume = volume;
-    this.currentVolume = this.myAudio.audio.volume;
-    this.myAudio.controlsState.isMute = !this.myAudio.controlsState.isMute;
+    this.myAudio.setVolume(volume);
+    this.currentVolume = volume;
   }
 
   setProgress(event: Event): void {
@@ -124,8 +126,7 @@ export class PlayerComponent implements OnInit {
     if (progressBar instanceof HTMLElement) {
       const progress = progressBar.getAttribute('aria-valuetext');
       if (progress !== null) {
-        this.myAudio.audio.currentTime = Number(progress);
-        this.myAudio.updateProgress();
+        this.myAudio.setCurrentTime(Number(progress));
       }
     }
   }
@@ -143,79 +144,77 @@ export class PlayerComponent implements OnInit {
     return this.getFormattedTime(result);
   }
 
-  setTrackIndex(index: number): void {
-    this.currentTrackIndex = index;
-    if (
-      this.currentTrackIndex === 0
-      && !this.myAudio.controlsState.isRepeatAllOn) {
-      this.myAudio.controlsState.isFirstTrack = true;
-      this.myAudio.controlsState.isLastTrack = false;
-    } else if (
-      this.currentTrackIndex === this.trackList.length - 1
-      && !this.myAudio.controlsState.isRepeatAllOn) {
-      this.myAudio.controlsState.isLastTrack = true;
-      this.myAudio.controlsState.isFirstTrack = false;
-    } else {
-      this.myAudio.controlsState.isLastTrack = false;
-      this.myAudio.controlsState.isFirstTrack = false;
-    }
-  }
+  // setTrackIndex(index: number): void {
+  //   this.myState.currentTrackIndex = index;
+  //   if (
+  //     this.myAudio.currentTrackIndex === 0
+  //     && !this.myAudio.controlsState.isRepeatAllOn) {
+  //     this.myAudio.controlsState.isFirstTrack = true;
+  //     this.myAudio.controlsState.isLastTrack = false;
+  //   } else if (
+  //     this.myAudio.currentTrackIndex === this.trackList.length - 1
+  //     && !this.myAudio.controlsState.isRepeatAllOn) {
+  //     this.myAudio.controlsState.isLastTrack = true;
+  //     this.myAudio.controlsState.isFirstTrack = false;
+  //   } else {
+  //     this.myAudio.controlsState.isLastTrack = false;
+  //     this.myAudio.controlsState.isFirstTrack = false;
+  //   }
+  // }
 
   next(): void {
     if (this.currentTrackIndex !== null) {
-      this.currentTrackIndex += 1;
+      this.myState.setPlayingTrackIndex(this.currentTrackIndex += 1);
       if (this.currentTrackIndex >= this.trackList.length) {
-        if (this.myAudio.controlsState.isRepeatAllOn) {
-          this.currentTrackIndex = 0;
+        if (this.controlsState.isRepeatAllOn) {
+          this.myState.setPlayingTrackIndex(0);
         } else {
-          this.myAudio.controlsState.isLastTrack = true;
+          this.controlsState.isLastTrack = true;
         }
       }
-      this.setTrackIndex(this.currentTrackIndex);
-      this.playTrack(this.trackList[this.currentTrackIndex].preview);
+      this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
     }
   }
 
   prev(): void {
     if (this.currentTrackIndex !== null) {
-      this.currentTrackIndex -= 1;
+      this.myState.setPlayingTrackIndex(this.currentTrackIndex -= 1);
       if (this.currentTrackIndex < 0) {
-        if (this.myAudio.controlsState.isRepeatAllOn) {
-          this.currentTrackIndex = this.trackList.length - 1;
+        if (this.controlsState.isRepeatAllOn) {
+          this.myState.setPlayingTrackIndex(this.trackList.length - 1);
         } else {
-          this.myAudio.controlsState.isFirstTrack = true;
+          this.controlsState.isFirstTrack = true;
         }
       }
-      this.setTrackIndex(this.currentTrackIndex);
-      this.playTrack(this.trackList[this.currentTrackIndex].preview);
+      this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
     }
   }
 
   toggleRepeat(): void {
-    this.myAudio.controlsState.isRepeatAllOn = !this.myAudio.controlsState.isRepeatAllOn;
-    this.myAudio.controlsState.isRepeatOneOn = false;
-    if (this.myAudio.controlsState.isRepeatAllOn) {
-      this.myAudio.controlsState.isFirstTrack = false;
-      this.myAudio.controlsState.isLastTrack = false;
+    this.controlsState.isRepeatAllOn = !this.controlsState.isRepeatAllOn;
+    this.controlsState.isRepeatOneOn = false;
+    if (this.controlsState.isRepeatAllOn) {
+      this.controlsState.isFirstTrack = false;
+      this.controlsState.isLastTrack = false;
     } else if (this.currentTrackIndex === 0) {
-      this.myAudio.controlsState.isFirstTrack = true;
-      this.myAudio.controlsState.isLastTrack = false;
+      this.controlsState.isFirstTrack = true;
+      this.controlsState.isLastTrack = false;
     } else if (this.currentTrackIndex === this.trackList.length - 1) {
-      this.myAudio.controlsState.isFirstTrack = false;
-      this.myAudio.controlsState.isLastTrack = true;
+      this.controlsState.isFirstTrack = false;
+      this.controlsState.isLastTrack = true;
     } else {
-      this.myAudio.controlsState.isFirstTrack = false;
-      this.myAudio.controlsState.isLastTrack = false;
+      this.controlsState.isFirstTrack = false;
+      this.controlsState.isLastTrack = false;
     }
   }
 
   toggleRepeatOne(): void {
-    this.myAudio.controlsState.isRepeatAllOn = false;
-    this.myAudio.controlsState.isRepeatOneOn = !this.myAudio.controlsState.isRepeatOneOn;
+    this.controlsState.isRepeatAllOn = false;
+    this.controlsState.isRepeatOneOn = !this.controlsState.isRepeatOneOn;
   }
 
   likeTrack(): void {
-    this.myAudio.controlsState.isLiked = !this.myAudio.controlsState.isLiked;
+    this.controlsState.isLiked = !this.controlsState.isLiked;
   }
 
   getTrackAlbumImageSrc(): string {
@@ -267,8 +266,12 @@ export class PlayerComponent implements OnInit {
       const newCurrentTrackIndex = shuffledTracks
         .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
 
-      this.trackListState.playingTrackIndex.next(newCurrentTrackIndex);
-      this.trackListState.trackList.next(shuffledTracks);
+      this.myState.playingTrackIndex.next(newCurrentTrackIndex);
+      this.myState.trackList.next(shuffledTracks);
     }
+  }
+
+  getCurrentTrackIndex(): number | null {
+    return this.currentTrackIndex;
   }
 }

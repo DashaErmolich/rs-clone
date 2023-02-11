@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
-import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
-import { ITrackResponse } from '../../models/api-response.models';
+import { IAudioPlayerState } from '../../models/audio-player.models';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 
@@ -12,8 +11,6 @@ const DEFAULT_PLAYER_VOLUME = 1;
 })
 
 export class AudioService {
-  trackList!: Partial<ITrackResponse>[];
-
   defaultState: IAudioPlayerState = {
     progress: 0,
     time: this.getFormattedTime(0),
@@ -28,62 +25,39 @@ export class AudioService {
     duration: this.defaultState.duration,
   };
 
-  controlsState: IPlayerControlsState = {
-    isPlay: false,
-    isMute: false,
-    isRepeatAllOn: false,
-    isRepeatOneOn: false,
-    isFirstTrack: false,
-    isLastTrack: false,
-    isLiked: false,
-    isShuffleOn: false,
-    isTrackReady: false,
-  };
+  isTrackReady$ = new BehaviorSubject(false);
+
+  isPlay$ = new BehaviorSubject(false);
+
+  isMute$ = new BehaviorSubject(false);
 
   state$ = new BehaviorSubject(this.defaultState);
 
-  controls$ = new BehaviorSubject(this.controlsState);
-
   currentVolume = DEFAULT_PLAYER_VOLUME;
-
-  volumeSaver: number | null = null;
-
-  currentTrackIndex: number | null = null;
 
   audio = new Audio();
 
-  playTrack(url: string | undefined): void {
-    this.controlsState.isTrackReady = false;
+  playTrack(url: string): void {
+    this.isTrackReady$.next(false);
     this.state$.next(this.defaultState);
-    this.controlsState.isPlay = true;
+    this.isPlay$.next(true);
 
     if (url) {
       this.audio.src = url;
       this.audio.load();
-      this.bindListeners(url);
+      this.bindListeners();
     }
   }
 
-  bindListeners(url: string): void {
+  bindListeners(): void {
     this.audio.addEventListener('loadedmetadata', () => {
-      this.controlsState.isTrackReady = true;
+      this.isTrackReady$.next(true);
       this.audio.play();
       this.state$.subscribe(() => {
         this.currentState.progress = this.state$.value.progress;
         this.currentState.time = this.state$.value.time;
         this.currentState.durationTime = this.state$.value.durationTime;
         this.currentState.duration = this.state$.value.duration;
-      });
-      this.controls$.subscribe(() => {
-        this.controlsState.isFirstTrack = this.controls$.value.isFirstTrack;
-        this.controlsState.isLastTrack = this.controls$.value.isLastTrack;
-        this.controlsState.isLiked = this.controls$.value.isLiked;
-        this.controlsState.isMute = this.controls$.value.isMute;
-        this.controlsState.isPlay = this.controls$.value.isPlay;
-        this.controlsState.isRepeatAllOn = this.controls$.value.isRepeatAllOn;
-        this.controlsState.isRepeatOneOn = this.controls$.value.isRepeatOneOn;
-        this.controlsState.isShuffleOn = this.controls$.value.isShuffleOn;
-        this.controlsState.isTrackReady = this.controls$.value.isTrackReady;
       });
     });
 
@@ -92,18 +66,7 @@ export class AudioService {
     });
 
     this.audio.addEventListener('ended', () => {
-      if (
-        this.controlsState.isRepeatOneOn
-        && this.currentTrackIndex !== null) {
-        this.playTrack(url);
-      } else if (
-        !this.controlsState.isRepeatAllOn
-        && this.controlsState.isLastTrack) {
-        this.state$.next(this.defaultState);
-        this.controlsState.isPlay = false;
-      } else {
-        this.next();
-      }
+      this.isPlay$.next(false);
     });
   }
 
@@ -116,50 +79,28 @@ export class AudioService {
     });
   }
 
-  playPause(): void {
-    if (this.controlsState.isTrackReady) {
-      if (this.controlsState.isPlay) {
-        this.audio.pause();
-      } else {
-        this.audio.play();
-      }
-      this.controlsState.isPlay = !this.controlsState.isPlay;
-    }
+  play(): void {
+    this.audio.play();
+    this.isPlay$.next(!this.isPlay$.value);
   }
 
-  setVolume(event: Event): void {
-    const volumeBar = event.currentTarget;
-    if (volumeBar instanceof HTMLInputElement) {
-      this.audio.volume = Number(volumeBar.value);
-      if (this.audio.volume === 0) {
-        this.controlsState.isMute = true;
-      } else {
-        this.controlsState.isMute = false;
-      }
-    }
+  pause(): void {
+    this.audio.pause();
+    this.isPlay$.next(!this.isPlay$.value);
   }
 
-  toggleMute(): void {
-    let volume = 0;
-    if (!this.controlsState.isMute) {
-      this.volumeSaver = this.audio.volume;
-    } else if (this.volumeSaver !== null) {
-      volume = this.volumeSaver;
-    }
+  setVolume(volume: number): void {
     this.audio.volume = volume;
-    this.currentVolume = this.audio.volume;
-    this.controlsState.isMute = !this.controlsState.isMute;
+    if (this.audio.volume === 0) {
+      this.isMute$.next(true);
+    } else {
+      this.isMute$.next(false);
+    }
   }
 
-  setProgress(event: Event): void {
-    const progressBar = event.target;
-    if (progressBar instanceof HTMLElement) {
-      const progress = progressBar.getAttribute('aria-valuetext');
-      if (progress !== null) {
-        this.audio.currentTime = Number(progress);
-        this.updateProgress();
-      }
-    }
+  setCurrentTime(currentTime: number): void {
+    this.audio.currentTime = currentTime;
+    this.updateProgress();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -173,132 +114,5 @@ export class AudioService {
       return this.getFormattedTime(0);
     }
     return this.getFormattedTime(result);
-  }
-
-  setTrackIndex(index: number): void {
-    this.currentTrackIndex = index;
-    if (
-      this.currentTrackIndex === 0
-      && !this.controlsState.isRepeatAllOn) {
-      this.controlsState.isFirstTrack = true;
-      this.controlsState.isLastTrack = false;
-    } else if (
-      this.currentTrackIndex === this.trackList.length - 1
-      && !this.controlsState.isRepeatAllOn) {
-      this.controlsState.isLastTrack = true;
-      this.controlsState.isFirstTrack = false;
-    } else {
-      this.controlsState.isLastTrack = false;
-      this.controlsState.isFirstTrack = false;
-    }
-  }
-
-  next(): void {
-    if (this.currentTrackIndex !== null) {
-      this.currentTrackIndex += 1;
-      if (this.currentTrackIndex >= this.trackList.length) {
-        if (this.controlsState.isRepeatAllOn) {
-          this.currentTrackIndex = 0;
-        } else {
-          this.controlsState.isLastTrack = true;
-        }
-      }
-      this.setTrackIndex(this.currentTrackIndex);
-      this.playTrack(this.trackList[this.currentTrackIndex].preview);
-    }
-  }
-
-  prev(): void {
-    if (this.currentTrackIndex !== null) {
-      this.currentTrackIndex -= 1;
-      if (this.currentTrackIndex < 0) {
-        if (this.controlsState.isRepeatAllOn) {
-          this.currentTrackIndex = this.trackList.length - 1;
-        } else {
-          this.controlsState.isFirstTrack = true;
-        }
-      }
-      this.setTrackIndex(this.currentTrackIndex);
-      this.playTrack(this.trackList[this.currentTrackIndex].preview);
-    }
-  }
-
-  toggleRepeat(): void {
-    this.controlsState.isRepeatAllOn = !this.controlsState.isRepeatAllOn;
-    this.controlsState.isRepeatOneOn = false;
-    if (this.controlsState.isRepeatAllOn) {
-      this.controlsState.isFirstTrack = false;
-      this.controlsState.isLastTrack = false;
-    } else if (this.currentTrackIndex === 0) {
-      this.controlsState.isFirstTrack = true;
-      this.controlsState.isLastTrack = false;
-    } else if (this.currentTrackIndex === this.trackList.length - 1) {
-      this.controlsState.isFirstTrack = false;
-      this.controlsState.isLastTrack = true;
-    } else {
-      this.controlsState.isFirstTrack = false;
-      this.controlsState.isLastTrack = false;
-    }
-  }
-
-  toggleRepeatOne(): void {
-    this.controlsState.isRepeatAllOn = false;
-    this.controlsState.isRepeatOneOn = !this.controlsState.isRepeatOneOn;
-  }
-
-  likeTrack(): void {
-    this.controlsState.isLiked = !this.controlsState.isLiked;
-  }
-
-  getTrackAlbumImageSrc(): string {
-    const imageSrcPlaceholder = '';
-    let imageSrc = imageSrcPlaceholder;
-    if (this.currentTrackIndex !== null) {
-      imageSrc = this.trackList[this.currentTrackIndex].album?.cover!;
-    }
-    return imageSrc;
-  }
-
-  getTrackTitle(): string {
-    const trackTitlePlaceholder = '';
-    let trackTitle = trackTitlePlaceholder;
-    if (this.currentTrackIndex !== null) {
-      trackTitle = this.trackList[this.currentTrackIndex].title!;
-    }
-    return trackTitle;
-  }
-
-  getTrackAlbumTitle(): string {
-    const trackAlbumTitlePlaceholder = '';
-    let trackAlbumTitle = trackAlbumTitlePlaceholder;
-    if (this.currentTrackIndex !== null) {
-      trackAlbumTitle = this.trackList[this.currentTrackIndex].album?.title!;
-    }
-    return trackAlbumTitle;
-  }
-
-  shuffleTracks(): void {
-    // eslint-disable-next-line no-debugger
-    debugger;
-    if (this.trackList.length && this.currentTrackIndex) {
-      const shuffledTracks = [...this.trackList];
-      let lastTrackIndex = shuffledTracks.length - 1;
-      let randomNum = 0;
-      let tmp;
-
-      while (lastTrackIndex) {
-        randomNum = Math.floor(Math.random() * (lastTrackIndex + 1));
-        tmp = shuffledTracks[lastTrackIndex];
-        shuffledTracks[lastTrackIndex] = shuffledTracks[randomNum];
-        shuffledTracks[randomNum] = tmp;
-        lastTrackIndex -= 1;
-      }
-
-      const newCurrentTrackIndex = shuffledTracks
-        .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
-
-      this.currentTrackIndex = newCurrentTrackIndex;
-      this.trackList = shuffledTracks;
-    }
   }
 }

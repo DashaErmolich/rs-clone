@@ -30,7 +30,9 @@ export class SearchComponent implements OnInit {
   }
 
   playTrack(url: string | undefined) {
-    this.myAudio.playTrack(url);
+    if (url) {
+      this.myAudio.playTrack(url);
+    }
   }
 
   setTrackIndex(i: number) {
