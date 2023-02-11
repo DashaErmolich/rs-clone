@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { IUserTheme } from '../../models/theme.models';
 import { ITrackResponse } from '../../models/api-response.models';
-import { ITrackListInfo } from '../../models/audio-player.models';
+import { ITrackListInfo, IPLayerInfo } from '../../models/audio-player.models';
 
 @Injectable({
   providedIn: 'root',
@@ -55,5 +55,21 @@ export class LocalStorageService {
   getPlayerVolume(): number | null {
     const volume = localStorage.getItem('volume');
     return volume === null ? null : Number(volume);
+  }
+
+  setPlayerInfo(
+    userIsRepeatAllOn: boolean,
+    userIsRepeatOneOn: boolean,
+  ): void {
+    const playerInfo: IPLayerInfo = {
+      isRepeatAllOn: userIsRepeatAllOn,
+      isRepeatOneOn: userIsRepeatOneOn,
+    };
+    localStorage.setItem('player', JSON.stringify(playerInfo));
+  }
+
+  getPlayerInfo(): IPLayerInfo | null {
+    const playerInfo = localStorage.getItem('player');
+    return playerInfo === null ? null : JSON.parse(playerInfo);
   }
 }

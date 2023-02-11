@@ -4,6 +4,7 @@ import { StateService } from 'src/app/core/services/state.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
 import { AudioService } from '../../core/services/audio.service';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-player',
@@ -28,8 +29,10 @@ export class PlayerComponent implements OnInit {
   isInitialTrackSet = false;
 
   controlsState: IPlayerControlsState = {
-    isRepeatAllOn: false,
-    isRepeatOneOn: false,
+    isRepeatAllOn: this.myStorage.getPlayerInfo()?.isRepeatAllOn !== undefined
+      ? this.myStorage.getPlayerInfo()?.isRepeatAllOn! : false,
+    isRepeatOneOn: this.myStorage.getPlayerInfo()?.isRepeatOneOn !== undefined
+      ? this.myStorage.getPlayerInfo()?.isRepeatOneOn! : false,
     isFirstTrack: false,
     isLastTrack: false,
     isLiked: false,
@@ -41,6 +44,7 @@ export class PlayerComponent implements OnInit {
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
+    private myStorage: LocalStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -150,11 +154,19 @@ export class PlayerComponent implements OnInit {
     this.controlsState.isRepeatAllOn = !this.controlsState.isRepeatAllOn;
     this.controlsState.isRepeatOneOn = false;
     this.checkTrackPosition();
+    this.myStorage.setPlayerInfo(
+      this.controlsState.isRepeatAllOn,
+      this.controlsState.isRepeatOneOn,
+    );
   }
 
   toggleRepeatOne(): void {
     this.controlsState.isRepeatAllOn = false;
     this.controlsState.isRepeatOneOn = !this.controlsState.isRepeatOneOn;
+    this.myStorage.setPlayerInfo(
+      this.controlsState.isRepeatAllOn,
+      this.controlsState.isRepeatOneOn,
+    );
   }
 
   likeTrack(): void {

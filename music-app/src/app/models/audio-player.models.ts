@@ -21,3 +21,8 @@ export interface ITrackListInfo {
   trackList: Partial<ITrackResponse>[],
   currentTrackIndex: number
 }
+
+export interface IPLayerInfo {
+  isRepeatAllOn: boolean,
+  isRepeatOneOn: boolean,
+}
