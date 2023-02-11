@@ -1,25 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ITrackResponse } from '../../models/api-response.models';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class StateService {
-  trackList = new Subject<Partial<ITrackResponse>[]>();
+  // trackList = new Subject<Partial<ITrackResponse>[]>();
 
-  playingTrackIndex = new Subject<number>();
+  // playingTrackIndex = new Subject<number>();
 
-  trackList$ = this.trackList.asObservable();
+  // trackList$ = this.trackList.asObservable();
 
-  playingTrackIndex$ = this.playingTrackIndex.asObservable();
+  // playingTrackIndex$ = this.playingTrackIndex.asObservable();
 
-  setTrackList(tracks: Partial<ITrackResponse>[]) {
-    this.trackList.next(tracks);
+  trackList$ = new BehaviorSubject<Partial<ITrackResponse>[]>([]);
+
+  playingTrackIndex$ = new BehaviorSubject<number | null>(0);
+
+  constructor(private storage: LocalStorageService) {
+    const trackListInfo = this.storage.getTrackListInfo();
+    if (trackListInfo !== null) {
+      this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
+    }
+  }
+
+  setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
+    this.trackList$.next(tracks);
+    this.playingTrackIndex$.next(index);
+    this.storage.setTrackListInfo(tracks, index);
   }
 
   setPlayingTrackIndex(index: number) {
-    this.playingTrackIndex.next(index);
+    this.playingTrackIndex$.next(index);
+    this.storage.setTrackListInfo(this.trackList$.value, index);
   }
 }

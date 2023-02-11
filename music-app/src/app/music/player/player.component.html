@@ -37,10 +37,10 @@
             mode="indeterminate"
             class="player-spinner-container"
             color="accent"
-            *ngIf="!isTrackReady && getCurrentTrackIndex() !== null"
+            *ngIf="!isTrackReady && getCurrentTrackIndex() !== null && !isInitialTrackSet"
           ></mat-spinner >
           <mat-icon
-            *ngIf="isTrackReady || getCurrentTrackIndex() === null"
+            *ngIf="isTrackReady || getCurrentTrackIndex() === null || isInitialTrackSet"
           >{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
         </button>
         <button mat-fab color="basic" (click)="next()" [disabled]="controlsState.isLastTrack">

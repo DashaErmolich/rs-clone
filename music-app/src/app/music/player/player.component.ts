@@ -13,7 +13,7 @@ import { AudioService } from '../../core/services/audio.service';
 export class PlayerComponent implements OnInit {
   trackList!: Partial<ITrackResponse>[];
 
-  currentTrackIndex: number | null = null;
+  currentTrackIndex!: number | null;
 
   currentState!: IAudioPlayerState;
 
@@ -24,6 +24,8 @@ export class PlayerComponent implements OnInit {
   isMute!: boolean;
 
   isTrackReady!: boolean;
+
+  isInitialTrackSet = false;
 
   controlsState: IPlayerControlsState = {
     isRepeatAllOn: false,
@@ -45,7 +47,7 @@ export class PlayerComponent implements OnInit {
     this.myState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {
       this.trackList = data;
     });
-    this.myState.playingTrackIndex$.subscribe((data: number) => {
+    this.myState.playingTrackIndex$.subscribe((data: number | null) => {
       this.currentTrackIndex = data;
       this.checkTrackPosition();
     });
@@ -64,6 +66,10 @@ export class PlayerComponent implements OnInit {
     this.myAudio.audio.addEventListener('ended', () => {
       this.playNext();
     });
+
+    if (this.currentTrackIndex !== null) {
+      this.isInitialTrackSet = true;
+    }
   }
 
   playNext(): void {
@@ -77,13 +83,16 @@ export class PlayerComponent implements OnInit {
   }
 
   playPause(): void {
-    if (this.isTrackReady) {
+    if (this.isInitialTrackSet && !this.isTrackReady) {
+      this.myAudio.playTrack(this.trackList[this.currentTrackIndex!].preview!);
+    } else if (this.isTrackReady) {
       if (this.isPlay) {
         this.myAudio.pause();
       } else {
         this.myAudio.play();
       }
     }
+    this.isInitialTrackSet = false;
   }
 
   setVolume(event: Event): void {
@@ -201,8 +210,7 @@ export class PlayerComponent implements OnInit {
       const newCurrentTrackIndex = shuffledTracks
         .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
 
-      this.myState.setPlayingTrackIndex(newCurrentTrackIndex);
-      this.myState.setTrackList(shuffledTracks);
+      this.myState.setTrackListInfo(shuffledTracks, newCurrentTrackIndex);
       this.checkTrackPosition();
     }
   }

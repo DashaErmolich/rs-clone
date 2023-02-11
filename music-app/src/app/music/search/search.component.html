@@ -1,12 +1,1 @@
 <p>search works!</p>
-<!-- Temporary cards for player testing -->
-<!-- START -->
-<div class="flex-row tmp">
-  <mat-card *ngFor="let track of trackList, index as i" class="card">
-    <mat-card-content>{{track.title}}</mat-card-content>
-    <mat-card-content>{{track.artist?.name}}</mat-card-content>
-    <mat-card-content>{{track.album?.title}}</mat-card-content>
-    <img mat-card-image class="card-img" src={{track.album?.cover}} alt={{track.title}} (click)="playTrack(track.preview); setTrackIndex(i)">
-  </mat-card>
-</div>
-<!-- END -->

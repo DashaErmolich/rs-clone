@@ -1,6 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { Injectable } from '@angular/core';
 import { IUserTheme } from '../../models/theme.models';
+import { ITrackResponse } from '../../models/api-response.models';
+import { ITrackListInfo } from '../../models/audio-player.models';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +29,22 @@ export class LocalStorageService {
   getTheme(): IUserTheme {
     const userTheme = localStorage.getItem('theme');
     return userTheme === null ? null : JSON.parse(userTheme);
+  }
+
+  setTrackListInfo(
+    userTrackList: Partial<ITrackResponse>[],
+    userCurrentTrackIndex: number,
+  ): void {
+    const trackListInfo: ITrackListInfo = {
+      trackList: userTrackList,
+      currentTrackIndex: userCurrentTrackIndex,
+    };
+
+    localStorage.setItem('trackList', JSON.stringify(trackListInfo));
+  }
+
+  getTrackListInfo(): ITrackListInfo {
+    const trackListInfo = localStorage.getItem('trackList');
+    return trackListInfo === null ? null : JSON.parse(trackListInfo);
   }
 }
