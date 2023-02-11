@@ -1,1 +1,93 @@
-<p>search works!</p>
+<div *ngIf="!searchParam" class="search-page">
+  <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+  <h2 *ngIf="!loading">Genres</h2>
+  <div class="search-container">
+    <mat-card *ngFor="let genre of genres; let i=index" class="card" [routerLink]="['/music/genre', genre.id]"
+      [style.background]="randomColor(i)">
+      <mat-card-content>{{genre.name}}</mat-card-content>
+        <img class="card-img" src="{{genre.picture_medium ? genre.picture_medium : defaultImg}}" alt={{genre.name}}>
+    </mat-card>
+  </div>
+  <h2 *ngIf="!loading">Playlists</h2>
+  <div class="search-container">
+    <mat-card *ngFor="let playlist of playlistsFromChart; let i=index" class="card" [style.background]="randomColor(i)"
+      [routerLink]="['/music/play-list', playlist.id]">
+      <mat-card-content>{{playlist.title}}</mat-card-content>
+      <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
+        alt={{playlist.title}}>
+    </mat-card>
+  </div>
+</div>
+
+<div *ngIf="searchParam" class="search-page">
+  <div class="chips-container">
+    <mat-chip-listbox aria-label="Search selection">
+      <mat-chip-option (click)="renderTracks()" selected>Tracks</mat-chip-option>
+      <mat-chip-option (click)="renderArtists()">Artists</mat-chip-option>
+      <mat-chip-option (click)="renderAlbums()">Albums</mat-chip-option>
+      <mat-chip-option (click)="renderPlaylists()">Playlists</mat-chip-option>
+    </mat-chip-listbox> 
+  </div>
+  <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+
+  <div [ngSwitch]="searchType">
+
+    <div *ngSwitchCase="'tracks'">
+      <div *ngIf="!loading" class="tracks-container">
+
+        <mat-card *ngFor="let track of tracks; let i=index">
+          <mat-card-content class="track">
+            <p class="track-number">{{ i+1 }}
+              <mat-icon matSuffix class="track-play">play_arrow</mat-icon>
+            </p>
+            <div class="track-img-wrapper">
+              <img class="track-img" src="{{track.album?.cover_small ? track.album?.cover_small : defaultImg}}"
+                alt={{track.title}}>
+            </div>
+            <div class="track-description">
+              <p class="track-title">{{track.title}}</p>
+              <p class="track-artist">{{track.artist?.name}}</p>
+            </div>
+            <div class="track-album">{{track.album?.title}}</div>
+            <div>00:30</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'artists'">
+      <div class="result-container">
+        <mat-card *ngFor="let artist of artists" class="artist-card" [routerLink]="['/music/artist', artist.id]">
+          <div class="image-wrapper">
+            <img src="{{artist.picture_medium ? artist.picture_medium : defaultImg}}" alt={{artist.name}}>
+          </div>
+          <mat-card-content class="title-h1">{{artist.name}}</mat-card-content>
+          <mat-card-content class="title-h2">Artist</mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'albums'">
+      <div class="result-container">
+        <mat-card *ngFor="let album of albums" class="album-card" [routerLink]="['/music/album', album.id]">
+          <div class="image-wrapper"><img src="{{album.cover_medium ? album.cover_medium : defaultImg}}"
+              alt={{album.title}}></div>
+          <mat-card-content class="title-h1">{{album.title}}</mat-card-content>
+          <mat-card-content class="title-h2">{{album.artist?.name}}</mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'playlists'">
+      <div class="result-container">
+        <mat-card *ngFor="let playlist of playlists; let i=index" class="card" [style.background]="randomColor(i)"
+          [routerLink]="['/music/play-list', playlist.id]">
+          <mat-card-content>{{playlist.title}}</mat-card-content>
+          <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
+            alt={{playlist.title}}>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
+</div>

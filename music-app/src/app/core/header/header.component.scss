@@ -9,8 +9,15 @@ header {
   justify-content: space-between;
   align-items: center;
   height: $header-height;
+  z-index: 10;
 
   h1 {
     margin: 0;
   }
+
+  .search-btn {
+    cursor: pointer;
+  }
+
 }
+

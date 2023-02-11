@@ -13,7 +13,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { NotFoundComponent } from '../core/not-found/not-found.component';
 import { LibraryComponent } from './library/library.component';
 import { HomeComponent } from './home/home.component';
@@ -22,6 +24,8 @@ import { PlayerComponent } from './player/player.component';
 import { SearchComponent } from './search/search.component';
 import { MusicPageComponent } from './music-page/music-page.component';
 import { PlayListComponent } from './play-list/play-list.component';
+import { GenreComponent } from './genre/genre.component';
+import { ArtistComponent } from './artist/artist.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,8 @@ import { PlayListComponent } from './play-list/play-list.component';
     SearchComponent,
     MusicPageComponent,
     PlayListComponent,
+    GenreComponent,
+    ArtistComponent,
   ],
   imports: [
     CommonModule,
@@ -47,12 +53,15 @@ import { PlayListComponent } from './play-list/play-list.component';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
-    MatListModule,
     MatProgressSpinnerModule,
+    MatInputModule,
+    MatChipsModule,
+    MatGridListModule,
   ],
   exports: [
     MusicPageComponent,
     HomeComponent,
+    MatInputModule,
   ],
 })
 export class MusicModule { }
