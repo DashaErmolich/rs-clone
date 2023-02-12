@@ -12,6 +12,8 @@ export class StateService {
 
   playingTrackIndex$ = new BehaviorSubject<number | null>(0);
 
+  isEqualizerShown$ = new BehaviorSubject<boolean>(false);
+
   constructor(private storage: LocalStorageService) {
     const trackListInfo = this.storage.getTrackListInfo();
     if (trackListInfo !== null) {
@@ -28,5 +30,9 @@ export class StateService {
   setPlayingTrackIndex(index: number) {
     this.playingTrackIndex$.next(index);
     this.storage.setTrackListInfo(this.trackList$.value, index);
+  }
+
+  setEqualizerVisibility(isVisible: boolean): void {
+    this.isEqualizerShown$.next(isVisible);
   }
 }

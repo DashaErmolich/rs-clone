@@ -28,6 +28,8 @@ export class PlayerComponent implements OnInit {
 
   isInitialTrackSet = false;
 
+  isEqualizerShown!: boolean;
+
   controlsState: IPlayerControlsState = {
     isRepeatAllOn: this.myStorage.getPlayerInfo()?.isRepeatAllOn !== undefined
       ? this.myStorage.getPlayerInfo()?.isRepeatAllOn! : false,
@@ -69,6 +71,9 @@ export class PlayerComponent implements OnInit {
     });
     this.myAudio.audio.addEventListener('ended', () => {
       this.playNext();
+    });
+    this.myState.isEqualizerShown$.subscribe((data) => {
+      this.isEqualizerShown = data;
     });
 
     if (this.currentTrackIndex !== null) {
@@ -249,5 +254,9 @@ export class PlayerComponent implements OnInit {
 
   getCurrentTrackIndex(): number | null {
     return this.currentTrackIndex;
+  }
+
+  toggleEqualizerVisibility() {
+    this.myState.setEqualizerVisibility(!this.isEqualizerShown);
   }
 }

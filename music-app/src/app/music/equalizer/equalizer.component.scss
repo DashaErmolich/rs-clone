@@ -1,0 +1,16 @@
+@import '../../../sass/abstracts/_constants.scss';
+
+.equalizer-container {
+  position: fixed;
+  top: $header-height;
+  left: calc(100vw * 2 / 12);
+  right: 0;
+  height: calc(100vh - $header-height - $player-height - $footer-height);
+  transform: translateY(100vh);
+  transition: ease-in-out 0.5s;
+  z-index: $z-index-dynamic-window;
+}
+
+.show-equalizer {
+  transform: translateY(0);
+}

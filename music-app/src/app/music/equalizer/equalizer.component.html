@@ -1,0 +1,9 @@
+<div [class]="!isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'" class="container accent-section">
+  <p>equalizer works!</p>
+  <canvas></canvas>
+  <div #player>
+    <div #audio></div>
+    <canvas #canvas style="width: 100vw;"></canvas>
+  </div>
+  <div class="equalizer-controls"></div>
+</div>

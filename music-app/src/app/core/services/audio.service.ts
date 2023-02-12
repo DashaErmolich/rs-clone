@@ -18,6 +18,7 @@ export class AudioService {
     private storage: LocalStorageService,
   ) {
     this.audio.volume = this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume;
+    this.audio.crossOrigin = 'anonymous';
   }
 
   defaultState: IAudioPlayerState = {
@@ -46,6 +47,10 @@ export class AudioService {
 
   audio = new Audio();
 
+  audioContext!: AudioContext;
+
+  analyser!: AnalyserNode;
+
   playTrack(url: string): void {
     this.isTrackReady$.next(false);
     this.state$.next(this.defaultState);
@@ -70,6 +75,14 @@ export class AudioService {
         this.currentState.duration = this.state$.value.duration;
         this.currentState.volume = this.state$.value.volume;
       });
+      if (!this.audioContext) {
+        this.audioContext = new AudioContext();
+        this.analyser = this.audioContext.createAnalyser();
+        this.audioContext
+          .createMediaElementSource(this.audio)
+          .connect(this.analyser);
+        this.analyser.connect(this.audioContext.destination);
+      }
     });
 
     this.audio.addEventListener('timeupdate', () => {
