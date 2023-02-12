@@ -1,9 +1,16 @@
-<div [class]="!isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'" class="container accent-section">
-  <p>equalizer works!</p>
-  <canvas></canvas>
-  <div #player>
-    <div #audio></div>
-    <canvas #canvas style="width: 100vw;"></canvas>
-  </div>
+<div [class]="!isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'" class="container accent-section scrollable-container">
+  <div class="flex-column">
+    <p>Preamp</p>
+    <mat-slider min="-12" max="12" step="0.1" color="warn">
+      <input matSliderThumb value="0" (input)="onPreamp($event)">
+    </mat-slider>
+    <div *ngFor="let range of equalizerHzRanges, index as i">
+      <p>{{ range }}</p>
+      <mat-slider min="-50" max="50" step="0.1">
+        <input matSliderThumb value="0" (input)="changeGain(i, $event)" (click)="changeGain(i, $event)">
+      </mat-slider>
+    </div>
+   </div>
+  <canvas #frequencyVisualizer class="frequency-visualizer"></canvas>
   <div class="equalizer-controls"></div>
 </div>

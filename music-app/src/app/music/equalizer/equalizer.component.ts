@@ -1,22 +1,30 @@
-/* eslint-disable no-debugger */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-plusplus */
-/* eslint-disable @typescript-eslint/naming-convention */
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
+
 import { StateService } from 'src/app/core/services/state.service';
 import { AudioService } from '../../core/services/audio.service';
+import { IEqualizerPresetsData, IEqualizerPreset, IEqualizerPresetsInfo } from '../../models/equalizer.models';
+
+const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../assets/winamp-presets/winamp-presets.json');
 
 @Component({
   selector: 'app-equalizer',
   templateUrl: './equalizer.component.html',
   styleUrls: ['./equalizer.component.scss'],
 })
-export class EqualizerComponent implements OnInit {
+
+export class EqualizerComponent implements OnInit, OnDestroy {
   isShown!: boolean;
 
-  @ViewChild('canvas', { static: true }) myCanvas!: ElementRef;
+  canvasWidth = window.innerWidth;
 
-  @ViewChild('player', { static: true }) player!: ElementRef;
+  @ViewChild('frequencyVisualizer', { static: true }) myCanvas!: ElementRef;
 
   private canvas!: HTMLCanvasElement;
 
@@ -24,7 +32,22 @@ export class EqualizerComponent implements OnInit {
 
   private reqAnimFrameId = 0;
 
-  private isPlayed = false;
+  equalizerPresets: IEqualizerPreset[] = [];
+
+  equalizerHzRanges: string[] = [
+    'hz70',
+    'hz180',
+    'hz320',
+    'hz600',
+    'hz1000',
+    'hz3000',
+    'hz6000',
+    'hz12000',
+    'hz14000',
+    'hz16000',
+  ];
+
+  equalizerPresetsInfo!: IEqualizerPresetsInfo;
 
   constructor(
     private ngZone: NgZone,
@@ -37,34 +60,58 @@ export class EqualizerComponent implements OnInit {
     this.myState.isEqualizerShown$.subscribe((data) => {
       this.isShown = data;
     });
+    equalizerPresetsData.then((data: IEqualizerPresetsData) => {
+      this.equalizerPresets = data.presets;
+      this.equalizerPresetsInfo = {
+        preampZeroValue: data.preampZeroValue,
+        maxValueOfPlus12dB: data.maxValueOfPlus12dB,
+        minValueOfPlus12dB: data.minValueOfPlus12dB,
+      };
+    });
     this.canvas = this.myCanvas.nativeElement;
+    this.canvas.width = this.canvasWidth * (10 / 12);
     this.canvasContext = this.canvas.getContext('2d');
-    this.player.nativeElement.appendChild(this.myAudio.audio);
 
     this.ngZone.runOutsideAngular(() => {
       this.startEqualizerAnimation();
     });
 
     this.myAudio.audio.addEventListener('play', () => {
-      this.isPlayed = true;
-      this.startEqualizerAnimation();
+      if (this.isShown) {
+        this.startEqualizerAnimation();
+      }
     });
 
-    ['pause', 'ended'].forEach((element) => {
-      this.myAudio.audio.addEventListener(element, () => {
-        this.isPlayed = false;
+    this.myAudio.audio.addEventListener('timeupdate', () => {
+      if (this.isShown) {
+        this.startEqualizerAnimation();
+      } else {
+        this.stopEqualizerAnimation();
+      }
+    });
+
+    ['pause', 'ended'].forEach((event) => {
+      this.myAudio.audio.addEventListener(event, () => {
         this.stopEqualizerAnimation();
       });
     });
+
+    window.addEventListener('resize', () => {
+      this.canvasWidth = window.innerWidth;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.myState.isEqualizerShown$.unsubscribe();
   }
 
   startEqualizerAnimation() {
     if (this.myAudio.analyser) {
       this.myAudio.analyser.fftSize = 2048;
-      const fbc_array = new Uint8Array(this.myAudio.analyser.frequencyBinCount);
-      const bar_count = window.innerWidth / 2;
+      const bufferLength = this.myAudio.analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
 
-      this.myAudio.analyser.getByteFrequencyData(fbc_array);
+      this.myAudio.analyser.getByteFrequencyData(dataArray);
 
       this.canvasContext?.clearRect(
         0,
@@ -72,19 +119,24 @@ export class EqualizerComponent implements OnInit {
         this.canvas.width,
         this.canvas.height,
       );
-      if (this.canvasContext) this.canvasContext.fillStyle = '#ffffff';
+      if (this.canvasContext) {
+        this.canvasContext.fillStyle = '#ffffff';
+      }
 
-      for (let i = 0; i < bar_count; i++) {
-        const bar_pos = i * 3;
-        const bar_width = 2;
-        const bar_height = -(fbc_array[i] / 2);
+      let x = 0;
+      for (let i = 0; i < bufferLength; i += 1) {
+        const barPosition = x;
+        const barWidth = 2;
+        const barHeight = (dataArray[i] / 2);
 
         this.canvasContext?.fillRect(
-          bar_pos,
-          this.canvas.height,
-          bar_width,
-          bar_height,
+          barPosition,
+          this.canvas.height - barHeight / 2,
+          barWidth,
+          barHeight,
         );
+
+        x += barWidth + 1;
       }
 
       this.reqAnimFrameId = window.requestAnimationFrame(
@@ -94,8 +146,19 @@ export class EqualizerComponent implements OnInit {
   }
 
   stopEqualizerAnimation() {
-    setTimeout(() => {
-      window.cancelAnimationFrame(this.reqAnimFrameId);
-    }, 500);
+    window.cancelAnimationFrame(this.reqAnimFrameId);
+  }
+
+  changeGain(audioFilterIndex: number, event: Event) {
+    const gainSlider = event.currentTarget;
+    if (gainSlider instanceof HTMLInputElement && Number(gainSlider.value)) {
+      this.myAudio.setGainAudioFilter(audioFilterIndex, Number(gainSlider.value));
+    }
+  }
+
+  onPreamp(event: Event): void {
+    const preampSlider = event.currentTarget;
+    if (preampSlider instanceof HTMLInputElement && Number(preampSlider.value)) {
+    }
   }
 }

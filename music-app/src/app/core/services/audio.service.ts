@@ -51,6 +51,21 @@ export class AudioService {
 
   analyser!: AnalyserNode;
 
+  public frequencies = [
+    { frequency: 70, minVal: -12, maxVal: 12 },
+    { frequency: 180, minVal: -12, maxVal: 12 },
+    { frequency: 320, minVal: -12, maxVal: 12 },
+    { frequency: 600, minVal: -12, maxVal: 12 },
+    { frequency: 1000, minVal: -12, maxVal: 12 },
+    { frequency: 3000, minVal: -12, maxVal: 12 },
+    { frequency: 6000, minVal: -12, maxVal: 12 },
+    { frequency: 12000, minVal: -12, maxVal: 12 },
+    { frequency: 14000, minVal: -12, maxVal: 12 },
+    { frequency: 16000, minVal: -12, maxVal: 12 },
+  ];
+
+  private audioFilters: BiquadFilterNode[] = [];
+
   playTrack(url: string): void {
     this.isTrackReady$.next(false);
     this.state$.next(this.defaultState);
@@ -78,9 +93,26 @@ export class AudioService {
       if (!this.audioContext) {
         this.audioContext = new AudioContext();
         this.analyser = this.audioContext.createAnalyser();
-        this.audioContext
-          .createMediaElementSource(this.audio)
-          .connect(this.analyser);
+        const source = this.audioContext.createMediaElementSource(this.audio);
+        // source.connect(this.analyser);
+
+        this.frequencies.forEach((element, index) => {
+          const filter = this.audioContext?.createBiquadFilter();
+          if (filter) {
+            filter.type = 'peaking';
+            filter.frequency.value = element.frequency;
+            filter.gain.value = 0;
+            this.audioFilters.push(filter);
+            if (this.audioFilters[index - 1]) {
+              this.audioFilters[index - 1].connect(this.audioFilters[index]);
+            }
+          }
+        });
+        source.connect(this.audioFilters[0]);
+        this.audioFilters[this.audioFilters.length - 1].connect(
+          // this.audioContext.destination,
+          this.analyser,
+        );
         this.analyser.connect(this.audioContext.destination);
       }
     });
@@ -137,5 +169,9 @@ export class AudioService {
       return this.getFormattedTime(0);
     }
     return this.getFormattedTime(result);
+  }
+
+  setGainAudioFilter(audioFilterIndex: number, gainValue: number): void {
+    this.audioFilters[audioFilterIndex].gain.value = gainValue;
   }
 }
