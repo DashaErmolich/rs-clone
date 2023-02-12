@@ -1,11 +1,13 @@
-<div class="flex-column height-100">
-  <div class="flex-row flex-1">
-    <div class="flex-column-3 container content-wrapper">
+<div class="flex-column height-100 music-page-container">
+  <div class="flex-row flex-1 height-100">
+    <div class="flex-column-2 container content-wrapper">
       <app-aside></app-aside>
     </div>
-    <div class="flex-column-9 container content-wrapper accent-wrapper">
-      <router-outlet></router-outlet>
+    <div class="flex-column-10 container content-wrapper accent-wrapper">
+      <div class="scrollable-container">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
-  <app-player></app-player>
 </div>
+<app-player></app-player>
