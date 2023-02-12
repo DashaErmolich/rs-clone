@@ -6,22 +6,33 @@
   left: calc(100vw * 2 / 12);
   right: 0;
   height: calc(100vh - $header-height - $player-height - $footer-height);
-  // transform: translateY(100vh);
+  transform: translateY(100vh);
   transition: ease-in-out 0.5s;
   z-index: $z-index-dynamic-window;
 }
 
 .show-equalizer {
-  // transform: translateY(0);
+  transform: translateY(0);
 }
 
 .frequency-visualizer {
   margin-left: - $container-p-large;
-  // position: absolute;
-  // bottom: 0;
+  position: absolute;
+  bottom: 0;
 }
 
-.vertical-range {
-  rotate: 270deg;
-  margin-bottom: 100px;
+.equalizer-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.equalizer-control {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+
+  mat-slider {
+    width: 100%;
+  }
 }

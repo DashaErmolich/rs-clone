@@ -52,16 +52,36 @@ export class AudioService {
   analyser!: AnalyserNode;
 
   public frequencies = [
-    { frequency: 70, minVal: -12, maxVal: 12 },
-    { frequency: 180, minVal: -12, maxVal: 12 },
-    { frequency: 320, minVal: -12, maxVal: 12 },
-    { frequency: 600, minVal: -12, maxVal: 12 },
-    { frequency: 1000, minVal: -12, maxVal: 12 },
-    { frequency: 3000, minVal: -12, maxVal: 12 },
-    { frequency: 6000, minVal: -12, maxVal: 12 },
-    { frequency: 12000, minVal: -12, maxVal: 12 },
-    { frequency: 14000, minVal: -12, maxVal: 12 },
-    { frequency: 16000, minVal: -12, maxVal: 12 },
+    {
+      frequency: 70, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 180, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 320, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 600, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 1000, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 3000, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 6000, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 12000, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 14000, minVal: -12, maxVal: 12, initialVal: 0,
+    },
+    {
+      frequency: 16000, minVal: -12, maxVal: 12, initialVal: 0,
+    },
   ];
 
   private audioFilters: BiquadFilterNode[] = [];
@@ -110,7 +130,6 @@ export class AudioService {
         });
         source.connect(this.audioFilters[0]);
         this.audioFilters[this.audioFilters.length - 1].connect(
-          // this.audioContext.destination,
           this.analyser,
         );
         this.analyser.connect(this.audioContext.destination);

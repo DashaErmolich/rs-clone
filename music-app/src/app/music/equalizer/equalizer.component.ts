@@ -34,18 +34,7 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
   equalizerPresets: IEqualizerPreset[] = [];
 
-  equalizerHzRanges: string[] = [
-    'hz70',
-    'hz180',
-    'hz320',
-    'hz600',
-    'hz1000',
-    'hz3000',
-    'hz6000',
-    'hz12000',
-    'hz14000',
-    'hz16000',
-  ];
+  frequencies = this.myAudio.frequencies;
 
   equalizerPresetsInfo!: IEqualizerPresetsInfo;
 
@@ -153,12 +142,6 @@ export class EqualizerComponent implements OnInit, OnDestroy {
     const gainSlider = event.currentTarget;
     if (gainSlider instanceof HTMLInputElement && Number(gainSlider.value)) {
       this.myAudio.setGainAudioFilter(audioFilterIndex, Number(gainSlider.value));
-    }
-  }
-
-  onPreamp(event: Event): void {
-    const preampSlider = event.currentTarget;
-    if (preampSlider instanceof HTMLInputElement && Number(preampSlider.value)) {
     }
   }
 }
