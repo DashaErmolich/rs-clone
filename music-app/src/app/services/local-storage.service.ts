@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { Injectable } from '@angular/core';
-import { IUserTheme } from '../../models/theme.models';
-import { ITrackResponse } from '../../models/api-response.models';
-import { ITrackListInfo, IPLayerInfo } from '../../models/audio-player.models';
+import { ITrackResponse } from '../models/api-response.models';
+import { IPLayerInfo, ITrackListInfo } from '../models/audio-player.models';
+import { IUserTheme } from '../models/theme.models';
 
 @Injectable({
   providedIn: 'root',

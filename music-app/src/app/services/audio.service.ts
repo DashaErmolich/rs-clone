@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
-import { IAudioPlayerState } from '../../models/audio-player.models';
+import { IAudioPlayerState } from '../models/audio-player.models';
 import { LocalStorageService } from './local-storage.service';
 
 const DEFAULT_PLAYER_VOLUME = 1;
