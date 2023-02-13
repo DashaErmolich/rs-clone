@@ -202,7 +202,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.state.setTrackListInfo(this.tracks, this.currentIndex);
     this.state.setPlayingTrackIndex(index);
     this.getPlayingTrackIndex();
-    this.myAudio.playTrack(String(this.tracks[index].preview));
+    this.playPause(index);
+    // this.myAudio.playTrack(String(this.tracks[index].preview));
   }
 
   playPause(index: number) {

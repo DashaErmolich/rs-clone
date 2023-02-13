@@ -30,13 +30,22 @@
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
 
-  <div [ngSwitch]="searchType">
+  <div [ngSwitch]="searchType" class="tracks">
 
-    <div *ngSwitchCase="'tracks'">
+    <div *ngSwitchCase="'tracks'" >
       <div *ngIf="!loading" class="tracks-container">
 
         <mat-card *ngFor="let track of tracks; let i=index">
           <mat-card-content [attr.class]="this.currentIndex === i ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
+            <!-- <div class="track-number-wrapper">
+              <p class="track-number" *ngIf="this.currentIndex !== i">{{ i+1 }}</p>
+              <button mat-icon-button class="track-play" *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+              <button mat-icon-button class="track-pause" *ngIf="this.currentIndex === i" (click)="playPause(i)">
+                <mat-icon>{{isPlay? 'pause_arrow' : 'play_arrow'}}</mat-icon>
+              </button>
+            </div> -->
             <div class="track-number-wrapper">
               <p class="track-number" *ngIf="this.currentIndex !== i">{{ i+1 }}</p>
               <mat-icon matSuffix class="track-play" *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">play_arrow</mat-icon>
@@ -90,6 +99,7 @@
         </mat-card>
       </div>
     </div>
+    <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
   </div>
-  <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
+  
 </div>
