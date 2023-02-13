@@ -1,5 +1,4 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
 import {
   Component,
   ElementRef,
@@ -7,11 +6,13 @@ import {
   OnInit,
   ViewChild,
   OnDestroy,
+  AfterViewInit,
 } from '@angular/core';
 
 import { StateService } from 'src/app/core/services/state.service';
-import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 import { AudioService } from '../../core/services/audio.service';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 import {
   IEqualizerPresetsData,
   IEqualizerPreset,
@@ -27,12 +28,14 @@ const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../as
   styleUrls: ['./equalizer.component.scss'],
 })
 
-export class EqualizerComponent implements OnInit, OnDestroy {
+export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
   isShown!: boolean;
 
   canvasWidth = window.innerWidth;
 
   @ViewChild('frequencyVisualizer', { static: true }) myCanvas!: ElementRef;
+
+  @ViewChild('presetSelect') presetSelect!: MatSelect;
 
   private canvas!: HTMLCanvasElement;
 
@@ -46,10 +49,13 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
   equalizerPresetsInfo!: IEqualizerPresetsInfo;
 
+  selectedPresetIndex!: number | null;
+
   constructor(
     private ngZone: NgZone,
     private myState: StateService,
     private myAudio: AudioService,
+    private myStorage: LocalStorageService,
   ) {
   }
 
@@ -64,6 +70,10 @@ export class EqualizerComponent implements OnInit, OnDestroy {
         maxValueOfPlus12dB: data.maxValueOfPlus12dB,
         minValueOfPlus12dB: data.minValueOfPlus12dB,
       };
+      this.selectedPresetIndex = this.myStorage.getEqualizerState() === null
+        ? null
+        : this.equalizerPresets
+          .findIndex((preset) => preset.name === this.myStorage.getEqualizerState()?.name);
     });
     this.canvas = this.myCanvas.nativeElement;
     this.canvas.width = this.canvasWidth * (10 / 12);
@@ -80,24 +90,24 @@ export class EqualizerComponent implements OnInit, OnDestroy {
       if (this.isShown) {
         this.startEqualizerAnimation();
       }
+      this.startEqualizerAnimation();
     });
 
-    this.myAudio.audio.addEventListener('timeupdate', () => {
-      if (this.isShown) {
-        this.startEqualizerAnimation();
-      } else {
-        this.stopEqualizerAnimation();
-      }
+    // this.myAudio.audio.addEventListener('timeupdate', () => {
+    //   if (this.isShown) {
+    //     console.log(1);
+    //     this.startEqualizerAnimation();
+    //   } else {
+    //     this.stopEqualizerAnimation();
+    //   }
+    // });
+
+    this.myAudio.audio.addEventListener('pause', () => {
+      this.stopEqualizerAnimation();
     });
 
-    ['pause', 'ended'].forEach((event) => {
-      this.myAudio.audio.addEventListener(event, () => {
-        this.stopEqualizerAnimation();
-      });
-    });
-
-    window.addEventListener('resize', () => {
-      this.canvasWidth = window.innerWidth;
+    this.myAudio.audio.addEventListener('ended', () => {
+      this.stopEqualizerAnimation();
     });
   }
 
@@ -105,9 +115,16 @@ export class EqualizerComponent implements OnInit, OnDestroy {
     this.myState.isEqualizerShown$.unsubscribe();
   }
 
+  ngAfterViewInit(): void {
+    this.presetSelect.valueChange.subscribe((data) => {
+      this.setEqualizerPreset(Number(data));
+      this.selectedPresetIndex = data;
+    });
+  }
+
   startEqualizerAnimation() {
     if (this.myAudio.analyser) {
-      // this.myAudio.analyser.fftSize = 2048;
+      this.myAudio.analyser.fftSize = 2048;
       const bufferLength = this.myAudio.analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
@@ -121,10 +138,11 @@ export class EqualizerComponent implements OnInit, OnDestroy {
       );
 
       let x = 0;
-      for (let i = 0; i < 100; i += 1) {
+      const barCount = 100;
+      for (let i = 0; i < barCount; i += 1) {
         const barPosition = x;
-        const barWidth = 5;
-        const barHeight = (dataArray[i] / 2);
+        const barWidth = this.canvas.width / barCount - 1;
+        const barHeight = (dataArray[i] / 2) * 2;
 
         this.canvasContext?.fillRect(
           barPosition,
@@ -148,17 +166,32 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
   changeGain(audioFilterIndex: number, event: Event) {
     const gainSlider = event.currentTarget;
-    if (gainSlider instanceof HTMLInputElement && Number(gainSlider.value)) {
+    if (gainSlider instanceof HTMLInputElement && gainSlider.value) {
       this.myAudio.setGainAudioFilter(audioFilterIndex, Number(gainSlider.value));
+      this.selectedPresetIndex = null;
+      const data: IEqualizerPreset = {
+        name: 'manual',
+        hz70: this.frequencies[0].initialVal,
+        hz180: this.frequencies[1].initialVal,
+        hz320: this.frequencies[2].initialVal,
+        hz600: this.frequencies[3].initialVal,
+        hz1000: this.frequencies[4].initialVal,
+        hz3000: this.frequencies[5].initialVal,
+        hz6000: this.frequencies[6].initialVal,
+        hz12000: this.frequencies[7].initialVal,
+        hz14000: this.frequencies[8].initialVal,
+        hz16000: this.frequencies[9].initialVal,
+      };
+      this.myStorage.setEqualizerState(data);
     }
   }
 
-  setEqualizerPreset(presetIndex: number, event: MatOptionSelectionChange): void {
-    if (event.source.selected) {
+  setEqualizerPreset(presetIndex: number): void {
+    if (this.isShown) {
       const preset: IEqualizerPreset = this.equalizerPresets[presetIndex];
       const values = Object.values(preset).filter((value) => typeof value === 'number');
       values.forEach((value, i) => {
-        this.frequencies[i].initialVal = this.convertRange(
+        const newVal = this.convertRange(
           value,
           {
             min: this.equalizerPresetsInfo.minValueOfPlus12dB,
@@ -169,11 +202,40 @@ export class EqualizerComponent implements OnInit, OnDestroy {
             max: this.frequencies[0].maxVal,
           },
         );
+        this.frequencies[i].initialVal = newVal;
+        this.myAudio.setGainAudioFilter(i, newVal);
       });
     }
+    const data: IEqualizerPreset = {
+      name: this.equalizerPresets[presetIndex].name,
+      hz70: this.frequencies[0].initialVal,
+      hz180: this.frequencies[1].initialVal,
+      hz320: this.frequencies[2].initialVal,
+      hz600: this.frequencies[3].initialVal,
+      hz1000: this.frequencies[4].initialVal,
+      hz3000: this.frequencies[5].initialVal,
+      hz6000: this.frequencies[6].initialVal,
+      hz12000: this.frequencies[7].initialVal,
+      hz14000: this.frequencies[8].initialVal,
+      hz16000: this.frequencies[9].initialVal,
+    };
+    this.myStorage.setEqualizerState(data);
   }
 
-  convertRange(value: number, oldRange: { min: number, max: number }, newRange: { min: number, max: number }) {
-    return Number((((value - oldRange.min) * (newRange.max - newRange.min)) / (oldRange.max - oldRange.min) + newRange.min).toFixed(1));
+  // eslint-disable-next-line class-methods-use-this
+  convertRange(
+    value: number,
+    oldRange: { min: number, max: number },
+    newRange: { min: number, max: number },
+  ) {
+    return Number(
+      (
+        (
+          (value - oldRange.min)
+          * (newRange.max - newRange.min))
+          / (oldRange.max - oldRange.min)
+          + newRange.min
+      ).toFixed(1),
+    );
   }
 }

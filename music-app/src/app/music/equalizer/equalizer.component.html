@@ -6,8 +6,10 @@
 >
 <mat-form-field appearance="fill">
   <mat-label>Equalizer preset</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let preset of equalizerPresets, index as i" [value]="preset.name" (onSelectionChange)="setEqualizerPreset(i, $event)">
+  <mat-select #presetSelect [(ngModel)]="selectedPresetIndex">
+    <mat-option
+    *ngFor="let preset of equalizerPresets, index as i"
+    [value]="i">
       {{ preset.name }}
     </mat-option>
   </mat-select>

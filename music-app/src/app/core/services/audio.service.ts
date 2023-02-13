@@ -16,13 +16,6 @@ const DEFAULT_PLAYER_VOLUME = 1;
 export class AudioService {
   storageVolume: number | null = this.storage.getPlayerVolume();
 
-  constructor(
-    private storage: LocalStorageService,
-  ) {
-    this.audio.volume = this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume;
-    this.audio.crossOrigin = 'anonymous';
-  }
-
   defaultState: IAudioPlayerState = {
     progress: 0,
     time: this.getFormattedTime(0),
@@ -53,42 +46,79 @@ export class AudioService {
 
   analyser!: AnalyserNode;
 
-  private amplifierValue: number = 0;
+  preset = this.storage.getEqualizerState();
 
   public frequencies: IEqualizerFrequencies[] = [
     {
-      frequency: 70, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 70,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz70,
     },
     {
-      frequency: 180, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 180,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz180,
     },
     {
-      frequency: 320, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 320,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz320,
     },
     {
-      frequency: 600, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 600,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz600,
     },
     {
-      frequency: 1000, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 1000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz1000,
     },
     {
-      frequency: 3000, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 3000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz3000,
     },
     {
-      frequency: 6000, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 6000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz6000,
     },
     {
-      frequency: 12000, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 12000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz12000,
     },
     {
-      frequency: 14000, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 14000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz14000,
     },
     {
-      frequency: 16000, minVal: -12, maxVal: 12, initialVal: 0,
+      frequency: 16000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz16000,
     },
   ];
 
   private audioFilters: BiquadFilterNode[] = [];
+
+  constructor(
+    private storage: LocalStorageService,
+  ) {
+    this.audio.volume = this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume;
+    this.audio.crossOrigin = 'anonymous';
+  }
 
   playTrack(url: string): void {
     this.isTrackReady$.next(false);
@@ -137,6 +167,9 @@ export class AudioService {
           this.analyser,
         );
         this.analyser.connect(this.audioContext.destination);
+        this.frequencies.forEach((data, i) => {
+          this.setGainAudioFilter(i, data.initialVal);
+        });
       }
     });
 
