@@ -101,7 +101,7 @@ export class PlayerComponent implements OnInit {
 
   setVolume(event: Event): void {
     const volumeBar = event.currentTarget;
-    if (volumeBar instanceof HTMLInputElement && Number(volumeBar.value)) {
+    if (volumeBar instanceof HTMLInputElement && volumeBar.value) {
       this.myAudio.setVolume(Number(volumeBar.value));
     }
   }
@@ -176,7 +176,7 @@ export class PlayerComponent implements OnInit {
   getTrackAlbumImageSrc(): string {
     const imageSrcPlaceholder = '';
     let imageSrc = imageSrcPlaceholder;
-    if (this.currentTrackIndex !== null) {
+    if (this.currentTrackIndex !== null && this.trackList.length) {
       imageSrc = this.trackList[this.currentTrackIndex].album?.cover!;
     }
     return imageSrc;
@@ -185,7 +185,7 @@ export class PlayerComponent implements OnInit {
   getTrackTitle(): string {
     const trackTitlePlaceholder = '';
     let trackTitle = trackTitlePlaceholder;
-    if (this.currentTrackIndex !== null) {
+    if (this.currentTrackIndex !== null && this.trackList.length) {
       trackTitle = this.trackList[this.currentTrackIndex].title!;
     }
     return trackTitle;
@@ -194,7 +194,7 @@ export class PlayerComponent implements OnInit {
   getTrackAlbumTitle(): string {
     const trackAlbumTitlePlaceholder = '';
     let trackAlbumTitle = trackAlbumTitlePlaceholder;
-    if (this.currentTrackIndex !== null) {
+    if (this.currentTrackIndex !== null && this.trackList.length) {
       trackAlbumTitle = this.trackList[this.currentTrackIndex].album?.title!;
     }
     return trackAlbumTitle;
