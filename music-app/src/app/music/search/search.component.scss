@@ -114,8 +114,7 @@
     }
 
     .track-number {
-      color: transparent;
-
+      display: none;
     }
 
     .track-play {
@@ -128,7 +127,6 @@
       cursor: pointer;
     }
   }
-
 }
 
 .track-img-wrapper {
@@ -143,11 +141,9 @@
   gap: 5px;
 }
 
-.track-number {
+.track-number-wrapper {
   position: relative;
-  text-align: center;
   width: 2rem;
-  margin: 0;
 }
 
 .track-img {
@@ -170,4 +166,19 @@
 
 .track-album {
   flex: 1 1 0;
+}
+
+.track-number{
+text-align: center;
+margin: 0;
+}
+
+.track-pause {
+  display: block;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
 }

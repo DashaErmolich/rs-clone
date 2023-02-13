@@ -11,6 +11,10 @@ import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
 import { Subscription } from 'rxjs';
+import { StateService } from 'src/app/services/state.service';
+import { AudioService } from 'src/app/services/audio.service';
+import { ThemeService } from 'src/app/services/theme.service';
+// import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-search',
@@ -66,10 +70,21 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlists$!: Subscription;
 
+  playingTrackIndex!: number;
+
+  isPlay!: boolean;
+
+  currentIndex!: number;
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private route: ActivatedRoute,
+    private state: StateService,
+    private myAudio: AudioService,
+    private themeService: ThemeService,
   ) {}
+
+  theme: string = this.themeService.activeTheme;
 
   ngOnInit(): void {
     this.queryParams$ = this.route.queryParams.subscribe((param) => {
@@ -181,5 +196,43 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.searchType === SearchType.playlists) {
       this.renderPlaylists();
     }
+  }
+
+  setTracksInfo(index: number) {
+    this.state.setTrackListInfo(this.tracks, this.currentIndex);
+    this.state.setPlayingTrackIndex(index);
+    this.getPlayingTrackIndex();
+    this.myAudio.playTrack(String(this.tracks[index].preview));
+  }
+
+  playPause(index: number) {
+    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+    if (this.isPlay) {
+      this.myAudio.pause();
+    } else {
+      this.myAudio.playTrack(String(this.tracks[index].preview));
+    }
+  }
+
+  // getTracksInfo() {
+  //   this.state.trackList$.subscribe((tracks) => { this.tracks = tracks; });
+  // }
+
+  // getPlayingTrackIndex() {
+  //   this.state.playingTrackIndex$.subscribe((index) => {
+  // this.playingTrackIndex = Number(index); });
+  // }
+
+  getPlayingTrackIndex() {
+    const notShuffleTracks = this.tracks;
+    let shuffleTracks: Partial<ITrackResponse>[] = [];
+    this.state.trackList$.subscribe((tracks) => {
+      shuffleTracks = tracks;
+      this.state.playingTrackIndex$.subscribe((index) => {
+        this.playingTrackIndex = Number(index);
+        this.currentIndex = notShuffleTracks
+          .findIndex((track) => track.id === shuffleTracks[this.playingTrackIndex].id);
+      });
+    });
   }
 }

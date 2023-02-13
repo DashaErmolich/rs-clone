@@ -36,10 +36,12 @@
       <div *ngIf="!loading" class="tracks-container">
 
         <mat-card *ngFor="let track of tracks; let i=index">
-          <mat-card-content class="track">
-            <p class="track-number">{{ i+1 }}
-              <mat-icon matSuffix class="track-play">play_arrow</mat-icon>
-            </p>
+          <mat-card-content [attr.class]="this.currentIndex === i ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
+            <div class="track-number-wrapper">
+              <p class="track-number" *ngIf="this.currentIndex !== i">{{ i+1 }}</p>
+              <mat-icon matSuffix class="track-play" *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">play_arrow</mat-icon>
+              <mat-icon matSuffix class="track-pause" *ngIf="this.currentIndex === i" (click)="playPause(i)">{{isPlay? 'pause_arrow' : 'play_arrow'}}</mat-icon>
+            </div>
             <div class="track-img-wrapper">
               <img class="track-img" src="{{track.album?.cover_small ? track.album?.cover_small : defaultImg}}"
                 alt={{track.title}}>

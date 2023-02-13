@@ -3,10 +3,10 @@
 @import './sass/abstracts/constants';
 @import './sass/abstracts/mixins';
 @import './sass/abstracts/material-theme';
+@import './sass/abstracts/dynamic-theme';
 
 html,
 body {
-  // font-size: 10px;
   height: 100%;
 }
 
@@ -149,7 +149,6 @@ label {
   footer {
     border-top: 1px solid #fff;
   }
-
 }
 
 .mb-small {
