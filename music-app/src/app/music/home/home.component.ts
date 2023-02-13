@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // temporary data for player testing
     // you can remove it after first load (it will be saved in the local storage)
-    this.deezerApi.getSearch('rummstein', 0, 5).subscribe((response) => {
+    this.deezerApi.getSearch('rammstein', 0, 5).subscribe((response) => {
       this.trackList = response.data;
       this.myState.trackList$.next(response.data);
     });

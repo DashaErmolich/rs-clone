@@ -1,21 +1,38 @@
-<div [class]="!isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'" class="container accent-section scrollable-container">
+<div
+  [class]="
+    !isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'
+  "
+  class="container accent-section scrollable-container"
+>
+<mat-form-field appearance="fill">
+  <mat-label>Equalizer preset</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let preset of equalizerPresets, index as i" [value]="preset.name" (onSelectionChange)="setEqualizerPreset(i, $event)">
+      {{ preset.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
   <div class="equalizer-controls">
-    <div class="equalizer-control" *ngFor="let range of frequencies, index as i">
-      <span>{{ range.frequency < 1000 ? range.frequency + ' Hz' : range.frequency / 1000 + ' kHz' }}</span>
-      <mat-slider
-      [min]="range.minVal"
-      [max]="range.maxVal"
-      step="0.1">
+    <div
+      class="equalizer-control"
+      *ngFor="let range of frequencies; index as i"
+    >
+      <span>{{
+        range.frequency < 1000
+          ? range.frequency + " Hz"
+          : range.frequency / 1000 + " kHz"
+      }}</span>
+      <mat-slider [min]="range.minVal" [max]="range.maxVal" step="0.1">
         <input
-        matSliderThumb
-        [value]="range.initialVal"
-        (input)="changeGain(i, $event)"
-        (click)="changeGain(i, $event)"
-        [(value)]="range.initialVal">
+          matSliderThumb
+          [value]="range.initialVal"
+          (input)="changeGain(i, $event)"
+          (click)="changeGain(i, $event)"
+          [(value)]="range.initialVal"
+        />
       </mat-slider>
-      <span>{{ range.initialVal + ' dB' }}</span>
+      <span>{{ range.initialVal + " dB" }}</span>
     </div>
   </div>
   <canvas #frequencyVisualizer class="frequency-visualizer"></canvas>
 </div>
-

@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable max-len */
 import {
   Component,
   ElementRef,
@@ -8,8 +10,14 @@ import {
 } from '@angular/core';
 
 import { StateService } from 'src/app/core/services/state.service';
+import { MatOptionSelectionChange } from '@angular/material/core';
 import { AudioService } from '../../core/services/audio.service';
-import { IEqualizerPresetsData, IEqualizerPreset, IEqualizerPresetsInfo } from '../../models/equalizer.models';
+import {
+  IEqualizerPresetsData,
+  IEqualizerPreset,
+  IEqualizerPresetsInfo,
+  IEqualizerFrequencies,
+} from '../../models/equalizer.models';
 
 const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../assets/winamp-presets/winamp-presets.json');
 
@@ -34,7 +42,7 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
   equalizerPresets: IEqualizerPreset[] = [];
 
-  frequencies = this.myAudio.frequencies;
+  frequencies: IEqualizerFrequencies[] = this.myAudio.frequencies;
 
   equalizerPresetsInfo!: IEqualizerPresetsInfo;
 
@@ -60,6 +68,9 @@ export class EqualizerComponent implements OnInit, OnDestroy {
     this.canvas = this.myCanvas.nativeElement;
     this.canvas.width = this.canvasWidth * (10 / 12);
     this.canvasContext = this.canvas.getContext('2d');
+    if (this.canvasContext) {
+      this.canvasContext.fillStyle = '#ffffff';
+    }
 
     this.ngZone.runOutsideAngular(() => {
       this.startEqualizerAnimation();
@@ -96,7 +107,7 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
   startEqualizerAnimation() {
     if (this.myAudio.analyser) {
-      this.myAudio.analyser.fftSize = 2048;
+      // this.myAudio.analyser.fftSize = 2048;
       const bufferLength = this.myAudio.analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
@@ -108,14 +119,11 @@ export class EqualizerComponent implements OnInit, OnDestroy {
         this.canvas.width,
         this.canvas.height,
       );
-      if (this.canvasContext) {
-        this.canvasContext.fillStyle = '#ffffff';
-      }
 
       let x = 0;
-      for (let i = 0; i < bufferLength; i += 1) {
+      for (let i = 0; i < 100; i += 1) {
         const barPosition = x;
-        const barWidth = 2;
+        const barWidth = 5;
         const barHeight = (dataArray[i] / 2);
 
         this.canvasContext?.fillRect(
@@ -143,5 +151,29 @@ export class EqualizerComponent implements OnInit, OnDestroy {
     if (gainSlider instanceof HTMLInputElement && Number(gainSlider.value)) {
       this.myAudio.setGainAudioFilter(audioFilterIndex, Number(gainSlider.value));
     }
+  }
+
+  setEqualizerPreset(presetIndex: number, event: MatOptionSelectionChange): void {
+    if (event.source.selected) {
+      const preset: IEqualizerPreset = this.equalizerPresets[presetIndex];
+      const values = Object.values(preset).filter((value) => typeof value === 'number');
+      values.forEach((value, i) => {
+        this.frequencies[i].initialVal = this.convertRange(
+          value,
+          {
+            min: this.equalizerPresetsInfo.minValueOfPlus12dB,
+            max: this.equalizerPresetsInfo.maxValueOfPlus12dB,
+          },
+          {
+            min: this.frequencies[0].minVal,
+            max: this.frequencies[0].maxVal,
+          },
+        );
+      });
+    }
+  }
+
+  convertRange(value: number, oldRange: { min: number, max: number }, newRange: { min: number, max: number }) {
+    return Number((((value - oldRange.min) * (newRange.max - newRange.min)) / (oldRange.max - oldRange.min) + newRange.min).toFixed(1));
   }
 }

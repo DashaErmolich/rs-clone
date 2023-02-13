@@ -23,6 +23,12 @@ export interface IEqualizerPreset {
   hz6000: number,
   hz12000: number,
   hz14000: number,
-  hz16000: number,
-  preamp: number
+  hz16000: number
+}
+
+export interface IEqualizerFrequencies {
+  frequency: number,
+  minVal: number,
+  maxVal: number,
+  initialVal: number,
 }

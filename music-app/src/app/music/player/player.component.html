@@ -73,7 +73,7 @@
   </div>
   <div class="player__items-group flex-column-3">
     <div class="flex-row audio-controls-container">
-      <button mat-mini-fab [color]="isEqualizerShown ? 'primary' : 'basic'" (click)="toggleEqualizerVisibility()">
+      <button mat-mini-fab [color]="isEqualizerShown ? 'primary' : 'basic'" (click)="toggleEqualizerVisibility()" [disabled]="!isTrackReady">
         <mat-icon>equalizer</mat-icon>
       </button>
       <div class="volume-container">

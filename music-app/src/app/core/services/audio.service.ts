@@ -1,9 +1,11 @@
+/* eslint-disable operator-assignment */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
 import { IAudioPlayerState } from '../../models/audio-player.models';
 import { LocalStorageService } from './local-storage.service';
+import { IEqualizerFrequencies } from '../../models/equalizer.models';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 
@@ -51,7 +53,9 @@ export class AudioService {
 
   analyser!: AnalyserNode;
 
-  public frequencies = [
+  private amplifierValue: number = 0;
+
+  public frequencies: IEqualizerFrequencies[] = [
     {
       frequency: 70, minVal: -12, maxVal: 12, initialVal: 0,
     },
