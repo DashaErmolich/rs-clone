@@ -101,7 +101,7 @@ export class PlayerComponent implements OnInit {
 
   setVolume(event: Event): void {
     const volumeBar = event.currentTarget;
-    if (volumeBar instanceof HTMLInputElement && Number(volumeBar.value)) {
+    if (volumeBar instanceof HTMLInputElement && volumeBar.value) {
       this.myAudio.setVolume(Number(volumeBar.value));
     }
   }
