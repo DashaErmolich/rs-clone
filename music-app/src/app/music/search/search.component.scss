@@ -159,6 +159,7 @@
   flex-direction: column;
   justify-content: space-around;
   gap: 5px;
+  overflow: hidden;
 }
 
 .track-number-wrapper {
@@ -168,7 +169,7 @@
 
 .track-img {
   display: block;
-  object-fit: cover;
+  width: 100%;
   transition: 0.4s;
 }
 

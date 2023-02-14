@@ -69,11 +69,17 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlists$!: Subscription;
 
+  playingTrackIndex$!: Subscription;
+
+  isPlay$!: Subscription;
+
   playingTrackIndex!: number;
 
   isPlay!: boolean;
 
   currentIndex!: number;
+
+  currentIndex$!: Subscription;
 
   constructor(
     private deezerRestApiService: DeezerRestApiService,
@@ -112,6 +118,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.artists$) this.artists$.unsubscribe();
     if (this.albums$) this.albums$.unsubscribe();
     if (this.playlists$) this.playlists$.unsubscribe();
+    if (this.isPlay$) this.isPlay$.unsubscribe();
+    if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
+    if (this.currentIndex$) this.currentIndex$.unsubscribe();
   }
 
   renderTracks() {
@@ -206,7 +215,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   playPause() {
-    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+    this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     if (this.isPlay) {
       this.myAudio.pause();
     } else {
@@ -217,9 +226,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   getPlayingTrackIndex() {
     const notShuffleTracks = this.tracks;
     let shuffleTracks: Partial<ITrackResponse>[] = [];
-    this.state.trackList$.subscribe((tracks) => {
+    this.currentIndex$ = this.state.trackList$.subscribe((tracks) => {
       shuffleTracks = tracks;
-      this.state.playingTrackIndex$.subscribe((index) => {
+      this.playingTrackIndex$ = this.state.playingTrackIndex$.subscribe((index) => {
         this.playingTrackIndex = Number(index);
         this.currentIndex = notShuffleTracks
           .findIndex((track) => track.id === shuffleTracks[this.playingTrackIndex].id);
