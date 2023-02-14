@@ -111,7 +111,7 @@ export class AudioService {
     },
   ];
 
-  private audioFilters: BiquadFilterNode[] = [];
+  audioFilters: BiquadFilterNode[] = [];
 
   constructor(
     private storage: LocalStorageService,

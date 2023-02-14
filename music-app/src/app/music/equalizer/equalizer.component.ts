@@ -110,12 +110,10 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
       if (this.isShown) {
         this.startEqualizerAnimation();
       }
-      this.startEqualizerAnimation();
     });
 
     this.myAudio.audio.addEventListener('timeupdate', () => {
       if (this.isShown) {
-        console.log(1);
         this.startEqualizerAnimation();
       } else {
         this.stopEqualizerAnimation();
@@ -179,25 +177,23 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
     window.cancelAnimationFrame(this.reqAnimFrameId);
   }
 
+  resetEqualizerPreset() {
+    this.frequencies.forEach((frequency, i) => {
+      frequency.initialVal = 0;
+      this.myAudio.setGainAudioFilter(i, frequency.initialVal);
+    });
+    this.selectedPresetIndex = null;
+    const preset: IEqualizerPreset = this.configEqualizerPreset();
+    this.myStorage.setEqualizerState(preset);
+  }
+
   changeGain(audioFilterIndex: number, event: Event) {
     const gainSlider = event.currentTarget;
     if (gainSlider instanceof HTMLInputElement && gainSlider.value) {
       this.myAudio.setGainAudioFilter(audioFilterIndex, Number(gainSlider.value));
       this.selectedPresetIndex = null;
-      const data: IEqualizerPreset = {
-        name: 'manual',
-        hz70: this.frequencies[0].initialVal,
-        hz180: this.frequencies[1].initialVal,
-        hz320: this.frequencies[2].initialVal,
-        hz600: this.frequencies[3].initialVal,
-        hz1000: this.frequencies[4].initialVal,
-        hz3000: this.frequencies[5].initialVal,
-        hz6000: this.frequencies[6].initialVal,
-        hz12000: this.frequencies[7].initialVal,
-        hz14000: this.frequencies[8].initialVal,
-        hz16000: this.frequencies[9].initialVal,
-      };
-      this.myStorage.setEqualizerState(data);
+      const preset: IEqualizerPreset = this.configEqualizerPreset();
+      this.myStorage.setEqualizerState(preset);
     }
   }
 
@@ -221,20 +217,8 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
         this.myAudio.setGainAudioFilter(i, newVal);
       });
     }
-    const data: IEqualizerPreset = {
-      name: this.equalizerPresets[presetIndex].name,
-      hz70: this.frequencies[0].initialVal,
-      hz180: this.frequencies[1].initialVal,
-      hz320: this.frequencies[2].initialVal,
-      hz600: this.frequencies[3].initialVal,
-      hz1000: this.frequencies[4].initialVal,
-      hz3000: this.frequencies[5].initialVal,
-      hz6000: this.frequencies[6].initialVal,
-      hz12000: this.frequencies[7].initialVal,
-      hz14000: this.frequencies[8].initialVal,
-      hz16000: this.frequencies[9].initialVal,
-    };
-    this.myStorage.setEqualizerState(data);
+    const preset: IEqualizerPreset = this.configEqualizerPreset(this.equalizerPresets[presetIndex].name);
+    this.myStorage.setEqualizerState(preset);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -252,5 +236,22 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
           + newRange.min
       ).toFixed(1),
     );
+  }
+
+  configEqualizerPreset(presetTitle: string = 'manual') {
+    const preset: IEqualizerPreset = {
+      name: presetTitle,
+      hz70: this.frequencies[0].initialVal,
+      hz180: this.frequencies[1].initialVal,
+      hz320: this.frequencies[2].initialVal,
+      hz600: this.frequencies[3].initialVal,
+      hz1000: this.frequencies[4].initialVal,
+      hz3000: this.frequencies[5].initialVal,
+      hz6000: this.frequencies[6].initialVal,
+      hz12000: this.frequencies[7].initialVal,
+      hz14000: this.frequencies[8].initialVal,
+      hz16000: this.frequencies[9].initialVal,
+    };
+    return preset;
   }
 }

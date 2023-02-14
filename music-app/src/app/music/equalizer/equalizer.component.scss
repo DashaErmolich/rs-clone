@@ -27,6 +27,10 @@ $eq-canvas-height: 150px;
 .eq-presets-wrapper {
   position: fixed;
   top: $container-p-small;
+
+  button {
+    margin-left: $container-p-small;
+  }
 }
 
 .eq-canvas {
