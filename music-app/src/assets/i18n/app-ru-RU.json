@@ -28,5 +28,8 @@
   },
   "welcome": {
     "greeting": "Добро пожаловать в RS Music App"
+  },
+  "sign-in": {
+    "submit-btn": "Зарегистрироваться"
   }
 }

@@ -29,5 +29,8 @@
   },
   "welcome": {
     "greeting": "Welcome to RS Music App"
+  },
+  "sign-in": {
+    "submit-btn": "Submit"
   }
 }
