@@ -108,6 +108,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchType = SearchType.tracks;
       }
     });
+    this.currentIndex$ = this.state.currentPlayingTrackIndex$.subscribe((res) => {
+      if (res) this.currentIndex = res;
+    });
+    console.log(this.currentIndex);
   }
 
   ngOnDestroy(): void {
@@ -232,6 +236,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.playingTrackIndex = Number(index);
         this.currentIndex = notShuffleTracks
           .findIndex((track) => track.id === shuffleTracks[this.playingTrackIndex].id);
+        this.state.setCurrentPlayingTrackIndex(this.currentIndex);
       });
     });
   }
