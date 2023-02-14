@@ -1,21 +1,24 @@
 <div *ngIf="!searchParam" class="search-page">
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
-  <h2 *ngIf="!loading">Genres</h2>
-  <div class="search-container">
-    <mat-card *ngFor="let genre of genres; let i=index" class="card" [routerLink]="['/music/genre', genre.id]"
-      [style.background]="randomColor(i)">
-      <mat-card-content>{{genre.name}}</mat-card-content>
+  <!--  -->
+  <div class="scrollable">
+    <h2 *ngIf="!loading">Genres</h2>
+    <div class="search-container">
+      <mat-card *ngFor="let genre of genres; let i=index" class="card" [routerLink]="['/music/genre', genre.id]"
+        [style.background]="randomColor(i)">
+        <mat-card-content>{{genre.name}}</mat-card-content>
         <img class="card-img" src="{{genre.picture_medium ? genre.picture_medium : defaultImg}}" alt={{genre.name}}>
-    </mat-card>
-  </div>
-  <h2 *ngIf="!loading">Playlists</h2>
-  <div class="search-container">
-    <mat-card *ngFor="let playlist of playlistsFromChart; let i=index" class="card" [style.background]="randomColor(i)"
-      [routerLink]="['/music/play-list', playlist.id]">
-      <mat-card-content>{{playlist.title}}</mat-card-content>
-      <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
-        alt={{playlist.title}}>
-    </mat-card>
+      </mat-card>
+    </div>
+    <h2 *ngIf="!loading">Playlists</h2>
+    <div class="search-container">
+      <mat-card *ngFor="let playlist of playlistsFromChart; let i=index" class="card"
+        [style.background]="randomColor(i)" [routerLink]="['/music/play-list', playlist.id]">
+        <mat-card-content>{{playlist.title}}</mat-card-content>
+        <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
+          alt={{playlist.title}}>
+      </mat-card>
+    </div>
   </div>
 </div>
 
@@ -26,30 +29,24 @@
       <mat-chip-option (click)="renderArtists()">Artists</mat-chip-option>
       <mat-chip-option (click)="renderAlbums()">Albums</mat-chip-option>
       <mat-chip-option (click)="renderPlaylists()">Playlists</mat-chip-option>
-    </mat-chip-listbox> 
+    </mat-chip-listbox>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
 
-  <div [ngSwitch]="searchType" class="tracks">
+  <div [ngSwitch]="searchType" class="tracks scrollable">
 
-    <div *ngSwitchCase="'tracks'" >
+    <div *ngSwitchCase="'tracks'">
       <div *ngIf="!loading" class="tracks-container">
 
         <mat-card *ngFor="let track of tracks; let i=index">
-          <mat-card-content [attr.class]="this.currentIndex === i ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
-            <!-- <div class="track-number-wrapper">
-              <p class="track-number" *ngIf="this.currentIndex !== i">{{ i+1 }}</p>
-              <button mat-icon-button class="track-play" *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">
-                <mat-icon>play_arrow</mat-icon>
-              </button>
-              <button mat-icon-button class="track-pause" *ngIf="this.currentIndex === i" (click)="playPause(i)">
-                <mat-icon>{{isPlay? 'pause_arrow' : 'play_arrow'}}</mat-icon>
-              </button>
-            </div> -->
+          <mat-card-content
+            [attr.class]="this.currentIndex === i ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
             <div class="track-number-wrapper">
               <p class="track-number" *ngIf="this.currentIndex !== i">{{ i+1 }}</p>
-              <mat-icon matSuffix class="track-play" *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">play_arrow</mat-icon>
-              <mat-icon matSuffix class="track-pause" *ngIf="this.currentIndex === i" (click)="playPause(i)">{{isPlay? 'pause_arrow' : 'play_arrow'}}</mat-icon>
+              <mat-icon aria-hidden="false" class="track-play" 
+              *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">play_arrow</mat-icon>
+              <mat-icon aria-hidden="false" class="track-pause" 
+              *ngIf="this.currentIndex === i" (click)="playPause()">{{isPlay? 'pause_arrow' : 'play_arrow'}}</mat-icon>
             </div>
             <div class="track-img-wrapper">
               <img class="track-img" src="{{track.album?.cover_small ? track.album?.cover_small : defaultImg}}"
@@ -101,5 +98,5 @@
     </div>
     <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
   </div>
-  
+
 </div>

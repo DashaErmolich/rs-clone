@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/services/state.service';
 import { AudioService } from 'src/app/services/audio.service';
 import { ThemeService } from 'src/app/services/theme.service';
-// import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-search',
@@ -202,27 +201,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.state.setTrackListInfo(this.tracks, this.currentIndex);
     this.state.setPlayingTrackIndex(index);
     this.getPlayingTrackIndex();
-    this.playPause(index);
-    // this.myAudio.playTrack(String(this.tracks[index].preview));
+    this.myAudio.playTrack(String(this.tracks[index].preview));
+    this.isPlay = !this.isPlay;
   }
 
-  playPause(index: number) {
+  playPause() {
     this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     if (this.isPlay) {
       this.myAudio.pause();
     } else {
-      this.myAudio.playTrack(String(this.tracks[index].preview));
+      this.myAudio.play();
     }
   }
-
-  // getTracksInfo() {
-  //   this.state.trackList$.subscribe((tracks) => { this.tracks = tracks; });
-  // }
-
-  // getPlayingTrackIndex() {
-  //   this.state.playingTrackIndex$.subscribe((index) => {
-  // this.playingTrackIndex = Number(index); });
-  // }
 
   getPlayingTrackIndex() {
     const notShuffleTracks = this.tracks;
