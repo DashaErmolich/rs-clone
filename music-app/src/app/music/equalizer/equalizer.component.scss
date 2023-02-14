@@ -1,5 +1,8 @@
 @import '../../../sass/abstracts/_constants.scss';
 
+$eq-preset-select-height: 78px;
+$eq-canvas-height: 150px;
+
 .equalizer-container {
   position: fixed;
   top: $header-height;
@@ -9,15 +12,26 @@
   transform: translateY(100vh);
   transition: ease-in-out 0.5s;
   z-index: $z-index-dynamic-window;
+  overflow-x: hidden;
 }
 
 .show-equalizer {
   transform: translateY(0);
 }
 
-.frequency-visualizer {
+.eq-controls-container {
+  height: calc(100% - $eq-canvas-height);
+  padding-top: $eq-preset-select-height;
+}
+
+.eq-presets-wrapper {
+  position: fixed;
+  top: $container-p-small;
+}
+
+.eq-canvas {
   margin-left: - $container-p-large;
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
 

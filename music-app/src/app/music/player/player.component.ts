@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 
 import { StateService } from 'src/app/core/services/state.service';
 import { ITrackResponse } from '../../models/api-response.models';

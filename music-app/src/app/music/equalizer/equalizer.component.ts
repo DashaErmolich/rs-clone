@@ -1,11 +1,9 @@
-/* eslint-disable no-underscore-dangle */
 import {
   Component,
   ElementRef,
   NgZone,
   OnInit,
   ViewChild,
-  OnDestroy,
   AfterViewInit,
 } from '@angular/core';
 
@@ -13,6 +11,7 @@ import { StateService } from 'src/app/core/services/state.service';
 import { MatSelect } from '@angular/material/select';
 import { AudioService } from '../../core/services/audio.service';
 import { LocalStorageService } from '../../core/services/local-storage.service';
+import { ThemeService } from '../../core/services/theme.service';
 import {
   IEqualizerPresetsData,
   IEqualizerPreset,
@@ -28,12 +27,12 @@ const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../as
   styleUrls: ['./equalizer.component.scss'],
 })
 
-export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
+export class EqualizerComponent implements OnInit, AfterViewInit {
   isShown!: boolean;
 
   canvasWidth = window.innerWidth;
 
-  @ViewChild('frequencyVisualizer', { static: true }) myCanvas!: ElementRef;
+  @ViewChild('eqCanvas', { static: true }) myCanvas!: ElementRef;
 
   @ViewChild('presetSelect') presetSelect!: MatSelect;
 
@@ -56,6 +55,7 @@ export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
     private myState: StateService,
     private myAudio: AudioService,
     private myStorage: LocalStorageService,
+    private myTheme: ThemeService,
   ) {
   }
 
@@ -79,7 +79,27 @@ export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.canvas.width = this.canvasWidth * (10 / 12);
     this.canvasContext = this.canvas.getContext('2d');
     if (this.canvasContext) {
-      this.canvasContext.fillStyle = '#ffffff';
+      const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
+      let startColor = '';
+      // eslint-disable-next-line default-case
+      switch (this.myTheme.activeThemeCssClass.split('-dark').join('')) {
+        case this.myTheme.themesData[0].cssClass:
+          startColor = '#673ab7';
+          break;
+        case this.myTheme.themesData[1].cssClass:
+          startColor = '#3f51b5';
+          break;
+        case this.myTheme.themesData[2].cssClass:
+          startColor = '#e91e63';
+          break;
+        case this.myTheme.themesData[3].cssClass:
+          startColor = '#9c27b0';
+          break;
+      }
+      const finishColor = this.myTheme.isThemeDark ? '#fff' : '#000';
+      gradient.addColorStop(0, startColor);
+      gradient.addColorStop(1, finishColor);
+      this.canvasContext.fillStyle = gradient;
     }
 
     this.ngZone.runOutsideAngular(() => {
@@ -93,14 +113,14 @@ export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
       this.startEqualizerAnimation();
     });
 
-    // this.myAudio.audio.addEventListener('timeupdate', () => {
-    //   if (this.isShown) {
-    //     console.log(1);
-    //     this.startEqualizerAnimation();
-    //   } else {
-    //     this.stopEqualizerAnimation();
-    //   }
-    // });
+    this.myAudio.audio.addEventListener('timeupdate', () => {
+      if (this.isShown) {
+        console.log(1);
+        this.startEqualizerAnimation();
+      } else {
+        this.stopEqualizerAnimation();
+      }
+    });
 
     this.myAudio.audio.addEventListener('pause', () => {
       this.stopEqualizerAnimation();
@@ -109,10 +129,6 @@ export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.myAudio.audio.addEventListener('ended', () => {
       this.stopEqualizerAnimation();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.myState.isEqualizerShown$.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -138,11 +154,10 @@ export class EqualizerComponent implements OnInit, OnDestroy, AfterViewInit {
       );
 
       let x = 0;
-      const barCount = 100;
-      for (let i = 0; i < barCount; i += 1) {
+      for (let i = 0; i < 200; i += 1) {
         const barPosition = x;
-        const barWidth = this.canvas.width / barCount - 1;
-        const barHeight = (dataArray[i] / 2) * 2;
+        const barWidth = this.canvas.width / 200 - 1;
+        const barHeight = (dataArray[i] / 2);
 
         this.canvasContext?.fillRect(
           barPosition,
