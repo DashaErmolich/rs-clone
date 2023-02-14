@@ -33,6 +33,7 @@
   "music": {
     "equalizer": {
       "presets-select-label": "Equalizer preset",
+      "presets-reset-button": "Reset equalizer preset",
       "units": {
         "hz": "Hz",
         "kHz": "kHz",

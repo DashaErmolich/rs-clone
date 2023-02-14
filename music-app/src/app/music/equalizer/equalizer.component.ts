@@ -88,10 +88,9 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
       this.myAudio.audio.addEventListener('timeupdate', () => {
         this.ngZone.run(() => {
           this.startEqualizerAnimation();
-        })
+        });
       });
     });
-
 
     this.routerEventSubscription = this.myRouter.events.subscribe(() => {
       this.myState.setEqualizerVisibility(false);
@@ -122,7 +121,7 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.canvasContext = this.canvas.getContext('2d');
     if (this.canvasContext) {
       const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
-      let startColor = this.getCanvasStartFillColor();
+      const startColor = this.getCanvasStartFillColor();
       const finishColor = this.getCanvasFinishFillColor();
       gradient.addColorStop(0, startColor);
       gradient.addColorStop(1, finishColor);
@@ -157,8 +156,7 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   startEqualizerAnimation() {
     if (this.myAudio.analyser && this.isShown) {
-
-      this.myAudio.analyser.fftSize = 2048;
+      this.myAudio.analyser.fftSize = 512;
       const bufferLength = this.myAudio.analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
@@ -173,6 +171,7 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const barCount = 100;
       let x = 0;
+      this.canvasContext?.save();
       for (let i = 0; i < barCount; i += 1) {
         const barPosition = x;
         const barWidth = this.canvas.width / barCount - 1;
@@ -188,18 +187,21 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
         x += barWidth + 1;
       }
 
-      this.reqAnimFrameId = window.requestAnimationFrame(
+      this.canvasContext?.restore();
+
+      this.reqAnimFrameId = requestAnimationFrame(
         this.startEqualizerAnimation.bind(this),
       );
     }
   }
 
   stopEqualizerAnimation() {
-    window.cancelAnimationFrame(this.reqAnimFrameId);
+    cancelAnimationFrame(this.reqAnimFrameId);
   }
 
   resetEqualizerPreset() {
     this.frequencies.forEach((frequency, i) => {
+      // eslint-disable-next-line no-param-reassign
       frequency.initialVal = 0;
       this.myAudio.setGainAudioFilter(i, frequency.initialVal);
     });
@@ -238,7 +240,9 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.myAudio.setGainAudioFilter(i, newVal);
       });
     }
-    const preset: IEqualizerPreset = this.configEqualizerPreset(this.equalizerPresets[presetIndex].name);
+    const preset: IEqualizerPreset = this.configEqualizerPreset(
+      this.equalizerPresets[presetIndex].name,
+    );
     this.myStorage.setEqualizerState(preset);
   }
 

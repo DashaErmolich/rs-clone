@@ -6,7 +6,7 @@
   <div class="eq-controls-container">
     <div class="eq-presets-wrapper">
       <mat-form-field appearance="fill">
-        <mat-label l10nTranslate>music.equalizer.preset-select-label</mat-label>
+        <mat-label l10nTranslate>music.equalizer.presets-select-label</mat-label>
         <mat-select #presetSelect [(ngModel)]="selectedPresetIndex">
           <mat-option
           *ngFor="let preset of equalizerPresets, index as i"
@@ -15,8 +15,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-mini-fab color="basic" (click)="resetEqualizerPreset()">
+      <button mat-fab extended color="basic" (click)="resetEqualizerPreset()">
         <mat-icon>refresh</mat-icon>
+        <span l10nTranslate="">music.equalizer.presets-reset-button</span>
       </button>
     </div>
     <div class="scrollable-container height-100">

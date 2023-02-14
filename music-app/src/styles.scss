@@ -6,7 +6,6 @@
 
 html,
 body {
-  // font-size: 10px;
   height: 100%;
 }
 
@@ -169,15 +168,17 @@ label {
   text-overflow: ellipsis;
 }
 
-// .mat-mdc-form-field-subscript-wrapper {
-//   height: 0px !important;
-// }
+header {
+    .mat-mdc-form-field-subscript-wrapper {
+    height: 0px !important;
+  }
 
-// .mat-mdc-form-field-infix {
-//   padding-top: 0.5rem !important;
-//   padding-bottom: 0.5rem !important;
-//   min-height: auto !important;
-// }
+  .mat-mdc-form-field-infix {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    min-height: auto !important;
+  }
+}
 
 .search-input {
   .mat-icon {

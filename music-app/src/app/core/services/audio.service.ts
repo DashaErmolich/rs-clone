@@ -1,7 +1,5 @@
-/* eslint-disable operator-assignment */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
 import { IAudioPlayerState } from '../../models/audio-player.models';
 import { LocalStorageService } from './local-storage.service';
@@ -148,7 +146,6 @@ export class AudioService {
         this.audioContext = new AudioContext();
         this.analyser = this.audioContext.createAnalyser();
         const source = this.audioContext.createMediaElementSource(this.audio);
-        // source.connect(this.analyser);
 
         this.frequencies.forEach((element, index) => {
           const filter = this.audioContext?.createBiquadFilter();
