@@ -10,7 +10,7 @@ import { LocalStorageService } from './local-storage.service';
 export class StateService {
   trackList$ = new BehaviorSubject<Partial<ITrackResponse>[]>([]);
 
-  playingTrackIndex$ = new BehaviorSubject<number | null>(0);
+  playingTrackIndex$ = new BehaviorSubject<number | null>(null);
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 

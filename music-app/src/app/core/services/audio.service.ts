@@ -36,7 +36,7 @@ export class AudioService {
 
   isPlay$ = new BehaviorSubject(false);
 
-  isMute$ = new BehaviorSubject(false);
+  isMute$ = new BehaviorSubject(this.defaultState.volume === 0);
 
   state$ = new BehaviorSubject(this.defaultState);
 
