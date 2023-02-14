@@ -1,13 +1,12 @@
 <div
   [class]="
-    !isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'
-  "
+    !isShown ? 'equalizer-container' : 'equalizer-container show-equalizer'"
   class="container accent-section scrollable-container"
 >
   <div class="eq-controls-container">
     <div class="eq-presets-wrapper">
       <mat-form-field appearance="fill">
-        <mat-label>Equalizer preset</mat-label>
+        <mat-label l10nTranslate>music.equalizer.preset-select-label</mat-label>
         <mat-select #presetSelect [(ngModel)]="selectedPresetIndex">
           <mat-option
           *ngFor="let preset of equalizerPresets, index as i"
@@ -25,11 +24,15 @@
         <div
           class="equalizer-control"
           *ngFor="let range of frequencies; index as i">
-          <span>{{
-            range.frequency < 1000
-              ? range.frequency + " Hz"
-              : range.frequency / 1000 + " kHz"
-          }}</span>
+          <div class="">
+            <span>{{
+              range.frequency < 1000
+                ? range.frequency + ' '
+                : range.frequency / 1000 + ' '
+            }}</span>
+            <span *ngIf="range.frequency < 1000" l10nTranslate>music.equalizer.units.hz</span>
+            <span *ngIf="range.frequency >= 1000" l10nTranslate>music.equalizer.units.kHz</span>
+          </div>
           <mat-slider [min]="range.minVal" [max]="range.maxVal" step="0.1">
             <input
               matSliderThumb
@@ -39,7 +42,10 @@
               [(value)]="range.initialVal"
             />
           </mat-slider>
-          <span>{{ range.initialVal + " dB" }}</span>
+          <div class="">
+            <span>{{ range.initialVal + ' ' }}</span>
+            <span l10nTranslate>music.equalizer.units.db</span>
+          </div>
         </div>
       </div>
     </div>

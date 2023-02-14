@@ -5,10 +5,13 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 
 import { StateService } from 'src/app/core/services/state.service';
 import { MatSelect } from '@angular/material/select';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AudioService } from '../../core/services/audio.service';
 import { LocalStorageService } from '../../core/services/local-storage.service';
 import { ThemeService } from '../../core/services/theme.service';
@@ -27,10 +30,8 @@ const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../as
   styleUrls: ['./equalizer.component.scss'],
 })
 
-export class EqualizerComponent implements OnInit, AfterViewInit {
+export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
   isShown!: boolean;
-
-  canvasWidth = window.innerWidth;
 
   @ViewChild('eqCanvas', { static: true }) myCanvas!: ElementRef;
 
@@ -50,12 +51,17 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
 
   selectedPresetIndex!: number | null;
 
+  routerEventSubscription!: Subscription;
+
+  isPlay!: boolean;
+
   constructor(
     private ngZone: NgZone,
     private myState: StateService,
     private myAudio: AudioService,
     private myStorage: LocalStorageService,
     private myTheme: ThemeService,
+    private myRouter: Router,
   ) {
   }
 
@@ -75,57 +81,24 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
         : this.equalizerPresets
           .findIndex((preset) => preset.name === this.myStorage.getEqualizerState()?.name);
     });
-    this.canvas = this.myCanvas.nativeElement;
-    this.canvas.width = this.canvasWidth * (10 / 12);
-    this.canvasContext = this.canvas.getContext('2d');
-    if (this.canvasContext) {
-      const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
-      let startColor = '';
-      // eslint-disable-next-line default-case
-      switch (this.myTheme.activeThemeCssClass.split('-dark').join('')) {
-        case this.myTheme.themesData[0].cssClass:
-          startColor = '#673ab7';
-          break;
-        case this.myTheme.themesData[1].cssClass:
-          startColor = '#3f51b5';
-          break;
-        case this.myTheme.themesData[2].cssClass:
-          startColor = '#e91e63';
-          break;
-        case this.myTheme.themesData[3].cssClass:
-          startColor = '#9c27b0';
-          break;
-      }
-      const finishColor = this.myTheme.isThemeDark ? '#fff' : '#000';
-      gradient.addColorStop(0, startColor);
-      gradient.addColorStop(1, finishColor);
-      this.canvasContext.fillStyle = gradient;
-    }
+
+    this.setEqualizerCanvas();
 
     this.ngZone.runOutsideAngular(() => {
-      this.startEqualizerAnimation();
+      this.myAudio.audio.addEventListener('timeupdate', () => {
+        this.ngZone.run(() => {
+          this.startEqualizerAnimation();
+        })
+      });
     });
 
-    this.myAudio.audio.addEventListener('play', () => {
-      if (this.isShown) {
-        this.startEqualizerAnimation();
-      }
+
+    this.routerEventSubscription = this.myRouter.events.subscribe(() => {
+      this.myState.setEqualizerVisibility(false);
     });
 
-    this.myAudio.audio.addEventListener('timeupdate', () => {
-      if (this.isShown) {
-        this.startEqualizerAnimation();
-      } else {
-        this.stopEqualizerAnimation();
-      }
-    });
-
-    this.myAudio.audio.addEventListener('pause', () => {
-      this.stopEqualizerAnimation();
-    });
-
-    this.myAudio.audio.addEventListener('ended', () => {
-      this.stopEqualizerAnimation();
+    this.myAudio.isPlay$.subscribe((data) => {
+      this.isPlay = data;
     });
   }
 
@@ -136,8 +109,55 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.routerEventSubscription.unsubscribe();
+    this.presetSelect.valueChange.unsubscribe();
+    this.stopEqualizerAnimation();
+  }
+
+  setEqualizerCanvas() {
+    this.canvas = this.myCanvas.nativeElement;
+    const sizeCoefficient = 10 / 12;
+    this.canvas.width = window.innerWidth * sizeCoefficient;
+    this.canvasContext = this.canvas.getContext('2d');
+    if (this.canvasContext) {
+      const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
+      let startColor = this.getCanvasStartFillColor();
+      const finishColor = this.getCanvasFinishFillColor();
+      gradient.addColorStop(0, startColor);
+      gradient.addColorStop(1, finishColor);
+      this.canvasContext.fillStyle = gradient;
+    }
+  }
+
+  getCanvasStartFillColor(): string {
+    let startColor = '';
+    switch (this.myTheme.activeThemeCssClass.split('-dark').join('')) {
+      case this.myTheme.themesData[0].cssClass:
+        startColor = '#673ab7';
+        break;
+      case this.myTheme.themesData[1].cssClass:
+        startColor = '#3f51b5';
+        break;
+      case this.myTheme.themesData[2].cssClass:
+        startColor = '#e91e63';
+        break;
+      case this.myTheme.themesData[3].cssClass:
+        startColor = '#9c27b0';
+        break;
+      default:
+        startColor = '#673ab7';
+    }
+    return startColor;
+  }
+
+  getCanvasFinishFillColor(): string {
+    return this.myTheme.isThemeDark ? '#fff' : '#000';
+  }
+
   startEqualizerAnimation() {
-    if (this.myAudio.analyser) {
+    if (this.myAudio.analyser && this.isShown) {
+
       this.myAudio.analyser.fftSize = 2048;
       const bufferLength = this.myAudio.analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
@@ -151,10 +171,11 @@ export class EqualizerComponent implements OnInit, AfterViewInit {
         this.canvas.height,
       );
 
+      const barCount = 100;
       let x = 0;
-      for (let i = 0; i < 200; i += 1) {
+      for (let i = 0; i < barCount; i += 1) {
         const barPosition = x;
-        const barWidth = this.canvas.width / 200 - 1;
+        const barWidth = this.canvas.width / barCount - 1;
         const barHeight = (dataArray[i] / 2);
 
         this.canvasContext?.fillRect(
