@@ -85,11 +85,7 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setEqualizerCanvas();
 
     this.ngZone.runOutsideAngular(() => {
-      this.myAudio.audio.addEventListener('timeupdate', () => {
-        this.ngZone.run(() => {
-          this.startEqualizerAnimation();
-        });
-      });
+      this.startEqualizerAnimation();
     });
 
     this.routerEventSubscription = this.myRouter.events.subscribe(() => {
