@@ -29,5 +29,10 @@
   },
   "welcome": {
     "greeting": "Welcome to RS Music App"
+  },
+  "not-found": {
+    "title": "Page not found",
+    "message": "The page you are looking for may have been moved, deleted, or possibly never existed",
+    "home-button": " Go to the home page"
   }
 }
