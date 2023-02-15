@@ -40,6 +40,8 @@ export class AudioService {
 
   isPlay$ = new BehaviorSubject(false);
 
+  isPause$ = new BehaviorSubject(false);
+
   isMute$ = new BehaviorSubject(this.defaultState.volume === 0);
 
   state$ = new BehaviorSubject(this.defaultState);
@@ -90,11 +92,13 @@ export class AudioService {
   play(): void {
     this.audio.play();
     this.isPlay$.next(!this.isPlay$.value);
+    this.isPause$.next(!this.isPause$.value);
   }
 
   pause(): void {
     this.audio.pause();
     this.isPlay$.next(!this.isPlay$.value);
+    this.isPause$.next(!this.isPause$.value);
   }
 
   setVolume(volume: number): void {

@@ -218,8 +218,16 @@ export class PlayerComponent implements OnInit {
         lastTrackIndex -= 1;
       }
 
-      const newCurrentTrackIndex = shuffledTracks
+      let newCurrentTrackIndex = shuffledTracks
         .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
+
+      if (newCurrentTrackIndex !== 0) {
+        const currentTrack = shuffledTracks[newCurrentTrackIndex];
+        const firstTrack = shuffledTracks[0];
+        shuffledTracks[0] = currentTrack;
+        shuffledTracks[newCurrentTrackIndex] = firstTrack;
+        newCurrentTrackIndex = 0;
+      }
 
       this.myState.setTrackListInfo(shuffledTracks, newCurrentTrackIndex);
       this.checkTrackPosition();

@@ -72,4 +72,13 @@ export class LocalStorageService {
     const playerInfo = localStorage.getItem('player');
     return playerInfo === null ? null : JSON.parse(playerInfo);
   }
+
+  // setCurrentPlayingTrackIndex(currentTrackIndex: number) {
+  //   localStorage.setItem('currentTrackIndex', JSON.stringify(currentTrackIndex));
+  // }
+
+  // getCurrentPlayingTrackIndex() {
+  //   const currentTrackIndex = localStorage.getItem('currentTrackIndex');
+  //   return currentTrackIndex === null ? null : JSON.parse(currentTrackIndex);
+  // }
 }

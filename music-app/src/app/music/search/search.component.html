@@ -38,14 +38,16 @@
       <div *ngIf="!loading" class="tracks-container">
 
         <mat-card *ngFor="let track of tracks; let i=index">
-          <mat-card-content
-            [attr.class]="this.currentIndex === i ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
+          <mat-card-content [attr.class]="(this.playingTrackIndex === i && ((isPlay$ | async) || (isPause$ | async)) && !isEnd)
+            ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
             <div class="track-number-wrapper">
-              <p class="track-number" *ngIf="this.currentIndex !== i">{{ i+1 }}</p>
-              <mat-icon aria-hidden="false" class="track-play" 
-              *ngIf="this.currentIndex !== i"(click)="setTracksInfo(i); getPlayingTrackIndex()">play_arrow</mat-icon>
-              <mat-icon aria-hidden="false" class="track-pause" 
-              *ngIf="this.currentIndex === i" (click)="playPause()">{{isPlay? 'pause_arrow' : 'play_arrow'}}</mat-icon>
+              <p class="track-number" *ngIf="this.playingTrackIndex !== i ||
+                (this.playingTrackIndex === i && (isPlay$ | async)===false && isEnd)">{{ i+1 }}</p>
+              <mat-icon aria-hidden="false" class="track-play"
+                *ngIf="this.playingTrackIndex !== i || (this.playingTrackIndex !== i && (isPlay$ | async) === false) || (this.playingTrackIndex === i && (isPlay$ | async) === false && isEnd)"
+                (click)="setTracksInfo(i); getTrackListInfo()">play_arrow</mat-icon>
+              <mat-icon aria-hidden="false" class="track-pause" *ngIf="this.playingTrackIndex === i && !isEnd"
+                (click)="playPause()">{{(isPlay$ | async)? 'pause_arrow' : 'play_arrow'}}</mat-icon>
             </div>
             <div class="track-img-wrapper">
               <img class="track-img" src="{{track.album?.cover_small ? track.album?.cover_small : defaultImg}}"
