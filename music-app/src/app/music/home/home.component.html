@@ -1,4 +1,22 @@
-<p>home works!</p>
+<h1 *ngFor="let greeting of greetings" l10nTranslate>
+  <span *ngIf="getCurrentTimeHours() >= greeting.hoursStart && getCurrentTimeHours() < greeting.hoursEnd">
+    {{ greeting.message }}
+  </span>
+</h1>
+
+<mat-card *ngIf="isTrackList()">
+  <mat-card-content>
+    <h2>Now playing</h2>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <h2>Recommended Playlists</h2>
+  </mat-card-content>
+</mat-card>
+
+
 <!-- Temporary cards for player testing -->
 <!-- START -->
 <div class="flex-row tmp">

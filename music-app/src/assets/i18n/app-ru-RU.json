@@ -28,5 +28,13 @@
   },
   "welcome": {
     "greeting": "Добро пожаловать в RS Music App"
+  },
+  "home": {
+    "greeting": {
+      "morning": "Доброе утро",
+      "afternoon": "Добрый день",
+      "evening": "Добрый вечер",
+      "night": "Доброй ночи"
+    }
   }
 }
