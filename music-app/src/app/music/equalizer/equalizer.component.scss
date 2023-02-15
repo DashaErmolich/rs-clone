@@ -3,16 +3,6 @@
 $eq-preset-select-height: 78px;
 $eq-canvas-height: 150px;
 
-.equalizer-container {
-  position: absolute;
-  top: $header-height;
-  left: calc(100vw * 2 / 12);
-  right: 0;
-  height: calc(100vh - $header-height - $player-height - $footer-height);
-  z-index: $z-index-dynamic-window;
-  overflow-x: hidden;
-}
-
 .eq-controls-container {
   height: calc(100% - $eq-canvas-height);
   padding-top: $eq-preset-select-height;

@@ -90,3 +90,13 @@
   justify-content: flex-end;
   gap: $container-p-small;
 }
+
+.equalizer {
+  position: fixed;
+  top: $header-height;
+  left: calc(100vw * 2 / 12);
+  right: 0;
+  height: calc(100vh - $header-height - $player-height - $footer-height);
+  z-index: $z-index-dynamic-window;
+  overflow-x: hidden;
+}

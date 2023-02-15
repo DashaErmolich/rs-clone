@@ -23,11 +23,11 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
   animations: [
     trigger('showEqualizer', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(100vh)' }),
-        animate('500ms', style({ opacity: 1, transform: 'translateY(0)' })),
+        style({ transform: 'translateY(100vh)' }),
+        animate('500ms', style({ transform: 'translateY(0)' })),
       ]),
       transition(':leave', [
-        animate('500ms', style({ opacity: 0, transform: 'translateY(100vh)' })),
+        animate('500ms', style({ transform: 'translateY(100vh)' })),
       ]),
     ]),
   ],
