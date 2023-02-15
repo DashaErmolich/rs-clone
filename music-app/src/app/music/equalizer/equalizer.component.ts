@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { AudioService } from '../../core/services/audio.service';
 import { LocalStorageService } from '../../core/services/local-storage.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { ThemePalletsPrimaryColors, ThemePalletsContrastColors } from '../../enums/colors';
+import { THEME_DARKNESS_SUFFIX } from '../../constants/constants';
 import {
   IEqualizerPresetsData,
   IEqualizerPreset,
@@ -23,6 +25,8 @@ import {
 } from '../../models/equalizer.models';
 
 const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../assets/winamp-presets/winamp-presets.json');
+
+const manualEqualizerSettingsTitle = 'manual';
 
 @Component({
   selector: 'app-equalizer',
@@ -112,8 +116,10 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setEqualizerCanvas() {
     this.canvas = this.myCanvas.nativeElement;
-    const sizeCoefficient = 10 / 12;
-    this.canvas.width = window.innerWidth * sizeCoefficient;
+    const layoutColumnCount = 12;
+    const EqualizerColumnCount = 10;
+    const canvasSizeCoefficient = EqualizerColumnCount / layoutColumnCount;
+    this.canvas.width = window.innerWidth * canvasSizeCoefficient;
     this.canvasContext = this.canvas.getContext('2d');
     if (this.canvasContext) {
       const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
@@ -127,27 +133,29 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getCanvasStartFillColor(): string {
     let startColor = '';
-    switch (this.myTheme.activeThemeCssClass.split('-dark').join('')) {
+    switch (this.myTheme.activeThemeCssClass.split(THEME_DARKNESS_SUFFIX).join('')) {
       case this.myTheme.themesData[0].cssClass:
-        startColor = '#673ab7';
+        startColor = ThemePalletsPrimaryColors.DeepPurpleAmber;
         break;
       case this.myTheme.themesData[1].cssClass:
-        startColor = '#3f51b5';
+        startColor = ThemePalletsPrimaryColors.IndigoPink;
         break;
       case this.myTheme.themesData[2].cssClass:
-        startColor = '#e91e63';
+        startColor = ThemePalletsPrimaryColors.PinkBlueberry;
         break;
       case this.myTheme.themesData[3].cssClass:
-        startColor = '#9c27b0';
+        startColor = ThemePalletsPrimaryColors.PurpleGreen;
         break;
       default:
-        startColor = '#673ab7';
+        startColor = ThemePalletsPrimaryColors.DeepPurpleAmber;
     }
     return startColor;
   }
 
   getCanvasFinishFillColor(): string {
-    return this.myTheme.isThemeDark ? '#fff' : '#000';
+    return this.myTheme.isThemeDark
+      ? ThemePalletsContrastColors.DarkTheme
+      : ThemePalletsContrastColors.LightTheme;
   }
 
   startEqualizerAnimation() {
@@ -259,7 +267,7 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  configEqualizerPreset(presetTitle: string = 'manual') {
+  configEqualizerPreset(presetTitle: string = manualEqualizerSettingsTitle) {
     const preset: IEqualizerPreset = {
       name: presetTitle,
       hz70: this.frequencies[0].initialVal,
