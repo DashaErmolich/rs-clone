@@ -3,6 +3,13 @@ import {
   OnInit,
 } from '@angular/core';
 
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+
 import { StateService } from 'src/app/core/services/state.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
@@ -13,6 +20,17 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss'],
+  animations: [
+    trigger('showEqualizer', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(100vh)' }),
+        animate('500ms', style({ opacity: 1, transform: 'translateY(0)' })),
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0, transform: 'translateY(100vh)' })),
+      ]),
+    ]),
+  ],
 })
 export class PlayerComponent implements OnInit {
   trackList!: Partial<ITrackResponse>[];

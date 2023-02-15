@@ -4,19 +4,13 @@ $eq-preset-select-height: 78px;
 $eq-canvas-height: 150px;
 
 .equalizer-container {
-  position: fixed;
+  position: absolute;
   top: $header-height;
   left: calc(100vw * 2 / 12);
   right: 0;
   height: calc(100vh - $header-height - $player-height - $footer-height);
-  transform: translateY(100vh);
-  transition: ease-in-out 0.5s;
   z-index: $z-index-dynamic-window;
   overflow-x: hidden;
-}
-
-.show-equalizer {
-  transform: translateY(0);
 }
 
 .eq-controls-container {
@@ -25,7 +19,7 @@ $eq-canvas-height: 150px;
 }
 
 .eq-presets-wrapper {
-  position: fixed;
+  position: absolute;
   top: $container-p-small;
   left: $container-p-large;
   right: $container-p-large;
@@ -39,7 +33,7 @@ $eq-canvas-height: 150px;
 
 .eq-canvas {
   margin-left: - $container-p-large;
-  position: fixed;
+  position: absolute;
   bottom: 0;
 }
 

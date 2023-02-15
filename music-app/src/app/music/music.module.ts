@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CookieModule } from 'ngx-cookie';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFoundComponent } from '../core/not-found/not-found.component';
 import { LibraryComponent } from './library/library.component';
 import { HomeComponent } from './home/home.component';
@@ -68,6 +69,7 @@ import { EqualizerComponent } from './equalizer/equalizer.component';
     FormsModule,
     MatSelectModule,
     MatFormFieldModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     MusicPageComponent,
