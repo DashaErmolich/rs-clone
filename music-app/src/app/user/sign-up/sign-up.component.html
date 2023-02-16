@@ -3,12 +3,11 @@
   <form class="example-form">
     <mat-form-field class="example-full-width">
       <mat-label>Username</mat-label>
-      <input matInput>
+      <input matInput [(ngModel)]="signInForm.username" name="username">
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
-      <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
-             placeholder="Ex. pat@example.com">
+      <input type="email" matInput [(ngModel)]="signInForm.email" name="email">
       <mat-hint>Errors appear instantly!</mat-hint>
       <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
         Please enter a valid email address
@@ -17,15 +16,20 @@
         Email is required
       </mat-error>
     </mat-form-field>
-    <div class="example-container">
-      <mat-form-field appearance="fill">
-        <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'">
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
+    <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Enter your password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="signInForm.password" name="pass">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div>
+      <button mat-flat-button color="primary" (click)="submitRegistrationForm()">Sign up</button>
+      <button mat-stroked-button color="warn" (click)="submitLogout()">Log out</button>
+      <p>Already have an account?</p>
+      <button mat-flat-button color="primary" routerLink="/sign-in" routerLinkActive="active">Sign in</button>
     </div>
-    <button mat-flat-button color="primary">Sign up</button>
   </form>
 </div>
+
+<!-- <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher" -->

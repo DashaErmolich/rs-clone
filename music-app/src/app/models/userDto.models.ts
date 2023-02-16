@@ -1,4 +1,4 @@
-export interface userDto {
+export interface userModel {
   username: string;
   email: string;
   isActivated: boolean;

@@ -1,6 +1,6 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -11,22 +11,26 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const authReq = req.clone({
+      withCredentials: true,
       headers: req.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`),
     })
-      return next.handle(authReq);
-    // return next.handle(authReq).pipe(
-    //   tap(
-    //     (event) => {
-    //       if (event instanceof HttpResponse)
-    //         console.log('Server response')
-    //     },
-    //     (err) => {
-    //       if (err instanceof HttpErrorResponse) {
-    //         if (err.status == 401)
-    //           console.log('Unauthorized')
-    //       }
-    //     }
-    //   )
-    // )
+    console.log(`auth interceptor works! Request: `)
+    console.log(authReq)
+    // return next.handle(authReq);
+    return next.handle(authReq).pipe(
+      tap({
+       next: (event) => {
+           if (event instanceof HttpResponse) {
+               console.log('Auth interceptor: OK');
+               
+           }
+       },
+       error: (error: HttpErrorResponse) => {
+        console.log('Auth interceptor: ERROR');
+          console.log('Error at auth interceptor:')
+           throw error;
+       }
+   })
+    )
   }
 }

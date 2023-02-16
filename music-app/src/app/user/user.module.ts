@@ -11,7 +11,10 @@ import { L10nIntlModule, L10nTranslationModule } from 'angular-l10n';
 import { AppStorage, HttpTranslationLoader, l10nConfig } from '../I10n-config';
 import { CookieModule } from 'ngx-cookie';
 import { MatIconModule } from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 import { AuthInterceptor } from '../interceptors/auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ResponseInterceptor } from '../interceptors/responce.interceptor';
 
 
 @NgModule({
@@ -34,7 +37,8 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor';
     ),
     CookieModule.withOptions(),
     L10nIntlModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [
     SignInComponent,
@@ -42,7 +46,18 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor';
     SettingsPageComponent,
   ],
   providers: [
-    AuthInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true,
+    },
+    
+
   ],
 })
 export class UserModule { }
