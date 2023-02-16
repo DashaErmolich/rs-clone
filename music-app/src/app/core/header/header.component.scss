@@ -21,3 +21,15 @@ header {
 
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100vw * 2 / 12);
+  margin-left: -$container-p-large;
+}
+
+.logo-icon {
+  width: $header-height * 0.7;
+  height: $header-height * 0.7;;
+}
