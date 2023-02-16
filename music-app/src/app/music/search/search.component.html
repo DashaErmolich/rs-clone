@@ -19,9 +19,7 @@
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
   <div [ngSwitch]="searchType" class="tracks scrollable">
     <div *ngSwitchCase="'tracks'">
-      <div *ngIf="!loading" class="tracks-container">
-        <app-tracks [tracks]="tracks"></app-tracks>
-      </div>
+      <app-tracks *ngIf="!loading"  [tracks]="tracks" class="tracks-container"></app-tracks>
     </div>
     <div *ngSwitchCase="'artists'">
       <app-artists [artists]="artists" class="result-container"></app-artists>

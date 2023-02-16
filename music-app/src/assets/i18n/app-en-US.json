@@ -29,5 +29,29 @@
   },
   "welcome": {
     "greeting": "Welcome to RS Music App"
+  },
+  "not-found": {
+    "title": "Page not found",
+    "message": "The page you are looking for may have been moved, deleted, or possibly never existed",
+    "home-button": " Go to the home page"
+  },
+  "music": {
+    "equalizer": {
+      "presets-select-label": "Equalizer preset",
+      "presets-reset-button": "Reset equalizer preset",
+      "units": {
+        "hz": "Hz",
+        "kHz": "kHz",
+        "db": "dB"
+      }
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "night": "Good night"
+    }
   }
 }

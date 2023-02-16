@@ -15,3 +15,5 @@ export const COLORS = ['#7ad891', '#e362b9', '#c4cd5b', '#f38476', '#75d78d', '#
   '#5948c7', '#c75eb2', '#8b50ca', '#95a2c7', '#bae5f6', '#d6b85d', '#83677f', '#7242c3', '#bc433f',
   '#82a18f', '#829b6c', '#6eac7a', '#7f7a4e', '#d07ac5', '#b8d3c4', '#a09ee9', '#46de56', '#50eb75',
   '#52fed7', '#4c5265', '#f97f7f'];
+
+export const THEME_DARKNESS_SUFFIX = '-dark';
