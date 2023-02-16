@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ThemeService } from './core/services/theme.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(
     private themeService: ThemeService,
   ) {
-    this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass); // not working
+    this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass);
   }
 
   getClass() {

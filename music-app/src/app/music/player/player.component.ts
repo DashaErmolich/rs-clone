@@ -1,16 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 
-import { StateService } from 'src/app/core/services/state.service';
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
-import { AudioService } from '../../core/services/audio.service';
-import { LocalStorageService } from '../../core/services/local-storage.service';
+
+import { StateService } from '../../services/state.service';
+import { AudioService } from '../../services/audio.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss'],
+  animations: [
+    trigger('showEqualizer', [
+      transition(':enter', [
+        style({ transform: 'translateY(100vh)' }),
+        animate('500ms', style({ transform: 'translateY(0)' })),
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ transform: 'translateY(100vh)' })),
+      ]),
+    ]),
+  ],
 })
+
 export class PlayerComponent implements OnInit {
   trackList!: Partial<ITrackResponse>[];
 
@@ -27,6 +50,8 @@ export class PlayerComponent implements OnInit {
   isTrackReady!: boolean;
 
   isInitialTrackSet = false;
+
+  isEqualizerShown!: boolean;
 
   controlsState: IPlayerControlsState = {
     isRepeatAllOn: this.myStorage.getPlayerInfo()?.isRepeatAllOn !== undefined
@@ -69,6 +94,9 @@ export class PlayerComponent implements OnInit {
     });
     this.myAudio.audio.addEventListener('ended', () => {
       this.playNext();
+    });
+    this.myState.isEqualizerShown$.subscribe((data) => {
+      this.isEqualizerShown = data;
     });
 
     if (this.currentTrackIndex !== null) {
@@ -219,8 +247,16 @@ export class PlayerComponent implements OnInit {
         lastTrackIndex -= 1;
       }
 
-      const newCurrentTrackIndex = shuffledTracks
+      let newCurrentTrackIndex = shuffledTracks
         .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
+
+      if (newCurrentTrackIndex !== 0) {
+        const currentTrack = shuffledTracks[newCurrentTrackIndex];
+        const firstTrack = shuffledTracks[0];
+        shuffledTracks[0] = currentTrack;
+        shuffledTracks[newCurrentTrackIndex] = firstTrack;
+        newCurrentTrackIndex = 0;
+      }
 
       this.myState.setTrackListInfo(shuffledTracks, newCurrentTrackIndex);
       this.checkTrackPosition();
@@ -249,5 +285,9 @@ export class PlayerComponent implements OnInit {
 
   getCurrentTrackIndex(): number | null {
     return this.currentTrackIndex;
+  }
+
+  toggleEqualizerVisibility() {
+    this.myState.setEqualizerVisibility(!this.isEqualizerShown);
   }
 }

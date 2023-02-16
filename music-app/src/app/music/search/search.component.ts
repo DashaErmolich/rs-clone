@@ -8,8 +8,9 @@ import {
   IAlbumResponse,
 } from 'src/app/models/api-response.models';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
-import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
+import { StateService } from 'src/app/services/state.service';
+import { ThemeService } from 'src/app/services/theme.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,12 +19,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  colors: string[] = COLORS;
-
-  defaultImg: string = DEFAULT_SRC;
-
-  isSearchPage: boolean = true;
-
   limitTracks: number = Limits.tracks;
 
   limitArtists: number = Limits.artists;
@@ -40,11 +35,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlistsFromChart: Partial<IPlayListResponse>[] = [];
 
-  loading = false;
+  loading = true;
 
   searchParam: string = '';
 
   tracks: Partial<ITrackResponse>[] = [];
+
+  tracksOfState: Partial<ITrackResponse>[] = [];
 
   artists: Partial<IArtistResponse>[] = [];
 
@@ -66,10 +63,20 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlists$!: Subscription;
 
+  playingTrackIndex$!: Subscription;
+
+  trackList$!: Subscription;
+
+  playingTrackIndex!: number;
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private route: ActivatedRoute,
+    private state: StateService,
+    private themeService: ThemeService,
   ) {}
+
+  theme: string = this.themeService.activeTheme;
 
   ngOnInit(): void {
     this.queryParams$ = this.route.queryParams.subscribe((param) => {
@@ -88,6 +95,12 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchType = SearchType.tracks;
       }
     });
+    this.trackList$ = this.state.trackList$.subscribe((tracks) => {
+      this.tracksOfState = tracks;
+    });
+    this.playingTrackIndex$ = this.state.playingTrackIndex$.subscribe((index) => {
+      this.playingTrackIndex = index!;
+    });
   }
 
   ngOnDestroy(): void {
@@ -98,11 +111,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.artists$) this.artists$.unsubscribe();
     if (this.albums$) this.albums$.unsubscribe();
     if (this.playlists$) this.playlists$.unsubscribe();
+    if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
+    if (this.trackList$) this.trackList$.unsubscribe();
   }
 
   renderTracks() {
     this.searchType = SearchType.tracks;
-    if (!this.tracks || this.tracks.length === 0) this.loading = true;
     this.tracks$ = this.deezerRestApiService
       .getSearch(this.searchParam, this.index, this.limitTracks)
       .subscribe((res) => {
@@ -151,7 +165,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     if (searchType === SearchType.tracks) {
       this.limitTracks += Limits.tracks;
-      this.renderTracks();
+      this.tracks$ = this.deezerRestApiService
+        .getSearch(this.searchParam, this.index, this.limitTracks)
+        .subscribe((res) => {
+          this.tracks = res.data;
+          if (this.tracksOfState.length) {
+            this.state.setTrackListInfo(this.tracks, this.playingTrackIndex);
+          }
+          this.loading = false;
+        });
     }
     if (searchType === SearchType.albums) {
       this.limitAlbums += Limits.albums;
@@ -161,11 +183,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.limitArtists += Limits.artists;
       this.renderArtists();
     }
-  }
-
-  randomColor(i: number) {
-    const index = i % this.colors.length;
-    return this.colors[index];
   }
 
   checkTypeOfSearch() {

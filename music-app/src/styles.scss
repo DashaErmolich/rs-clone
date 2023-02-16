@@ -3,10 +3,10 @@
 @import './sass/abstracts/constants';
 @import './sass/abstracts/mixins';
 @import './sass/abstracts/material-theme';
+@import './sass/abstracts/dynamic-theme';
 
 html,
 body {
-  // font-size: 10px;
   height: 100%;
 }
 
@@ -79,6 +79,8 @@ a {
 
 .content-wrapper {
   padding-top: $header-height;
+  padding-bottom: 0px;
+  height: 100%;
 }
 
 .scrollable-container {
@@ -150,11 +152,14 @@ label {
   footer {
     border-top: 1px solid #fff;
   }
-
 }
 
 .mb-small {
   margin-bottom: $container-p-small;
+}
+
+.mb-large {
+  margin-bottom: $container-p-large;
 }
 
 .navigation-link {
@@ -170,18 +175,24 @@ label {
   text-overflow: ellipsis;
 }
 
-.mat-mdc-form-field-subscript-wrapper {
-  height: 0px !important;
-}
+header {
+    .mat-mdc-form-field-subscript-wrapper {
+    height: 0px !important;
+  }
 
-.mat-mdc-form-field-infix {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
-  min-height: auto !important;
+  .mat-mdc-form-field-infix {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    min-height: auto !important;
+  }
 }
 
 .search-input {
   .mat-icon {
     padding: 0.3rem !important;
   }
+}
+
+.position-relative {
+  position: relative;
 }
