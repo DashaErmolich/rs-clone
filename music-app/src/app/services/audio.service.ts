@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { IAudioPlayerState } from '../models/audio-player.models';
 import { LocalStorageService } from './local-storage.service';
-import { IEqualizerFrequencies } from '../../models/equalizer.models';
+import { IEqualizerFrequencies } from '../models/equalizer.models';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 

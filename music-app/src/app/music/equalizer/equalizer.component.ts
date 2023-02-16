@@ -8,15 +8,15 @@ import {
   OnDestroy,
 } from '@angular/core';
 
-import { StateService } from 'src/app/core/services/state.service';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AudioService } from '../../core/services/audio.service';
-import { LocalStorageService } from '../../core/services/local-storage.service';
-import { ThemeService } from '../../core/services/theme.service';
 import { ThemePalletsPrimaryColors, ThemePalletsContrastColors } from '../../enums/colors';
 import { THEME_DARKNESS_SUFFIX } from '../../constants/constants';
+import { StateService } from '../../services/state.service';
+import { AudioService } from '../../services/audio.service';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { ThemeService } from '../../services/theme.service';
 import {
   IEqualizerPresetsData,
   IEqualizerPreset,
