@@ -1,4 +1,4 @@
-<h1 *ngFor="let greeting of greetings" l10nTranslate class="mb-large">
+<h1 *ngFor="let greeting of greetings" l10nTranslate>
   <span *ngIf="getCurrentTimeHours() >= greeting.hoursStart && getCurrentTimeHours() < greeting.hoursEnd">
     {{ greeting.message }}
   </span>
