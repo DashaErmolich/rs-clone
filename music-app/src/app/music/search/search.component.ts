@@ -247,8 +247,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  isTrackPlaying(index: number) {
-    return this.tracksOfState.length
-      ? this.tracks[index].id === this.tracksOfState[this.playingTrackIndex].id : false;
-  }
+  // isTrackPlaying(index: number) {
+  //   return this.tracksOfState.length
+  //     ? this.tracks[index].id === this.tracksOfState[this.playingTrackIndex].id : false;
+  // }
 }

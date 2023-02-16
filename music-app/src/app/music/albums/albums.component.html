@@ -1,0 +1,6 @@
+<mat-card *ngFor="let album of albums" class="album-card" [routerLink]="['/music/album', album.id]">
+  <div class="image-wrapper"><img src="{{album.cover_medium ? album.cover_medium : defaultImg}}"
+      alt={{album.title}}></div>
+  <mat-card-content class="title-h1">{{album.title}}</mat-card-content>
+  <mat-card-content class="title-h2">{{album.artist?.name}}</mat-card-content>
+</mat-card>
