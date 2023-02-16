@@ -1,2 +1,18 @@
-<p>home works!</p>
+<h1 *ngFor="let greeting of greetings" l10nTranslate class="mb-large">
+  <span *ngIf="getCurrentTimeHours() >= greeting.hoursStart && getCurrentTimeHours() < greeting.hoursEnd">
+    {{ greeting.message }}
+  </span>
+</h1>
 
+<mat-card *ngIf="isTrackList()" class="mb-large">
+  <mat-card-content>
+    <h2>Now playing</h2>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mb-large">
+  <mat-card-content>
+    <h2>Recommended Tracks</h2>
+    <app-tracks [tracks]="trackList"></app-tracks>
+  </mat-card-content>
+</mat-card>

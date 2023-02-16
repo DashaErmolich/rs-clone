@@ -33,6 +33,11 @@ import { PlayListComponent } from './play-list/play-list.component';
 import { GenreComponent } from './genre/genre.component';
 import { ArtistComponent } from './artist/artist.component';
 import { EqualizerComponent } from './equalizer/equalizer.component';
+import { TracksComponent } from './shared/tracks/tracks.component';
+import { ArtistsComponent } from './shared/artists/artists.component';
+import { AlbumsComponent } from './shared/albums/albums.component';
+import { PlaylistsComponent } from './shared/playlists/playlists.component';
+import { GenresComponent } from './shared/genres/genres.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +52,11 @@ import { EqualizerComponent } from './equalizer/equalizer.component';
     GenreComponent,
     ArtistComponent,
     EqualizerComponent,
+    TracksComponent,
+    ArtistsComponent,
+    AlbumsComponent,
+    PlaylistsComponent,
+    GenresComponent,
   ],
   imports: [
     CommonModule,

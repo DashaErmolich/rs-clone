@@ -24,4 +24,6 @@ $themes-map: (
   ),
 );
 
-@import './theme-core';
+@import './dynamic-theme';
+@include make-stylesheets($themes-map);
+
