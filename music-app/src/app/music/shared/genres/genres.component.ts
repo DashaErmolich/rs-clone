@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { IGenreResponse } from '../../../models/api-response.models';
 import { COLORS, DEFAULT_SRC } from '../../../constants/constants';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-genres',
@@ -12,9 +13,13 @@ import { COLORS, DEFAULT_SRC } from '../../../constants/constants';
 export class GenresComponent {
   defaultImg: string = DEFAULT_SRC;
 
-  colors: string[] = COLORS;
+  colors: string[] = this.myUtils.getShuffledArray(COLORS);
 
   @Input() genres: Partial<IGenreResponse>[] = [];
+
+  constructor(
+    private myUtils: UtilsService,
+  ) { }
 
   randomColor(i: number) {
     const index = i % this.colors.length;

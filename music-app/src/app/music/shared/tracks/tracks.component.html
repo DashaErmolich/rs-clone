@@ -15,10 +15,10 @@
         alt={{track.title}}>
     </div>
     <div class="track-description">
-      <p class="track-title">{{track.title}}</p>
-      <p class="track-artist">{{track.artist?.name}}</p>
+      <p class="track-title">{{track.title | titlecase}}</p>
+      <p class="track-artist">{{track.artist?.name | titlecase}}</p>
     </div>
-    <div class="track-album">{{track.album?.title}}</div>
+    <div class="track-album">{{track.album?.title | titlecase}}</div>
     <div>00:30</div>
   </mat-card-content>
 </mat-card>
