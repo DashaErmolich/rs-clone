@@ -73,9 +73,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playingTrackIndex$!: Subscription;
 
+  trackList$!: Subscription;
+
   isPlay$!: Observable<boolean>;
 
   isPause$!: Observable<boolean>;
+
+  isEnd$!: Subscription;
 
   playingTrackIndex!: number;
 
@@ -112,17 +116,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
     this.isPlay$ = this.myAudio.isPlay$;
     this.isPause$ = this.myAudio.isPause$;
-    this.myAudio.state$.subscribe((res) => {
+    this.isEnd$ = this.myAudio.state$.subscribe((res) => {
       if (res.progress !== res.duration) {
         this.isEnd = false;
       } else {
         this.isEnd = true;
       }
     });
-    this.state.trackList$.subscribe((tracks) => {
+    this.trackList$ = this.state.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
     });
-    this.state.playingTrackIndex$.subscribe((index) => {
+    this.playingTrackIndex$ = this.state.playingTrackIndex$.subscribe((index) => {
       this.playingTrackIndex = index!;
     });
   }
@@ -136,6 +140,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.albums$) this.albums$.unsubscribe();
     if (this.playlists$) this.playlists$.unsubscribe();
     if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
+    if (this.isEnd$) this.isEnd$.unsubscribe();
+    if (this.trackList$) this.trackList$.unsubscribe();
   }
 
   renderTracks() {
