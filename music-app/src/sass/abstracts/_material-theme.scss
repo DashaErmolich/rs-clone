@@ -25,4 +25,3 @@ $themes-map: (
 );
 
 @import './theme-core';
-@include make-stylesheets($themes-map);

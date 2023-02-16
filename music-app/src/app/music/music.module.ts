@@ -16,6 +16,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CookieModule } from 'ngx-cookie';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFoundComponent } from '../core/not-found/not-found.component';
 import { LibraryComponent } from './library/library.component';
 import { HomeComponent } from './home/home.component';
@@ -26,6 +32,7 @@ import { MusicPageComponent } from './music-page/music-page.component';
 import { PlayListComponent } from './play-list/play-list.component';
 import { GenreComponent } from './genre/genre.component';
 import { ArtistComponent } from './artist/artist.component';
+import { EqualizerComponent } from './equalizer/equalizer.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +46,7 @@ import { ArtistComponent } from './artist/artist.component';
     PlayListComponent,
     GenreComponent,
     ArtistComponent,
+    EqualizerComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +55,7 @@ import { ArtistComponent } from './artist/artist.component';
     MatSidenavModule,
     L10nTranslationModule,
     L10nIntlModule,
+    CookieModule.withOptions(),
     MatButtonModule,
     MatListModule,
     MatSliderModule,
@@ -57,6 +66,10 @@ import { ArtistComponent } from './artist/artist.component';
     MatInputModule,
     MatChipsModule,
     MatGridListModule,
+    FormsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     MusicPageComponent,

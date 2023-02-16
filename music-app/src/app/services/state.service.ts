@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ITrackResponse } from '../../models/api-response.models';
+import { ITrackResponse } from '../models/api-response.models';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -11,6 +11,8 @@ export class StateService {
   trackList$ = new BehaviorSubject<Partial<ITrackResponse>[]>([]);
 
   playingTrackIndex$ = new BehaviorSubject<number | null>(null);
+
+  isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
   constructor(private storage: LocalStorageService) {
     const trackListInfo = this.storage.getTrackListInfo();
@@ -28,5 +30,9 @@ export class StateService {
   setPlayingTrackIndex(index: number) {
     this.playingTrackIndex$.next(index);
     this.storage.setTrackListInfo(this.trackList$.value, index);
+  }
+
+  setEqualizerVisibility(isVisible: boolean): void {
+    this.isEqualizerShown$.next(isVisible);
   }
 }
