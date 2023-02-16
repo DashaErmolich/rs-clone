@@ -1,21 +1,23 @@
 <div *ngIf="!searchParam" class="search-page">
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
-  <h2 *ngIf="!loading">Genres</h2>
-  <div class="search-container">
-    <mat-card *ngFor="let genre of genres; let i=index" class="card" [routerLink]="['/music/genre', genre.id]"
-      [style.background]="randomColor(i)">
-      <mat-card-content>{{genre.name}}</mat-card-content>
+  <div class="scrollable">
+    <h2 *ngIf="!loading">Genres</h2>
+    <div class="search-container">
+      <mat-card *ngFor="let genre of genres; let i=index" class="card" [routerLink]="['/music/genre', genre.id]"
+        [style.background]="randomColor(i)">
+        <mat-card-content>{{genre.name}}</mat-card-content>
         <img class="card-img" src="{{genre.picture_medium ? genre.picture_medium : defaultImg}}" alt={{genre.name}}>
-    </mat-card>
-  </div>
-  <h2 *ngIf="!loading">Playlists</h2>
-  <div class="search-container">
-    <mat-card *ngFor="let playlist of playlistsFromChart; let i=index" class="card" [style.background]="randomColor(i)"
-      [routerLink]="['/music/play-list', playlist.id]">
-      <mat-card-content>{{playlist.title}}</mat-card-content>
-      <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
-        alt={{playlist.title}}>
-    </mat-card>
+      </mat-card>
+    </div>
+    <h2 *ngIf="!loading">Playlists</h2>
+    <div class="search-container">
+      <mat-card *ngFor="let playlist of playlistsFromChart; let i=index" class="card"
+        [style.background]="randomColor(i)" [routerLink]="['/music/play-list', playlist.id]">
+        <mat-card-content>{{playlist.title}}</mat-card-content>
+        <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
+          alt={{playlist.title}}>
+      </mat-card>
+    </div>
   </div>
 </div>
 
@@ -26,20 +28,27 @@
       <mat-chip-option (click)="renderArtists()">Artists</mat-chip-option>
       <mat-chip-option (click)="renderAlbums()">Albums</mat-chip-option>
       <mat-chip-option (click)="renderPlaylists()">Playlists</mat-chip-option>
-    </mat-chip-listbox> 
+    </mat-chip-listbox>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
 
-  <div [ngSwitch]="searchType">
+  <div [ngSwitch]="searchType" class="tracks scrollable">
 
     <div *ngSwitchCase="'tracks'">
       <div *ngIf="!loading" class="tracks-container">
 
         <mat-card *ngFor="let track of tracks; let i=index">
-          <mat-card-content class="track">
-            <p class="track-number">{{ i+1 }}
-              <mat-icon matSuffix class="track-play">play_arrow</mat-icon>
-            </p>
+          <mat-card-content [attr.class]="(isTrackPlaying(i) && ((isPlay$ | async) || (isPause$ | async)) && !isEnd)
+            ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
+            <div class="track-number-wrapper">
+              <p class="track-number" *ngIf="!isTrackPlaying(i) ||
+                (isTrackPlaying(i) && (isPlay$ | async)===false && isEnd)">{{ i+1 }}</p>
+              <mat-icon aria-hidden="false" class="track-play"
+                *ngIf="!isTrackPlaying(i) || (!isTrackPlaying(i) && (isPlay$ | async) === false) || (isTrackPlaying(i) && (isPlay$ | async) === false && isEnd)"
+                (click)="setTracksInfo(i)">play_arrow</mat-icon>
+              <mat-icon aria-hidden="false" class="track-pause" *ngIf="isTrackPlaying(i) && !isEnd"
+                (click)="playPause()">{{(isPlay$ | async)? 'pause_arrow' : 'play_arrow'}}</mat-icon>
+            </div>
             <div class="track-img-wrapper">
               <img class="track-img" src="{{track.album?.cover_small ? track.album?.cover_small : defaultImg}}"
                 alt={{track.title}}>
@@ -88,6 +97,7 @@
         </mat-card>
       </div>
     </div>
+    <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
   </div>
-  <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
+
 </div>

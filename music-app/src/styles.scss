@@ -3,10 +3,10 @@
 @import './sass/abstracts/constants';
 @import './sass/abstracts/mixins';
 @import './sass/abstracts/material-theme';
+@import './sass/abstracts/dynamic-theme';
 
 html,
 body {
-  // font-size: 10px;
   height: 100%;
 }
 
@@ -79,10 +79,12 @@ a {
 
 .content-wrapper {
   padding-top: $header-height;
+  padding-bottom: 0px;
+  height: 100%;
 }
 
 .scrollable-container {
-  overflow-y: scroll;
+  height: 100%;
 }
 
 .flex-column {
@@ -150,7 +152,6 @@ label {
   footer {
     border-top: 1px solid #fff;
   }
-
 }
 
 .mb-small {

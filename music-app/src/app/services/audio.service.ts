@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
-import { IAudioPlayerState } from '../../models/audio-player.models';
+import { IAudioPlayerState } from '../models/audio-player.models';
 import { LocalStorageService } from './local-storage.service';
 
 const DEFAULT_PLAYER_VOLUME = 1;
@@ -39,6 +39,8 @@ export class AudioService {
   isTrackReady$ = new BehaviorSubject(false);
 
   isPlay$ = new BehaviorSubject(false);
+
+  isPause$ = new BehaviorSubject(false);
 
   isMute$ = new BehaviorSubject(this.defaultState.volume === 0);
 
@@ -90,11 +92,13 @@ export class AudioService {
   play(): void {
     this.audio.play();
     this.isPlay$.next(!this.isPlay$.value);
+    this.isPause$.next(!this.isPause$.value);
   }
 
   pause(): void {
     this.audio.pause();
     this.isPlay$.next(!this.isPlay$.value);
+    this.isPause$.next(!this.isPause$.value);
   }
 
   setVolume(volume: number): void {
