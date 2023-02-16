@@ -1,8 +1,9 @@
-/* eslint-disable class-methods-use-this */
 import { Injectable } from '@angular/core';
-import { ITrackResponse } from '../models/api-response.models';
-import { IPLayerInfo, ITrackListInfo } from '../models/audio-player.models';
 import { IUserTheme } from '../models/theme.models';
+import { ITrackResponse } from '../models/api-response.models';
+import { ITrackListInfo, IPLayerInfo } from '../models/audio-player.models';
+import { IEqualizerPreset } from '../models/equalizer.models';
+/* eslint-disable class-methods-use-this */
 
 @Injectable({
   providedIn: 'root',
@@ -71,5 +72,14 @@ export class LocalStorageService {
   getPlayerInfo(): IPLayerInfo | null {
     const playerInfo = localStorage.getItem('player');
     return playerInfo === null ? null : JSON.parse(playerInfo);
+  }
+
+  setEqualizerState(equalizerState: IEqualizerPreset): void {
+    localStorage.setItem('EQ', JSON.stringify(equalizerState));
+  }
+
+  getEqualizerState(): IEqualizerPreset | null {
+    const data = localStorage.getItem('EQ');
+    return data === null ? null : JSON.parse(data);
   }
 }

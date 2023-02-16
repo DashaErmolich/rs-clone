@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import * as moment from 'moment';
 import { IAudioPlayerState } from '../models/audio-player.models';
 import { LocalStorageService } from './local-storage.service';
+import { IEqualizerFrequencies } from '../models/equalizer.models';
 
 const DEFAULT_PLAYER_VOLUME = 1;
 
@@ -13,12 +13,6 @@ const DEFAULT_PLAYER_VOLUME = 1;
 
 export class AudioService {
   storageVolume: number | null = this.storage.getPlayerVolume();
-
-  constructor(
-    private storage: LocalStorageService,
-  ) {
-    this.audio.volume = this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume;
-  }
 
   defaultState: IAudioPlayerState = {
     progress: 0,
@@ -48,6 +42,84 @@ export class AudioService {
 
   audio = new Audio();
 
+  audioContext!: AudioContext;
+
+  analyser!: AnalyserNode;
+
+  preset = this.storage.getEqualizerState();
+
+  public frequencies: IEqualizerFrequencies[] = [
+    {
+      frequency: 70,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz70,
+    },
+    {
+      frequency: 180,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz180,
+    },
+    {
+      frequency: 320,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz320,
+    },
+    {
+      frequency: 600,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz600,
+    },
+    {
+      frequency: 1000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz1000,
+    },
+    {
+      frequency: 3000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz3000,
+    },
+    {
+      frequency: 6000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz6000,
+    },
+    {
+      frequency: 12000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz12000,
+    },
+    {
+      frequency: 14000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz14000,
+    },
+    {
+      frequency: 16000,
+      minVal: -12,
+      maxVal: 12,
+      initialVal: this.preset === null ? 0 : this.preset.hz16000,
+    },
+  ];
+
+  audioFilters: BiquadFilterNode[] = [];
+
+  constructor(
+    private storage: LocalStorageService,
+  ) {
+    this.audio.volume = this.storageVolume === null ? DEFAULT_PLAYER_VOLUME : this.storageVolume;
+    this.audio.crossOrigin = 'anonymous';
+  }
+
   playTrack(url: string): void {
     this.isTrackReady$.next(false);
     this.state$.next(this.defaultState);
@@ -72,6 +144,32 @@ export class AudioService {
         this.currentState.duration = this.state$.value.duration;
         this.currentState.volume = this.state$.value.volume;
       });
+      if (!this.audioContext) {
+        this.audioContext = new AudioContext();
+        this.analyser = this.audioContext.createAnalyser();
+        const source = this.audioContext.createMediaElementSource(this.audio);
+
+        this.frequencies.forEach((element, index) => {
+          const filter = this.audioContext?.createBiquadFilter();
+          if (filter) {
+            filter.type = 'peaking';
+            filter.frequency.value = element.frequency;
+            filter.gain.value = 0;
+            this.audioFilters.push(filter);
+            if (this.audioFilters[index - 1]) {
+              this.audioFilters[index - 1].connect(this.audioFilters[index]);
+            }
+          }
+        });
+        source.connect(this.audioFilters[0]);
+        this.audioFilters[this.audioFilters.length - 1].connect(
+          this.analyser,
+        );
+        this.analyser.connect(this.audioContext.destination);
+        this.frequencies.forEach((data, i) => {
+          this.setGainAudioFilter(i, data.initialVal);
+        });
+      }
     });
 
     this.audio.addEventListener('timeupdate', () => {
@@ -128,5 +226,9 @@ export class AudioService {
       return this.getFormattedTime(0);
     }
     return this.getFormattedTime(result);
+  }
+
+  setGainAudioFilter(audioFilterIndex: number, gainValue: number): void {
+    this.audioFilters[audioFilterIndex].gain.value = gainValue;
   }
 }

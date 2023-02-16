@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(
     private themeService: ThemeService,
   ) {
-    this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass); // not working
+    this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass);
   }
 
   getClass() {

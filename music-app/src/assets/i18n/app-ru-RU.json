@@ -28,5 +28,16 @@
   },
   "welcome": {
     "greeting": "Добро пожаловать в RS Music App"
+  },
+  "music": {
+    "equalizer": {
+      "presets-select-label": "Настройки эквалайзера",
+      "presets-reset-button": "Сбросить настройки эквалайзера",
+      "units": {
+        "hz": "Гц",
+        "kHz": "кГц",
+        "db": "дБ"
+      }
+    }
   }
 }
