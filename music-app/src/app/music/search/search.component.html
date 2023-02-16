@@ -36,8 +36,9 @@
 
     <div *ngSwitchCase="'tracks'">
       <div *ngIf="!loading" class="tracks-container">
+        <app-tracks [tracks]="tracks"></app-tracks>
 
-        <mat-card *ngFor="let track of tracks; let i=index">
+        <!-- <mat-card *ngFor="let track of tracks; let i=index">
           <mat-card-content [attr.class]="(isTrackPlaying(i) && ((isPlay$ | async) || (isPause$ | async)) && !isEnd)
             ? theme + '-border' + ' theme-primary'+ ' track' : 'track'">
             <div class="track-number-wrapper">
@@ -60,7 +61,7 @@
             <div class="track-album">{{track.album?.title}}</div>
             <div>00:30</div>
           </mat-card-content>
-        </mat-card>
+        </mat-card> -->
       </div>
     </div>
 

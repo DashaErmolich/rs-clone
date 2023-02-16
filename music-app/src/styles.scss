@@ -83,7 +83,7 @@ a {
 }
 
 .scrollable-container {
-  height: 100%;
+  overflow-y: scroll;
 }
 
 .flex-column {
@@ -155,6 +155,10 @@ label {
 
 .mb-small {
   margin-bottom: $container-p-small;
+}
+
+.mb-large {
+  margin-bottom: $container-p-large;
 }
 
 .navigation-link {

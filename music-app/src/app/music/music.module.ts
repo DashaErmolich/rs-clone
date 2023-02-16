@@ -26,6 +26,7 @@ import { MusicPageComponent } from './music-page/music-page.component';
 import { PlayListComponent } from './play-list/play-list.component';
 import { GenreComponent } from './genre/genre.component';
 import { ArtistComponent } from './artist/artist.component';
+import { TracksComponent } from './tracks/tracks.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ArtistComponent } from './artist/artist.component';
     PlayListComponent,
     GenreComponent,
     ArtistComponent,
+    TracksComponent,
   ],
   imports: [
     CommonModule,
