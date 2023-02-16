@@ -16,13 +16,13 @@ import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
 
 import { CookieModule } from 'ngx-cookie';
 import { ThemeService } from 'src/app/services/theme.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { SettingsAsideComponent } from './settings-aside/settings-aside.component';
 import { SettingsLanguageComponent } from './settings-language/settings-language.component';
 import { SettingsThemeComponent } from './settings-theme/settings-theme.component';
 import { SettingsAccountComponent } from './settings-account/settings-account.component';
 import { SettingsPageComponent } from './settings-page/settings-page.component';
 import { l10nConfig, HttpTranslationLoader, AppStorage } from '../../I10n-config';
-import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @NgModule({
   declarations: [

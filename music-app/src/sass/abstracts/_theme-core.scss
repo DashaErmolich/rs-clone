@@ -67,16 +67,6 @@
       background-color: mat-color($warn);
     }
 
-    .theme-primary.#{$css-class}-border {
-      border: 1px solid mat-color($primary);
-    }
-    .theme-accent.#{$css-class}-border {
-      border: 1px solid mat-color($accent);
-    }
-    .theme-warn.#{$css-class}-border {
-      border: 1px solid mat-color($warn);
-    }
-
     .theme-primary.#{$css-class}-font-color {
       color: mat-color($primary);
     }
