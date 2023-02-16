@@ -66,15 +66,17 @@
     </div>
 
     <div *ngSwitchCase="'artists'">
-      <div class="result-container">
-        <mat-card *ngFor="let artist of artists" class="artist-card" [routerLink]="['/music/artist', artist.id]">
+      <app-artists [artists]="artists" class="result-container"></app-artists>
+      <!-- <div class="result-container"> -->
+
+        <!-- <mat-card *ngFor="let artist of artists" class="artist-card" [routerLink]="['/music/artist', artist.id]">
           <div class="image-wrapper">
             <img src="{{artist.picture_medium ? artist.picture_medium : defaultImg}}" alt={{artist.name}}>
           </div>
           <mat-card-content class="title-h1">{{artist.name}}</mat-card-content>
           <mat-card-content class="title-h2">Artist</mat-card-content>
-        </mat-card>
-      </div>
+        </mat-card> -->
+      <!-- </div> -->
     </div>
 
     <div *ngSwitchCase="'albums'">

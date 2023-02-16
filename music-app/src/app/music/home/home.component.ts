@@ -37,6 +37,6 @@ export class HomeComponent implements OnInit {
   }
 
   isTrackList(): boolean {
-    return Boolean(this.trackList.length);
+    return this.trackList ? Boolean(this.trackList.length) : false;
   }
 }
