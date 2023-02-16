@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ITrackResponse } from '../../models/api-response.models';
+import { ITrackResponse } from '../models/api-response.models';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
