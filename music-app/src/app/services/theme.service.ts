@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
+import { IUserTheme } from '../models/theme.models';
 import { LocalStorageService } from './local-storage.service';
-import { IUserTheme } from '../../models/theme.models';
 
 const THEME_DARKNESS_SUFFIX = '-dark';
 

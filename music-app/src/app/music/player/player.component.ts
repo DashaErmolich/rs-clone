@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
-import { StateService } from 'src/app/core/services/state.service';
+import { AudioService } from 'src/app/services/audio.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { StateService } from 'src/app/services/state.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
-import { AudioService } from '../../core/services/audio.service';
-import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-player',
@@ -219,8 +218,16 @@ export class PlayerComponent implements OnInit {
         lastTrackIndex -= 1;
       }
 
-      const newCurrentTrackIndex = shuffledTracks
+      let newCurrentTrackIndex = shuffledTracks
         .findIndex((track) => track.id === this.trackList[this.currentTrackIndex!].id);
+
+      if (newCurrentTrackIndex !== 0) {
+        const currentTrack = shuffledTracks[newCurrentTrackIndex];
+        const firstTrack = shuffledTracks[0];
+        shuffledTracks[0] = currentTrack;
+        shuffledTracks[newCurrentTrackIndex] = firstTrack;
+        newCurrentTrackIndex = 0;
+      }
 
       this.myState.setTrackListInfo(shuffledTracks, newCurrentTrackIndex);
       this.checkTrackPosition();

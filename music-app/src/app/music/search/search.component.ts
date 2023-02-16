@@ -10,7 +10,10 @@ import {
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { StateService } from 'src/app/services/state.service';
+import { AudioService } from 'src/app/services/audio.service';
+import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-search',
@@ -40,11 +43,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlistsFromChart: Partial<IPlayListResponse>[] = [];
 
-  loading = false;
+  loading = true;
 
   searchParam: string = '';
 
   tracks: Partial<ITrackResponse>[] = [];
+
+  tracksOfState: Partial<ITrackResponse>[] = [];
 
   artists: Partial<IArtistResponse>[] = [];
 
@@ -66,10 +71,31 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlists$!: Subscription;
 
+  playingTrackIndex$!: Subscription;
+
+  trackList$!: Subscription;
+
+  isPlay$!: Observable<boolean>;
+
+  isPause$!: Observable<boolean>;
+
+  isEnd$!: Subscription;
+
+  playingTrackIndex!: number;
+
+  isPlay!: boolean;
+
+  isEnd!: boolean;
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private route: ActivatedRoute,
+    private state: StateService,
+    private myAudio: AudioService,
+    private themeService: ThemeService,
   ) {}
+
+  theme: string = this.themeService.activeTheme;
 
   ngOnInit(): void {
     this.queryParams$ = this.route.queryParams.subscribe((param) => {
@@ -88,6 +114,21 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchType = SearchType.tracks;
       }
     });
+    this.isPlay$ = this.myAudio.isPlay$;
+    this.isPause$ = this.myAudio.isPause$;
+    this.isEnd$ = this.myAudio.state$.subscribe((res) => {
+      if (res.progress !== res.duration) {
+        this.isEnd = false;
+      } else {
+        this.isEnd = true;
+      }
+    });
+    this.trackList$ = this.state.trackList$.subscribe((tracks) => {
+      this.tracksOfState = tracks;
+    });
+    this.playingTrackIndex$ = this.state.playingTrackIndex$.subscribe((index) => {
+      this.playingTrackIndex = index!;
+    });
   }
 
   ngOnDestroy(): void {
@@ -98,11 +139,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.artists$) this.artists$.unsubscribe();
     if (this.albums$) this.albums$.unsubscribe();
     if (this.playlists$) this.playlists$.unsubscribe();
+    if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
+    if (this.isEnd$) this.isEnd$.unsubscribe();
+    if (this.trackList$) this.trackList$.unsubscribe();
   }
 
   renderTracks() {
     this.searchType = SearchType.tracks;
-    if (!this.tracks || this.tracks.length === 0) this.loading = true;
     this.tracks$ = this.deezerRestApiService
       .getSearch(this.searchParam, this.index, this.limitTracks)
       .subscribe((res) => {
@@ -151,7 +194,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     if (searchType === SearchType.tracks) {
       this.limitTracks += Limits.tracks;
-      this.renderTracks();
+      this.tracks$ = this.deezerRestApiService
+        .getSearch(this.searchParam, this.index, this.limitTracks)
+        .subscribe((res) => {
+          this.tracks = res.data;
+          if (this.tracksOfState.length) {
+            this.state.setTrackListInfo(this.tracks, this.playingTrackIndex);
+          }
+          this.loading = false;
+        });
     }
     if (searchType === SearchType.albums) {
       this.limitAlbums += Limits.albums;
@@ -181,5 +232,25 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.searchType === SearchType.playlists) {
       this.renderPlaylists();
     }
+  }
+
+  setTracksInfo(index: number) {
+    this.state.setTrackListInfo(this.tracks, index);
+    this.myAudio.playTrack(String(this.tracksOfState[index].preview));
+    this.isPlay = !this.isPlay;
+  }
+
+  playPause() {
+    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+    if (this.isPlay) {
+      this.myAudio.pause();
+    } else {
+      this.myAudio.play();
+    }
+  }
+
+  isTrackPlaying(index: number) {
+    return this.tracksOfState.length
+      ? this.tracks[index].id === this.tracksOfState[this.playingTrackIndex].id : false;
   }
 }
