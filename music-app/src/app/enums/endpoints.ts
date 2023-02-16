@@ -19,7 +19,7 @@ export enum SearchType {
 }
 
 export enum Limits {
-  tracks = 3,
+  tracks = 25,
   artists = 10,
   albums = 10,
   playlists = 10,

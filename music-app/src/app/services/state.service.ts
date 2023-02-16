@@ -12,8 +12,6 @@ export class StateService {
 
   playingTrackIndex$ = new BehaviorSubject<number | null>(null);
 
-  // currentPlayingTrackIndex$ = new BehaviorSubject<number | null>(null);
-
   constructor(private storage: LocalStorageService) {
     const trackListInfo = this.storage.getTrackListInfo();
     if (trackListInfo !== null) {
@@ -31,8 +29,4 @@ export class StateService {
     this.playingTrackIndex$.next(index);
     this.storage.setTrackListInfo(this.trackList$.value, index);
   }
-
-  // setCurrentPlayingTrackIndex(index: number) {
-  //   this.currentPlayingTrackIndex$.next(index);
-  // }
 }
