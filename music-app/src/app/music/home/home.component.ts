@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.myDeezer.getSearch('queen', 0, 25).subscribe((response) => {
+    this.myDeezer.getSearch('muse', 0, 5).subscribe((response) => {
       this.trackList = response.data;
     });
   }

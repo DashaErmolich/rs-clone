@@ -1,18 +1,21 @@
 import {
   Component, Input, OnInit, OnDestroy,
 } from '@angular/core';
+
 import { Subscription, Observable } from 'rxjs';
-import { ITrackResponse } from '../../models/api-response.models';
-import { StateService } from '../../services/state.service';
-import { AudioService } from '../../services/audio.service';
-import { ThemeService } from '../../services/theme.service';
-import { DEFAULT_SRC } from '../../constants/constants';
+
+import { ITrackResponse } from '../../../models/api-response.models';
+import { StateService } from '../../../services/state.service';
+import { AudioService } from '../../../services/audio.service';
+import { ThemeService } from '../../../services/theme.service';
+import { DEFAULT_SRC } from '../../../constants/constants';
 
 @Component({
   selector: 'app-tracks',
   templateUrl: './tracks.component.html',
-  styleUrls: ['./tracks.component.scss'],
+  styleUrls: ['../../search/search.component.scss'],
 })
+
 export class TracksComponent implements OnInit, OnDestroy {
   defaultImg: string = DEFAULT_SRC;
 

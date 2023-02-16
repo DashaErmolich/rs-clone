@@ -1,0 +1,5 @@
+<mat-card *ngFor="let genre of genres; let i=index" class="card" [routerLink]="['/music/genre', genre.id]"
+  [style.background]="randomColor(i)">
+  <mat-card-content>{{genre.name}}</mat-card-content>
+  <img class="card-img" src="{{genre.picture_medium ? genre.picture_medium : defaultImg}}" alt={{genre.name}}>
+</mat-card>

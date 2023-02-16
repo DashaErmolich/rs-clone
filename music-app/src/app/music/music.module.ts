@@ -26,9 +26,11 @@ import { MusicPageComponent } from './music-page/music-page.component';
 import { PlayListComponent } from './play-list/play-list.component';
 import { GenreComponent } from './genre/genre.component';
 import { ArtistComponent } from './artist/artist.component';
-import { TracksComponent } from './tracks/tracks.component';
-import { ArtistsComponent } from './artists/artists.component';
-import { AlbumsComponent } from './albums/albums.component';
+import { TracksComponent } from './shared/tracks/tracks.component';
+import { ArtistsComponent } from './shared/artists/artists.component';
+import { AlbumsComponent } from './shared/albums/albums.component';
+import { PlaylistsComponent } from './shared/playlists/playlists.component';
+import { GenresComponent } from './shared/genres/genres.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { AlbumsComponent } from './albums/albums.component';
     TracksComponent,
     ArtistsComponent,
     AlbumsComponent,
+    PlaylistsComponent,
+    GenresComponent,
   ],
   imports: [
     CommonModule,

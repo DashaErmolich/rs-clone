@@ -8,7 +8,6 @@ import {
   IAlbumResponse,
 } from 'src/app/models/api-response.models';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
-import { DEFAULT_SRC, COLORS } from 'src/app/constants/constants';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
 import { StateService } from 'src/app/services/state.service';
 import { ThemeService } from 'src/app/services/theme.service';
@@ -20,12 +19,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  colors: string[] = COLORS;
-
-  defaultImg: string = DEFAULT_SRC;
-
-  isSearchPage: boolean = true;
-
   limitTracks: number = Limits.tracks;
 
   limitArtists: number = Limits.artists;
@@ -74,17 +67,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   trackList$!: Subscription;
 
-  // isPlay$!: Observable<boolean>;
-
-  // isPause$!: Observable<boolean>;
-
-  // isEnd$!: Subscription;
-
   playingTrackIndex!: number;
-
-  // isPlay!: boolean;
-
-  // isEnd!: boolean;
 
   constructor(
     private deezerRestApiService: DeezerRestApiService,
@@ -112,15 +95,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchType = SearchType.tracks;
       }
     });
-    // this.isPlay$ = this.myAudio.isPlay$;
-    // this.isPause$ = this.myAudio.isPause$;
-    // this.isEnd$ = this.myAudio.state$.subscribe((res) => {
-    //   if (res.progress !== res.duration) {
-    //     this.isEnd = false;
-    //   } else {
-    //     this.isEnd = true;
-    //   }
-    // });
     this.trackList$ = this.state.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
     });
@@ -138,7 +112,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.albums$) this.albums$.unsubscribe();
     if (this.playlists$) this.playlists$.unsubscribe();
     if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
-    // if (this.isEnd$) this.isEnd$.unsubscribe();
     if (this.trackList$) this.trackList$.unsubscribe();
   }
 
@@ -212,11 +185,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  randomColor(i: number) {
-    const index = i % this.colors.length;
-    return this.colors[index];
-  }
-
   checkTypeOfSearch() {
     if (this.searchType === SearchType.tracks) {
       this.renderTracks();
@@ -231,24 +199,4 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.renderPlaylists();
     }
   }
-
-  // setTracksInfo(index: number) {
-  //   this.state.setTrackListInfo(this.tracks, index);
-  //   this.myAudio.playTrack(String(this.tracksOfState[index].preview));
-  //   this.isPlay = !this.isPlay;
-  // }
-
-  // playPause() {
-  //   this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
-  //   if (this.isPlay) {
-  //     this.myAudio.pause();
-  //   } else {
-  //     this.myAudio.play();
-  //   }
-  // }
-
-  // isTrackPlaying(index: number) {
-  //   return this.tracksOfState.length
-  //     ? this.tracks[index].id === this.tracksOfState[this.playingTrackIndex].id : false;
-  // }
 }
