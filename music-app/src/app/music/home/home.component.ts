@@ -2,6 +2,8 @@ import * as moment from 'moment';
 
 import { OnInit, Component } from '@angular/core';
 
+import { forkJoin } from 'rxjs';
+
 import {
   ITrackResponse,
   IArtistResponse,
@@ -67,30 +69,27 @@ export class HomeComponent implements OnInit {
     { message: 'home.greeting.night', hoursStart: 21, hoursEnd: 4 },
   ];
 
+  isLoading = true;
+
   constructor(
     private myDeezer: DeezerRestApiService,
     private myUtils: UtilsService,
   ) { }
 
   ngOnInit(): void {
-    this.myDeezer.getSearch('muse', 0, 5).subscribe((response) => {
-      this.trackList = this.getReadyData(response.data);
-    });
-    this.myDeezer.getSearchArtists('met', 0, 5).subscribe((response) => {
-      this.artists = this.getReadyData(response.data);
-    });
-    this.myDeezer.getSearchPlayLists('bla', 0, 5).subscribe((response) => {
-      this.playlists = this.getReadyData(response.data);
-    });
-    this.myDeezer.getGenres().subscribe((response) => {
-      this.genres = this.getReadyData(response.data);
-    });
-    this.myDeezer.getChart().subscribe((response) => {
-      this.chartRecommendations.tracks.data = this.getReadyData(response.tracks.data, 10);
-      this.chartRecommendations.albums.data = this.getReadyData(response.albums.data);
-      this.chartRecommendations.artists.data = this.getReadyData(response.artists.data);
-      this.chartRecommendations.playlists.data = this.getReadyData(response.playlists.data);
-      this.chartRecommendations.podcasts.data = this.getReadyData(response.podcasts.data);
+    forkJoin({
+      genres: this.myDeezer.getGenres(),
+      chartData: this.myDeezer.getChart(),
+    }).subscribe((response) => {
+      this.genres = this.getReadyData(response.genres.data);
+      this.chartRecommendations.tracks.data = this.getReadyData(response.chartData.tracks.data, 10);
+      this.chartRecommendations.albums.data = this.getReadyData(response.chartData.albums.data);
+      this.chartRecommendations.artists.data = this.getReadyData(response.chartData.artists.data);
+      this.chartRecommendations.playlists.data = this.getReadyData(
+        response.chartData.playlists.data,
+      );
+      this.chartRecommendations.podcasts.data = this.getReadyData(response.chartData.podcasts.data);
+      this.isLoading = false;
     });
   }
 
