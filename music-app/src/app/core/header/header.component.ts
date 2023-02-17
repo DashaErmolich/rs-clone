@@ -4,12 +4,17 @@ import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
 import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+import { StateService } from '../../services/state.service';
+import { IUserIcons } from '../../models/user-icons.models';
+
+import { userIconsData } from '../../../assets/user-icons/user-icons';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
+
 export class HeaderComponent implements OnInit, OnDestroy {
   searchControl: FormControl = new FormControl();
 
@@ -23,11 +28,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   events$: Subscription = new Subscription();
 
-  userIcon = '../../../assets/icons/user-icons-sprite.svg#icons8-jake';
+  userIcons: IUserIcons[] = userIconsData;
+
+  userIconsPath: string[] = this.userIcons.map((icon) => icon.path);
+
+  userName!: string;
+
+  userIconId!: number;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private myState: StateService,
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +61,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.isSearchRoute = false;
         }
       }
+    });
+    this.myState.userName$.subscribe((data) => {
+      this.userName = data;
+    });
+    this.myState.userIconId$.subscribe((data) => {
+      this.userIconId = data;
     });
   }
 
