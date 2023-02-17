@@ -38,6 +38,7 @@ import { ArtistsComponent } from './shared/artists/artists.component';
 import { AlbumsComponent } from './shared/albums/albums.component';
 import { PlaylistsComponent } from './shared/playlists/playlists.component';
 import { GenresComponent } from './shared/genres/genres.component';
+import { LikedTracksComponent } from './liked-tracks/liked-tracks.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { GenresComponent } from './shared/genres/genres.component';
     AlbumsComponent,
     PlaylistsComponent,
     GenresComponent,
+    LikedTracksComponent,
   ],
   imports: [
     CommonModule,
