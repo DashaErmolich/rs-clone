@@ -1,1 +1,41 @@
-<p>artist works!</p>
+<div *ngIf="artist">
+  <div class="artist-wrapper">
+    <div class="artist-container">
+      <div class="artist-image"><img src={{artist.picture_medium}} alt={{artist.name}}></div>
+      <div *ngIf="artist.type === 'artist'" class="artist-description">
+        <p class="artist-type">{{artist.type}}</p>
+        <h2 class="artist-title">{{artist.name}}</h2><div class="artist-container-btns">
+      <button mat-fab color="primary" (click)="playPause(0)">
+        <mat-icon>{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
+      </button>
+      <button mat-fab color="basic">
+        <mat-icon>favorite</mat-icon>
+      </button>
+      </div>
+      
+    </div>
+  </div>
+    </div>
+    
+  <!-- <p>tracks: {{artist.tracklist}} </p> -->
+  <!-- <span> duration: {{Math.floor(artist.duration/60)}}min</span> -->
+  <!-- <p>{{artist.tracks.data[0].artist.name}}, {{artist.tracks.data[1].artist.name}},
+        {{artist.tracks.data[2].artist.name}} and more</p> -->
+  <!-- <p>Made for: {{artist.creator.name}}</p> -->
+</div>
+
+<app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container"></app-tracks>
+<!-- <div *ngIf="tracks$ | async as tracks" class="tracks-container">
+    <div *ngFor="let track of tracks.data let i=index" class="track">
+      <p>{{ i+1 }}</p>
+      <div *ngIf="track.album.cover_small"><img src={{track.album.cover_small}} alt={{track.title}}></div>
+      <div *ngIf="!track.album.cover_small"><img src={{defaultImg}} alt={{track.title}}></div>
+
+      <div class="track-description">
+        <p>{{track.title}}</p>
+        <p>Album: {{track.album.title}}</p>
+      </div>
+      <div>00:30</div>
+    </div>
+  </div> -->
+
