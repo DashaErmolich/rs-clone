@@ -1,15 +1,14 @@
 import { Inject, Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from "@angular/router";
-import { AuthorizationApiService } from "../services/authorization-api.service";
 import { StateService } from "../core/services/state.service";
-import { take, catchError } from 'rxjs/operators';
+import { AuthorizationService } from "../core/services/authorization.service";
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate, CanActivateChild {
   constructor(
     @Inject(StateService) private state: StateService,
     private router: Router,
-    private authService: AuthorizationApiService
+    private authService: AuthorizationService
   ) {}
 
   canActivate(
@@ -17,7 +16,7 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot
   ): boolean {
     console.log('Guard check reached');
-    this.state.checkAuth();
+    this.authService.checkAuth();
     console.log('Guard check result:');
     console.log(this.state.isAuthorized);
 

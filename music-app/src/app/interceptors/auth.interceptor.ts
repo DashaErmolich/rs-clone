@@ -19,23 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
       })
       console.log(`auth interceptor works! Modified request: `)
       console.log(authReq)
-      // return next.handle(authReq);
       return next.handle(authReq)
-    //   .pipe(
-    //     tap({
-    //      next: (event) => {
-    //          if (event instanceof HttpResponse) {
-    //              console.log('Auth interceptor: OK');
-                 
-    //          }
-    //      },
-    //      error: (error: HttpErrorResponse) => {
-    //       console.log('Auth interceptor: ERROR');
-    //         console.log('Error at auth interceptor:')
-    //          throw error;
-    //      }
-    //  })
-    //   )
     }
     else return next.handle(req);
   }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { StateService } from 'src/app/core/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 
@@ -24,7 +25,8 @@ export class SignUpComponent {
   hide = true;
 
   constructor(
-    private store: StateService
+    private store: StateService,
+    private authServe: AuthorizationService
   ) { }
 
   signInForm: any = {
@@ -37,9 +39,9 @@ export class SignUpComponent {
     // this.authServe.registration(this.signInForm.username, this.signInForm.email, this.signInForm.password).subscribe((res) => {
     //   console.log(res)
     // })
-    this.store.registration(this.signInForm.username, this.signInForm.email, this.signInForm.password);
+    this.authServe.registration(this.signInForm.username, this.signInForm.email, this.signInForm.password);
   }
   submitLogout() {
-    this.store.logout();
+    this.authServe.logout();
   }
 }
