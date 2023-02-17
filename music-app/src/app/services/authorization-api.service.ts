@@ -1,14 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { serverUrl } from '../constants/constants';
-import { AuthResponse } from '../models/auth-response.models';
+import { HttpClient } from '@angular/common/http';
+import { serverUrl } from 'src/app/constants/constants';
+import { AuthResponse } from 'src/app/models/auth-response.models';
 import { userModel } from 'src/app/models/userDto.models';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
+export class AuthorizationApiService {
 
-export class AuthService {
   constructor(private http: HttpClient) {}
 
   login (username: string, email: string, password: string) {
@@ -28,6 +28,6 @@ export class AuthService {
   }
 
   fetchUsers () {
-    return this.http.get<userModel[]>(`${serverUrl}/users`);
+    return this.http.get<userModel[]>(`${serverUrl}/users`)
   }
 }

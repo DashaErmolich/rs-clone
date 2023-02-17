@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { StateService } from 'src/app/core/services/state.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,7 +24,6 @@ export class SignUpComponent {
   hide = true;
 
   constructor(
-    private authServe: AuthService,
     private store: StateService
   ) { }
 

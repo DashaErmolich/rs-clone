@@ -15,6 +15,7 @@ import { SettingsThemeComponent } from './user/settings/settings-theme/settings-
 import { SettingsAccountComponent } from './user/settings/settings-account/settings-account.component';
 import { GenreComponent } from './music/genre/genre.component';
 import { ArtistComponent } from './music/artist/artist.component';
+import { AuthorizedGuard } from './guards/isAuthorized.guard'; 
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -22,6 +23,8 @@ const routes: Routes = [
   {
     path: 'music',
     component: MusicPageComponent,
+    canActivate: [AuthorizedGuard],
+    canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -35,6 +38,8 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsPageComponent,
+    canActivate: [AuthorizedGuard],
+    canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'language', pathMatch: 'full' },
       { path: 'language', component: SettingsLanguageComponent },

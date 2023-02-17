@@ -27,6 +27,8 @@
     <div>
       <button mat-flat-button color="primary" (click)="submitLoginForm()">Sign in</button>
       <button mat-stroked-button color="warn" (click)="submitLogout()">Log out</button>
+      <button mat-raised-button color="accent" (click)="submitFetch()">Fetch users</button>
+      <button mat-stroked-button color="primary" (click)="submitRefresh()">Refresh</button>
     <p>Does not have an account?</p>
     <button mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active">Sign up</button>
     </div>
