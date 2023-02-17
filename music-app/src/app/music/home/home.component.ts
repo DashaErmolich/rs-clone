@@ -103,7 +103,14 @@ export class HomeComponent implements OnInit {
   }
 
   getReadyData<T>(data: T[], itemsQty: number = this.itemsQtyDefault): T[] {
-    return this.myUtils.getShuffledArray(data).slice(0, itemsQty);
+    let result: T[] = [];
+    if (data.length) {
+      result = this.myUtils.getShuffledArray(data);
+    }
+    if (result.length >= itemsQty) {
+      result = result.slice(0, itemsQty);
+    }
+    return result;
   }
 
   isThisTimeOfDay(hoursStart: number, hoursEnd: number): boolean {
