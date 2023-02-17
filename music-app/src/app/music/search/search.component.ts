@@ -118,10 +118,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.searchParam$) this.searchParam$.unsubscribe();
   }
 
-  getSearchParam(value: string) {
-    this.searchParam = value;
-  }
-
   renderTracks() {
     this.searchType = SearchType.tracks;
     this.tracks$ = this.deezerRestApiService
