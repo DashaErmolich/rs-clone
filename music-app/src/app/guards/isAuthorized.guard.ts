@@ -15,16 +15,13 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    console.log('Guard check reached');
+
     this.authService.checkAuth();
-    console.log('Guard check result:');
-    console.log(this.state.isAuthorized);
+    
+    if (!this.state.isAuthorized) {
+      this.router.navigate(['welcome']);
+    }
 
-      if (!this.state.isAuthorized) {
-        this.router.navigate(['welcome']);
-      }
-
-    // })
     return this.state.isAuthorized;
   }
 

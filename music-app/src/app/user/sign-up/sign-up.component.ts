@@ -3,7 +3,6 @@ import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/form
 import {ErrorStateMatcher} from '@angular/material/core';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { StateService } from 'src/app/core/services/state.service';
-import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -36,9 +35,6 @@ export class SignUpComponent {
   }
 
   submitRegistrationForm() {
-    // this.authServe.registration(this.signInForm.username, this.signInForm.email, this.signInForm.password).subscribe((res) => {
-    //   console.log(res)
-    // })
     this.authServe.registration(this.signInForm.username, this.signInForm.email, this.signInForm.password);
   }
   submitLogout() {

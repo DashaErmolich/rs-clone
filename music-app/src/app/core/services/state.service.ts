@@ -1,4 +1,4 @@
-import { Injectable, Input, OnChanges } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { userModel } from 'src/app/models/userDto.models';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';

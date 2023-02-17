@@ -23,30 +23,17 @@ export class ResponseInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       tap({
-       next: (event) => {
-           if (event instanceof HttpResponse) {
-               console.log('Response interceptor has taken response: OK and send it out');
-           }
-           else {
-            console.log('Response interceptor has taken request: OK and send it out');
-           }
-       },
        error: (error: HttpErrorResponse) => {
-        console.log('Response interceptor: response ERROR');
         if (error.status === 401 && localStorage.getItem('token')) {
           try {
-            console.log('Take 401. Trying to use refresh token to restore access') // ПОЧИСТИТЬ ЛОГИ
             localStorage.removeItem('token');
             this.authService.refresh().pipe(take(1)).subscribe((res) => {
               if (res.accessToken) localStorage.setItem('token', res.accessToken)
             })
-          } catch (e) {
-            console.error('Failed first attempt to refresh user token');
-          }
+          } catch (e) {}
           throw new refreshRequiredError('Требуется обновление данных о пользователе');
         }
         else {
-          console.log('Failed final attempt to refresh user token. Redirect to welcome')
           this.router.navigate(['welcome']);
         }
        }

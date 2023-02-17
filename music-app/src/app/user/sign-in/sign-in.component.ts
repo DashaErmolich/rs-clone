@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { StateService } from 'src/app/core/services/state.service';
@@ -28,19 +28,6 @@ export class SignInComponent {
     private store: StateService,
   ) { }
 
-  // signInForm: FormGroup;
-
-  // constructor() {
-  //   this.signInForm = new FormGroup({
-  //     username: new FormControl(null),
-  //     email: new FormControl(null),
-  //     password: new FormControl(null)
-  //   })
-  //   this.signInForm.valueChanges.subscribe((v) => {
-  //     console.log(v)
-  //   })
-  // }
-
   signInForm: any = {
     username: '',
     email: '',
@@ -48,9 +35,6 @@ export class SignInComponent {
   }
 
   submitLoginForm() {
-    // this.authServe.registration(this.signInForm.username, this.signInForm.email, this.signInForm.password).subscribe((res) => {
-    //   console.log(res)
-    // })
     this.authServe.login(this.signInForm.username, this.signInForm.email, this.signInForm.password)
   }
   submitLogout() {

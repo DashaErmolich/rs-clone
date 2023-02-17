@@ -14,8 +14,6 @@ import { CoreModule } from './core/core.module';
 import { MusicModule } from './music/music.module';
 import { UserModule } from './user/user.module';
 import { AuthorizedGuard } from './guards/isAuthorized.guard'; 
-import { StateService } from './core/services/state.service';
-import { AuthorizationApiService } from './services/authorization-api.service';
 
 function initializeApp(): Promise<void> {
   return new Promise((resolve, reject) => { 

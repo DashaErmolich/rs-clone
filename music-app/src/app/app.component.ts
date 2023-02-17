@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StateService } from './core/services/state.service';
 import { ThemeService } from './core/services/theme.service';
 
@@ -20,7 +20,6 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(): void {
     if (localStorage.getItem('token')) {
-      console.log('Some token found. Authorized set at true')
       this.store.setAuthorized(true);
     }
   }

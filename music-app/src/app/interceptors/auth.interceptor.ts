@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
@@ -17,8 +17,6 @@ export class AuthInterceptor implements HttpInterceptor {
         withCredentials: true,
         headers: req.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`),
       })
-      console.log(`auth interceptor works! Modified request: `)
-      console.log(authReq)
       return next.handle(authReq)
     }
     else return next.handle(req);
