@@ -1,18 +1,35 @@
-<h1 *ngFor="let greeting of greetings" l10nTranslate class="mb-large">
-  <span *ngIf="getCurrentTimeHours() >= greeting.hoursStart && getCurrentTimeHours() < greeting.hoursEnd">
+<h1 *ngFor="let greeting of greetings" l10nTranslate>
+  <span *ngIf="isThisTimeOfDay(greeting.hoursStart, greeting.hoursEnd)">
     {{ greeting.message }}
   </span>
 </h1>
 
-<mat-card *ngIf="isTrackList()" class="mb-large">
-  <mat-card-content>
-    <h2>Now playing</h2>
-  </mat-card-content>
-</mat-card>
+<div class="mb-large">
+  <h2 l10nTranslate>home.genres</h2>
+  <app-genres [genres]="genres" class="suggestions-container"></app-genres>
+</div>
 
-<mat-card class="mb-large">
-  <mat-card-content>
-    <h2>Recommended Tracks</h2>
-    <app-tracks [tracks]="trackList"></app-tracks>
-  </mat-card-content>
-</mat-card>
+<div class="mb-large">
+    <h2 l10nTranslate>{{ chartRecommendations.tracks.title }}</h2>
+    <app-tracks [tracks]="chartRecommendations.tracks.data" class="suggestions-tracks"></app-tracks>
+</div>
+
+<div class="mb-large">
+    <h2 l10nTranslate>{{ chartRecommendations.albums.title }}</h2>
+    <app-albums [albums]="chartRecommendations.albums.data" class="suggestions-container"></app-albums>
+</div>
+
+<div class="mb-large">
+  <h2 l10nTranslate>{{ chartRecommendations.playlists.title }}</h2>
+  <app-playlists [playlists]="chartRecommendations.playlists.data" class="suggestions-container"></app-playlists>
+</div>
+
+<div class="mb-large">
+    <h2 l10nTranslate>{{ chartRecommendations.artists.title }}</h2>
+    <app-artists [artists]="chartRecommendations.artists.data" class="suggestions-container"></app-artists>
+</div>
+
+<div class="mb-large">
+    <h2 l10nTranslate>{{ chartRecommendations.podcasts.title }}</h2>
+    <app-playlists [playlists]="chartRecommendations.podcasts.data" class="suggestions-container"></app-playlists>
+</div>

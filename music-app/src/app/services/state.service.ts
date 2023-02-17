@@ -20,6 +20,10 @@ export class StateService {
 
   userIconId$ = new BehaviorSubject<number>(0);
 
+  searchValue$ = new BehaviorSubject<string>('');
+
+  likedTracks$ = new BehaviorSubject<number[]>([]);
+
   constructor(
     private storage: LocalStorageService,
   ) {
@@ -33,6 +37,7 @@ export class StateService {
     if (userData !== null) {
       this.setUserData(userData.userName, userData.userIconId);
     }
+    this.likedTracks$.next(this.storage.getLikedTracks());
   }
 
   setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
@@ -54,5 +59,24 @@ export class StateService {
     this.userName$.next(userName);
     this.userIconId$.next(userIconId);
     this.storage.setUserData(userName, userIconId);
+  }
+
+  setSearchParam(searchValue: string) {
+    this.searchValue$.next(searchValue);
+  }
+
+  setLikedTrack(trackDeezerId: number): void {
+    this.storage.setLikedTrack(trackDeezerId);
+    this.likedTracks$.next(this.storage.getLikedTracks());
+  }
+
+  removeLikedTrack(trackDeezerId: number): void {
+    const likedTracks = this.storage.getLikedTracks();
+    const trackIndex = likedTracks.findIndex((trackId) => trackId === trackDeezerId);
+    if (trackIndex >= 0) {
+      likedTracks.splice(trackIndex, 1);
+    }
+    this.storage.setLikedTracks(likedTracks);
+    this.likedTracks$.next(likedTracks);
   }
 }

@@ -52,6 +52,14 @@
       "afternoon": "Good afternoon",
       "evening": "Good evening",
       "night": "Good night"
-    }
+    },
+    "charts": {
+      "tracks": "Today's biggest hits",
+      "albums": "Popular albums",
+      "artists": "Popular artists",
+      "playlists": "Trending now playlists",
+      "podcasts": "You may like this podcasts"
+    },
+    "genres": "Popular genres"
   }
 }

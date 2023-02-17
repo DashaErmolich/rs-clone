@@ -15,6 +15,7 @@ import { SettingsThemeComponent } from './user/settings/settings-theme/settings-
 import { SettingsAccountComponent } from './user/settings/settings-account/settings-account.component';
 import { GenreComponent } from './music/genre/genre.component';
 import { ArtistComponent } from './music/artist/artist.component';
+import { LikedTracksComponent } from './music/liked-tracks/liked-tracks.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'search', component: SearchComponent },
       { path: 'library', component: LibraryComponent },
+      { path: 'liked-tracks', component: LikedTracksComponent },
       { path: 'play-list/:playListId', component: PlayListComponent },
       { path: 'genre/:genreId', component: GenreComponent },
       { path: 'artist/:artistId', component: ArtistComponent },

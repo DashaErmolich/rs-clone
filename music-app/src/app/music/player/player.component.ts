@@ -64,6 +64,8 @@ export class PlayerComponent implements OnInit {
     isShuffleOn: false,
   };
 
+  likedTracks!: number[];
+
   volumeSaver: number | null = null;
 
   constructor(
@@ -79,6 +81,9 @@ export class PlayerComponent implements OnInit {
     this.myState.playingTrackIndex$.subscribe((data: number | null) => {
       this.currentTrackIndex = data;
       this.checkTrackPosition();
+      if (this.likedTracks) {
+        this.isTrackLiked();
+      }
     });
     this.myAudio.state$.subscribe((data) => {
       this.currentState = data;
@@ -102,6 +107,11 @@ export class PlayerComponent implements OnInit {
     if (this.currentTrackIndex !== null) {
       this.isInitialTrackSet = true;
     }
+
+    this.myState.likedTracks$.subscribe((data) => {
+      this.likedTracks = data;
+      this.isTrackLiked();
+    });
   }
 
   playNext(): void {
@@ -197,10 +207,6 @@ export class PlayerComponent implements OnInit {
     );
   }
 
-  likeTrack(): void {
-    this.controlsState.isLiked = !this.controlsState.isLiked;
-  }
-
   getTrackAlbumImageSrc(): string {
     const imageSrcPlaceholder = '';
     let imageSrc = imageSrcPlaceholder;
@@ -289,5 +295,22 @@ export class PlayerComponent implements OnInit {
 
   toggleEqualizerVisibility() {
     this.myState.setEqualizerVisibility(!this.isEqualizerShown);
+  }
+
+  isTrackLiked(): boolean {
+    const index = this.likedTracks
+      .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
+    const isLiked = index >= 0;
+    this.controlsState.isLiked = isLiked;
+    return index >= 0;
+  }
+
+  likeTrack(): void {
+    this.controlsState.isLiked = !this.controlsState.isLiked;
+    if (this.controlsState.isLiked) {
+      this.myState.setLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    } else {
+      this.myState.removeLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    }
   }
 }

@@ -3,7 +3,8 @@ import { FormControl } from '@angular/forms';
 import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
-import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+
+import { Subscription } from 'rxjs';
 import { StateService } from '../../services/state.service';
 import { IUserIcons } from '../../models/user-icons.models';
 
@@ -40,14 +41,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private myState: StateService,
+    private state: StateService,
   ) {}
 
   ngOnInit(): void {
-    this.queryParams$ = this.route.queryParams.subscribe((param) => this.searchControl.setValue(param['q']));
+    this.queryParams$ = this.route.queryParams.subscribe((param) => {
+      if (param['q'] !== undefined) {
+        this.searchControl.setValue(param['q']);
+      } else {
+        this.searchControl.setValue('');
+      }
+      if (this.queryParams$) this.queryParams$.unsubscribe();
+    });
+
     this.searchControl$ = this.searchControl.valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((res) => {
         this.searchValue = res;
+        this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
 
@@ -71,8 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.searchControl$) this.searchControl$.unsubscribe();
+    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.events$) this.events$.unsubscribe();
   }
 }
