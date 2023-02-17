@@ -81,6 +81,9 @@ export class PlayerComponent implements OnInit {
     this.myState.playingTrackIndex$.subscribe((data: number | null) => {
       this.currentTrackIndex = data;
       this.checkTrackPosition();
+      if (this.likedTracks) {
+        this.isTrackLiked();
+      }
     });
     this.myAudio.state$.subscribe((data) => {
       this.currentState = data;
@@ -170,7 +173,6 @@ export class PlayerComponent implements OnInit {
       this.checkTrackPosition();
       this.myState.setPlayingTrackIndex(nextTrackIndex);
       this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
-      this.isTrackLiked();
     }
   }
 
@@ -183,7 +185,6 @@ export class PlayerComponent implements OnInit {
       this.checkTrackPosition();
       this.myState.setPlayingTrackIndex(prevTrackIndex);
       this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
-      this.isTrackLiked();
     }
   }
 
