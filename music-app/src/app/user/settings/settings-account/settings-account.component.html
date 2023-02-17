@@ -1,1 +1,16 @@
-<p>settings-account works!</p>
+<h2>Icon</h2>
+<div class="settings-user-icons-container mb-large">
+  <div *ngFor="let icon of userIcons" class="settings-user-icon-container"
+    [ngClass]="userIconId === icon.id
+      ? (theme + '-border' + ' theme-warn')
+      : (theme + '-border' + ' theme-primary')">
+    <svg class="settings-user-icon">
+      <use attr.xlink:href="{{ icon.path }}"></use>
+    </svg>
+  </div>
+</div>
+
+<h2>Username</h2>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Username" [value]="userName">
+</mat-form-field>

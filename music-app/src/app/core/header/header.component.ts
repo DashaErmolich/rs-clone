@@ -23,6 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   events$: Subscription = new Subscription();
 
+  userIcon = '../../../assets/icons/user-icons-sprite.svg#icons8-jake';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
