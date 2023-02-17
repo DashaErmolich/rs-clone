@@ -28,16 +28,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private state: StateService,
+
   ) {}
 
   ngOnInit(): void {
     this.queryParams$ = this.route.queryParams.subscribe((param) => {
       if (param['q'] !== undefined) {
         this.searchControl.setValue(param['q']);
-        this.state.setSearchParam(param['q']);
       } else {
-        this.state.setSearchParam('');
+        this.searchControl.setValue('');
       }
+      if (this.queryParams$) this.queryParams$.unsubscribe();
     });
 
     this.searchControl$ = this.searchControl.valueChanges
@@ -61,8 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.searchControl$) this.searchControl$.unsubscribe();
+    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.events$) this.events$.unsubscribe();
   }
 }

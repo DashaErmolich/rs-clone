@@ -106,7 +106,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.genres$) this.genres$.unsubscribe();
     if (this.playlistsFromChart$) this.playlistsFromChart$.unsubscribe();
     if (this.tracks$) this.tracks$.unsubscribe();
