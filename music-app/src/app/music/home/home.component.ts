@@ -1,7 +1,6 @@
 import * as moment from 'moment';
 import { OnInit, Component } from '@angular/core';
 import { ITrackResponse } from '../../models/api-response.models';
-import { StateService } from '../../services/state.service';
 import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { IGreetings } from '../../models/greetings.models';
 
@@ -21,7 +20,6 @@ export class HomeComponent implements OnInit {
   ];
 
   constructor(
-    private myState: StateService,
     private myDeezer: DeezerRestApiService,
   ) { }
 

@@ -82,4 +82,19 @@ export class LocalStorageService {
     const data = localStorage.getItem('EQ');
     return data === null ? null : JSON.parse(data);
   }
+
+  setLikedTrack(trackDeezerlId: number): void {
+    const likedTracks = this.getLikedTracks();
+    likedTracks.push(trackDeezerlId);
+    localStorage.setItem('likedTracks', JSON.stringify(likedTracks));
+  }
+
+  setLikedTracks(likedTracksId: number[]): void {
+    localStorage.setItem('likedTracks', JSON.stringify(likedTracksId));
+  }
+
+  getLikedTracks(): number[] {
+    const likedTracks = localStorage.getItem('likedTracks');
+    return likedTracks === null ? [] : JSON.parse(likedTracks);
+  }
 }
