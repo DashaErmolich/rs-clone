@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { Subscription } from 'rxjs';
+
 import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { ITrackResponse } from '../../models/api-response.models';
 import { StateService } from '../../services/state.service';
@@ -8,8 +11,12 @@ import { StateService } from '../../services/state.service';
   templateUrl: './liked-tracks.component.html',
   styleUrls: ['./liked-tracks.component.scss'],
 })
-export class LikedTracksComponent implements OnInit {
+export class LikedTracksComponent implements OnInit, OnDestroy {
   trackList: Partial<ITrackResponse>[] = [];
+
+  trackList$ = new Subscription();
+
+  likedTracks$ = new Subscription();
 
   constructor(
     private myDeezer: DeezerRestApiService,
@@ -17,13 +24,18 @@ export class LikedTracksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.myState.likedTracks$.subscribe((likedTracks) => {
+    this.likedTracks$ = this.myState.likedTracks$.subscribe((likedTracks) => {
       this.trackList = [];
       likedTracks.forEach((trackId) => {
-        this.myDeezer.getTrack(trackId).subscribe((res) => {
+        this.trackList$ = this.myDeezer.getTrack(trackId).subscribe((res) => {
           this.trackList.push(res);
         });
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.likedTracks$.unsubscribe();
+    this.trackList$.unsubscribe();
   }
 }
