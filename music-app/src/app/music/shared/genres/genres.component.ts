@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 import { IGenreResponse } from '../../../models/api-response.models';
-import { COLORS, DEFAULT_SRC } from '../../../constants/constants';
+import { DEFAULT_SRC } from '../../../constants/constants';
+import { RandomColorHelper } from '../../../helpers/random-color-helper';
 
 @Component({
   selector: 'app-genres',
@@ -9,15 +10,8 @@ import { COLORS, DEFAULT_SRC } from '../../../constants/constants';
   styleUrls: ['../../search/search.component.scss'],
 })
 
-export class GenresComponent {
+export class GenresComponent extends RandomColorHelper {
   defaultImg: string = DEFAULT_SRC;
 
-  colors: string[] = COLORS;
-
   @Input() genres: Partial<IGenreResponse>[] = [];
-
-  randomColor(i: number) {
-    const index = i % this.colors.length;
-    return this.colors[index];
-  }
 }
