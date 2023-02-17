@@ -14,6 +14,8 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
+  searchValue$ = new BehaviorSubject<string>('');
+
   likedTracks$ = new BehaviorSubject<number[]>([]);
 
   constructor(private storage: LocalStorageService) {
@@ -37,6 +39,10 @@ export class StateService {
 
   setEqualizerVisibility(isVisible: boolean): void {
     this.isEqualizerShown$.next(isVisible);
+  }
+
+  setSearchParam(searchValue: string) {
+    this.searchValue$.next(searchValue);
   }
 
   setLikedTrack(trackDeezerId: number): void {
