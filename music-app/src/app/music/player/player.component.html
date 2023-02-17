@@ -22,7 +22,7 @@
     <div class="flex-row player-controls">
       <div class="flex-row player-buttons-group">
         <button mat-mini-fab color="basic" (click)="likeTrack()">
-          <mat-icon [color]="isTrackLiked() ? 'warn' : 'basic'">favorite</mat-icon>
+          <mat-icon [color]="controlsState.isLiked ? 'warn' : 'basic'">favorite</mat-icon>
         </button>
         <button mat-mini-fab color="basic" (click)="shuffleTracks()">
           <mat-icon>shuffle</mat-icon>

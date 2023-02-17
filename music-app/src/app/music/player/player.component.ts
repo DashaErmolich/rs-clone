@@ -64,6 +64,8 @@ export class PlayerComponent implements OnInit {
     isShuffleOn: false,
   };
 
+  likedTracks!: number[];
+
   volumeSaver: number | null = null;
 
   constructor(
@@ -102,6 +104,11 @@ export class PlayerComponent implements OnInit {
     if (this.currentTrackIndex !== null) {
       this.isInitialTrackSet = true;
     }
+
+    this.myState.likedTracks$.subscribe((data) => {
+      this.likedTracks = data;
+      this.isTrackLiked();
+    });
   }
 
   playNext(): void {
@@ -163,6 +170,7 @@ export class PlayerComponent implements OnInit {
       this.checkTrackPosition();
       this.myState.setPlayingTrackIndex(nextTrackIndex);
       this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
+      this.isTrackLiked();
     }
   }
 
@@ -175,6 +183,7 @@ export class PlayerComponent implements OnInit {
       this.checkTrackPosition();
       this.myState.setPlayingTrackIndex(prevTrackIndex);
       this.myAudio.playTrack(this.trackList[this.currentTrackIndex].preview!);
+      this.isTrackLiked();
     }
   }
 
@@ -195,15 +204,6 @@ export class PlayerComponent implements OnInit {
       this.controlsState.isRepeatAllOn,
       this.controlsState.isRepeatOneOn,
     );
-  }
-
-  likeTrack(): void {
-    this.controlsState.isLiked = !this.controlsState.isLiked;
-    if (this.controlsState.isLiked) {
-      this.myState.setLikedTrack(this.trackList[this.currentTrackIndex!].id!);
-    } else {
-      this.myState.removeLikedTrack(this.trackList[this.currentTrackIndex!].id!);
-    }
   }
 
   getTrackAlbumImageSrc(): string {
@@ -297,11 +297,19 @@ export class PlayerComponent implements OnInit {
   }
 
   isTrackLiked(): boolean {
-    const likedTracks = this.myStorage.getLikedTracks();
-    const index = likedTracks
+    const index = this.likedTracks
       .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
     const isLiked = index >= 0;
     this.controlsState.isLiked = isLiked;
     return index >= 0;
+  }
+
+  likeTrack(): void {
+    this.controlsState.isLiked = !this.controlsState.isLiked;
+    if (this.controlsState.isLiked) {
+      this.myState.setLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    } else {
+      this.myState.removeLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    }
   }
 }

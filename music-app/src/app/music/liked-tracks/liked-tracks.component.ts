@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { ITrackResponse } from '../../models/api-response.models';
-import { LocalStorageService } from '../../services/local-storage.service';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-liked-tracks',
@@ -9,13 +9,21 @@ import { LocalStorageService } from '../../services/local-storage.service';
   styleUrls: ['./liked-tracks.component.scss'],
 })
 export class LikedTracksComponent implements OnInit {
-  trackList!: Partial<ITrackResponse>[];
+  trackList: Partial<ITrackResponse>[] = [];
 
   constructor(
-    private myStorage: LocalStorageService,
+    private myDeezer: DeezerRestApiService,
+    private myState: StateService,
   ) { }
 
   ngOnInit(): void {
-    this.myStorage.getLikedTracks();
+    this.myState.likedTracks$.subscribe((likedTracks) => {
+      this.trackList = [];
+      likedTracks.forEach((trackId) => {
+        this.myDeezer.getTrack(trackId).subscribe((res) => {
+          this.trackList.push(res);
+        });
+      });
+    });
   }
 }

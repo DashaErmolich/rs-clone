@@ -21,6 +21,7 @@ export class StateService {
     if (trackListInfo !== null) {
       this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
     }
+    this.likedTracks$.next(this.storage.getLikedTracks());
   }
 
   setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
@@ -50,5 +51,6 @@ export class StateService {
       likedTracks.splice(trackIndex, 1);
     }
     this.storage.setLikedTracks(likedTracks);
+    this.likedTracks$.next(likedTracks);
   }
 }
