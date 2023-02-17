@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 import { IPlayListResponse } from '../../../models/api-response.models';
-import { DEFAULT_SRC, COLORS } from '../../../constants/constants';
-import { UtilsService } from '../../../services/utils.service';
+import { DEFAULT_SRC } from '../../../constants/constants';
+import { RandomColorHelper } from '../../../helpers/random-color-helper';
 
 @Component({
   selector: 'app-playlists',
@@ -10,19 +10,8 @@ import { UtilsService } from '../../../services/utils.service';
   styleUrls: ['../../search/search.component.scss'],
 })
 
-export class PlaylistsComponent {
+export class PlaylistsComponent extends RandomColorHelper {
   defaultImg: string = DEFAULT_SRC;
 
-  colors: string[] = this.myUtils.getShuffledArray(COLORS);
-
   @Input() playlists: Partial<IPlayListResponse>[] = [];
-
-  constructor(
-    private myUtils: UtilsService,
-  ) { }
-
-  randomColor(i: number) {
-    const index = i % this.colors.length;
-    return this.colors[index];
-  }
 }
