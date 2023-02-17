@@ -23,7 +23,6 @@ const routes: Routes = [
   {
     path: 'music',
     component: MusicPageComponent,
-    canActivate: [AuthorizedGuard],
     canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -38,7 +37,6 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsPageComponent,
-    canActivate: [AuthorizedGuard],
     canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'language', pathMatch: 'full' },

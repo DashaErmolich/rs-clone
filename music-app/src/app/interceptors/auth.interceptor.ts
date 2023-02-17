@@ -3,10 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { serverUrl } from '../constants/constants';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(
+    private localStore: LocalStorageService,
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -15,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (req.url.includes(serverUrl)) {
       const authReq = req.clone({
         withCredentials: true,
-        headers: req.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`),
+        headers: req.headers.set('Authorization', `Bearer ${this.localStore.getToken()}`),
       })
       return next.handle(authReq)
     }

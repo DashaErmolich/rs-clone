@@ -3,6 +3,7 @@ import { userModel } from 'src/app/models/userDto.models';
 import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,14 @@ export class AuthorizationService {
 
   constructor(
     private authService: AuthorizationApiService,
-    private state: StateService
+    private state: StateService,
+    private localStore: LocalStorageService
     ) {}
 
     login(username: string, email: string, password: string) {
       try {
         this.authService.login(username, email, password).pipe(take(1)).subscribe((res) => {
-          localStorage.setItem('token', res.accessToken)
+          this.localStore.setToken(res.accessToken)
           this.state.setAuthorized(true);
           this.state.setUser(res.user)
         })
@@ -27,7 +29,7 @@ export class AuthorizationService {
     registration(username: string, email: string, password: string) {
       try {
         this.authService.registration(username, email, password).pipe(take(1)).subscribe((res) => {
-          localStorage.setItem('token', res.accessToken)
+          this.localStore.setToken(res.accessToken)
           this.state.setAuthorized(true);
           this.state.setUser(res.user)
         })
@@ -37,7 +39,7 @@ export class AuthorizationService {
     logout() {
       try {
         this.authService.logout().pipe(take(1)).subscribe(() => {
-          localStorage.removeItem('token')
+          this.localStore.removeToken();
           this.state.setAuthorized(false);
           this.state.setUser({} as userModel)
         })
@@ -46,9 +48,16 @@ export class AuthorizationService {
     
     checkAuth() {
       try {
-        this.authService.refresh().pipe(take(1)).subscribe((res) => {
+        this.state.setAuthorized(this.localStore.getToken() ? true : false)
+
+        this.authService.refresh().pipe(
+        take(1),
+        catchError(err => {
+          return []
+        }),
+        ).subscribe((res) => {
           if (res.accessToken) {
-            localStorage.setItem('token', res.accessToken)
+            this.localStore.setToken(res.accessToken)
             this.state.setAuthorized(true);
             this.state.setUser(res.user)
           }

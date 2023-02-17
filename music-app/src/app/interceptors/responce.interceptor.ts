@@ -4,13 +4,17 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { serverUrl } from '../constants/constants';
-import { StateService } from '../services/state.service';
 import { refreshRequiredError } from '../errors/refreshRequired.error';
 import { AuthorizationApiService } from '../services/authorization-api.service';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Injectable()
 export class ResponseInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthorizationApiService, private router: Router, private storage: StateService) {}
+  constructor(
+    private authService: AuthorizationApiService, 
+    private router: Router, 
+    private localStore: LocalStorageService
+    ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -24,14 +28,14 @@ export class ResponseInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap({
        error: (error: HttpErrorResponse) => {
-        if (error.status === 401 && localStorage.getItem('token')) {
+        if (error.status === 401 && this.localStore.getToken()) {
           try {
-            localStorage.removeItem('token');
+            this.localStore.removeToken();
             this.authService.refresh().pipe(take(1)).subscribe((res) => {
-              if (res.accessToken) localStorage.setItem('token', res.accessToken)
+              if (res.accessToken) this.localStore.setToken(res.accessToken);
             })
           } catch (e) {}
-          throw new refreshRequiredError('Требуется обновление данных о пользователе');
+          throw new refreshRequiredError('Users data refresh required');
         }
         else {
           this.router.navigate(['welcome']);

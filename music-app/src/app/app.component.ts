@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { StateService } from './services/state.service';
+import { Component } from '@angular/core';
 import { ThemeService } from './services/theme.service';
 
 @Component({
@@ -8,22 +7,16 @@ import { ThemeService } from './services/theme.service';
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent {
   title = 'music-app';
   isAuthorized!: boolean;
 
   constructor(
     private themeService: ThemeService,
-    private store: StateService
   ) {
     this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass);
   }
-  ngOnInit(): void {
-    if (localStorage.getItem('token')) {
-      this.store.setAuthorized(true);
-    }
-  }
- 
+
   getClass() {
     return this.themeService.activeCssClass$;
   }

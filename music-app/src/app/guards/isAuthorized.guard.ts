@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from "@angular/router";
 import { StateService } from "../services/state.service";
-import { AuthorizationService } from "../core/services/authorization.service";
+import { AuthorizationService } from "../services/authorization.service";
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate, CanActivateChild {
@@ -15,7 +15,6 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-
     this.authService.checkAuth();
     
     if (!this.state.isAuthorized) {

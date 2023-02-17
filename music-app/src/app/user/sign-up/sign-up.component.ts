@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
-import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { AuthorizationService } from 'src/app/services/authorization.service';
 import { StateService } from 'src/app/services/state.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
