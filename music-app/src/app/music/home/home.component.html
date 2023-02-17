@@ -1,12 +1,18 @@
-<p>home works!</p>
-<!-- Temporary cards for player testing -->
-<!-- START -->
-<div class="flex-row tmp">
-  <mat-card *ngFor="let track of trackList, index as i" class="card">
-    <mat-card-content>{{track.title}}</mat-card-content>
-    <mat-card-content>{{track.artist?.name}}</mat-card-content>
-    <mat-card-content>{{track.album?.title}}</mat-card-content>
-    <img mat-card-image class="card-img" src={{track.album?.cover}} alt={{track.title}} (click)="playTrack(track.preview); setTrackIndex(i)">
-  </mat-card>
-</div>
-<!-- END -->
+<h1 *ngFor="let greeting of greetings" l10nTranslate class="mb-large">
+  <span *ngIf="getCurrentTimeHours() >= greeting.hoursStart && getCurrentTimeHours() < greeting.hoursEnd">
+    {{ greeting.message }}
+  </span>
+</h1>
+
+<mat-card *ngIf="isTrackList()" class="mb-large">
+  <mat-card-content>
+    <h2>Now playing</h2>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mb-large">
+  <mat-card-content>
+    <h2>Recommended Tracks</h2>
+    <app-tracks [tracks]="trackList"></app-tracks>
+  </mat-card-content>
+</mat-card>

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { serverUrl } from '../constants/constants';
-import { StateService } from '../core/services/state.service';
+import { StateService } from '../services/state.service';
 import { refreshRequiredError } from '../errors/refreshRequired.error';
 import { AuthorizationApiService } from '../services/authorization-api.service';
 

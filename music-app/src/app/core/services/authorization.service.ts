@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { userModel } from 'src/app/models/userDto.models';
-import { StateService } from './state.service';
+import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
 

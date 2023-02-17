@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { StateService } from './core/services/state.service';
-import { ThemeService } from './core/services/theme.service';
+import { StateService } from './services/state.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit{
     private themeService: ThemeService,
     private store: StateService
   ) {
-    this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass); // not working
+    this.themeService.setActiveCssClass(this.themeService.activeThemeCssClass);
   }
   ngOnInit(): void {
     if (localStorage.getItem('token')) {
@@ -24,7 +24,6 @@ export class AppComponent implements OnInit{
     }
   }
  
-
   getClass() {
     return this.themeService.activeCssClass$;
   }

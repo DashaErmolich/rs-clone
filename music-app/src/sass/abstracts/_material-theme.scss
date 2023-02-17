@@ -24,5 +24,6 @@ $themes-map: (
   ),
 );
 
-@import 'angular-material-dynamic-themes-eli/themes-core';
+@import './dynamic-theme';
 @include make-stylesheets($themes-map);
+

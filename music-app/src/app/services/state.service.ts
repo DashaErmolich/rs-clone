@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { userModel } from 'src/app/models/userDto.models';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
-import { ITrackResponse } from '../../models/api-response.models';
+import { ITrackResponse } from '../models/api-response.models';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -12,7 +12,9 @@ import { LocalStorageService } from './local-storage.service';
 export class StateService {
   trackList$ = new BehaviorSubject<Partial<ITrackResponse>[]>([]);
 
-  playingTrackIndex$ = new BehaviorSubject<number | null>(0);
+  playingTrackIndex$ = new BehaviorSubject<number | null>(null);
+
+  isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
   user = {} as userModel;
   isAuthorized = false;
@@ -40,7 +42,11 @@ export class StateService {
   }
 
   setUser(user: userModel) {
-    this.user = user;
+    this.user = user; 
+  }
+  
+  setEqualizerVisibility(isVisible: boolean): void {
+    this.isEqualizerShown$.next(isVisible);
   }
 }
 

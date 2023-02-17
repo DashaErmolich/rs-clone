@@ -7,6 +7,8 @@
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: $z-index-top;
  }
 
  .tmp {
@@ -81,4 +83,20 @@
   flex-wrap: nowrap;
   align-items: center;
   gap: $container-p-small;
+}
+
+.audio-controls-container {
+  align-items: center;
+  justify-content: flex-end;
+  gap: $container-p-small;
+}
+
+.equalizer {
+  position: fixed;
+  top: $header-height;
+  left: calc(100vw * 2 / 12);
+  right: 0;
+  height: calc(100vh - $header-height - $player-height - $footer-height);
+  z-index: $z-index-dynamic-window;
+  overflow-x: hidden;
 }
