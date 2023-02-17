@@ -199,6 +199,11 @@ export class PlayerComponent implements OnInit {
 
   likeTrack(): void {
     this.controlsState.isLiked = !this.controlsState.isLiked;
+    if (this.controlsState.isLiked) {
+      this.myState.setLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    } else {
+      this.myState.removeLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    }
   }
 
   getTrackAlbumImageSrc(): string {
@@ -289,5 +294,14 @@ export class PlayerComponent implements OnInit {
 
   toggleEqualizerVisibility() {
     this.myState.setEqualizerVisibility(!this.isEqualizerShown);
+  }
+
+  isTrackLiked(): boolean {
+    const likedTracks = this.myStorage.getLikedTracks();
+    const index = likedTracks
+      .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
+    const isLiked = index >= 0;
+    this.controlsState.isLiked = isLiked;
+    return index >= 0;
   }
 }

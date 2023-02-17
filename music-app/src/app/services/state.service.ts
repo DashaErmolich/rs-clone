@@ -14,6 +14,8 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
+  likedTracks$ = new BehaviorSubject<number[]>([]);
+
   constructor(private storage: LocalStorageService) {
     const trackListInfo = this.storage.getTrackListInfo();
     if (trackListInfo !== null) {
@@ -34,5 +36,19 @@ export class StateService {
 
   setEqualizerVisibility(isVisible: boolean): void {
     this.isEqualizerShown$.next(isVisible);
+  }
+
+  setLikedTrack(trackDeezerId: number): void {
+    this.storage.setLikedTrack(trackDeezerId);
+    this.likedTracks$.next(this.storage.getLikedTracks());
+  }
+
+  removeLikedTrack(trackDeezerId: number): void {
+    const likedTracks = this.storage.getLikedTracks();
+    const trackIndex = likedTracks.findIndex((trackId) => trackId === trackDeezerId);
+    if (trackIndex >= 0) {
+      likedTracks.splice(trackIndex, 1);
+    }
+    this.storage.setLikedTracks(likedTracks);
   }
 }
