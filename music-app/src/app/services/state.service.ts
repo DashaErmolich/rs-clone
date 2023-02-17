@@ -14,6 +14,8 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
+  searchValue$ = new BehaviorSubject<string>('');
+
   constructor(private storage: LocalStorageService) {
     const trackListInfo = this.storage.getTrackListInfo();
     if (trackListInfo !== null) {
@@ -34,5 +36,9 @@ export class StateService {
 
   setEqualizerVisibility(isVisible: boolean): void {
     this.isEqualizerShown$.next(isVisible);
+  }
+
+  setSearchParam(searchValue: string) {
+    this.searchValue$.next(searchValue);
   }
 }

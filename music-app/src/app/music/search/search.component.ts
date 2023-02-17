@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import {
   IGenreResponse,
   IPlayListResponse,
@@ -11,7 +10,7 @@ import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
 import { StateService } from 'src/app/services/state.service';
 import { ThemeService } from 'src/app/services/theme.service';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -67,11 +66,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   trackList$!: Subscription;
 
+  searchParam$!: Subscription;
+
   playingTrackIndex!: number;
 
   constructor(
     private deezerRestApiService: DeezerRestApiService,
-    private route: ActivatedRoute,
     private state: StateService,
     private themeService: ThemeService,
   ) {}
@@ -79,22 +79,24 @@ export class SearchComponent implements OnInit, OnDestroy {
   theme: string = this.themeService.activeTheme;
 
   ngOnInit(): void {
-    this.queryParams$ = this.route.queryParams.subscribe((param) => {
-      this.searchParam = param['q'];
-      if (this.searchParam) {
-        this.checkTypeOfSearch();
-      } else {
-        this.loading = true;
-        this.genres$ = this.deezerRestApiService.getGenres().subscribe((genres) => {
-          this.genres = genres.data.filter((genre) => genre.id !== 0);
-          this.loading = false;
-        });
-        this.playlistsFromChart$ = this.deezerRestApiService.getChart().subscribe((playlists) => {
-          this.playlistsFromChart = playlists.playlists.data;
-        });
-        this.searchType = SearchType.tracks;
-      }
-    });
+    this.searchParam$ = this.state.searchValue$
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((res) => {
+        this.searchParam = res;
+        if (this.searchParam) {
+          this.checkTypeOfSearch();
+        } else {
+          this.loading = true;
+          this.genres$ = this.deezerRestApiService.getGenres().subscribe((genres) => {
+            this.genres = genres.data.filter((genre) => genre.id !== 0);
+            this.loading = false;
+          });
+          this.playlistsFromChart$ = this.deezerRestApiService.getChart().subscribe((playlists) => {
+            this.playlistsFromChart = playlists.playlists.data;
+          });
+          this.searchType = SearchType.tracks;
+        }
+      });
     this.trackList$ = this.state.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
     });
@@ -113,6 +115,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.playlists$) this.playlists$.unsubscribe();
     if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
     if (this.trackList$) this.trackList$.unsubscribe();
+    if (this.searchParam$) this.searchParam$.unsubscribe();
+  }
+
+  getSearchParam(value: string) {
+    this.searchParam = value;
   }
 
   renderTracks() {

@@ -3,7 +3,8 @@ import { FormControl } from '@angular/forms';
 import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
-import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-header',
@@ -26,14 +27,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private state: StateService,
   ) {}
 
   ngOnInit(): void {
-    this.queryParams$ = this.route.queryParams.subscribe((param) => this.searchControl.setValue(param['q']));
+    this.queryParams$ = this.route.queryParams.subscribe((param) => {
+      if (param['q'] !== undefined) {
+        this.searchControl.setValue(param['q']);
+        this.state.setSearchParam(param['q']);
+      } else {
+        this.state.setSearchParam('');
+      }
+    });
+
     this.searchControl$ = this.searchControl.valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((res) => {
         this.searchValue = res;
+        this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
 
