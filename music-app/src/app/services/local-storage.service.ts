@@ -3,6 +3,7 @@ import { IUserTheme } from '../models/theme.models';
 import { ITrackResponse } from '../models/api-response.models';
 import { ITrackListInfo, IPLayerInfo } from '../models/audio-player.models';
 import { IEqualizerPreset } from '../models/equalizer.models';
+import IUserData from '../models/user-data.models';
 /* eslint-disable class-methods-use-this */
 
 @Injectable({
@@ -81,5 +82,21 @@ export class LocalStorageService {
   getEqualizerState(): IEqualizerPreset | null {
     const data = localStorage.getItem('EQ');
     return data === null ? null : JSON.parse(data);
+  }
+
+  setUserData(
+    newUserName: string,
+    newUserIconId: number,
+  ): void {
+    const userData: IUserData = {
+      userName: newUserName,
+      userIconId: newUserIconId,
+    };
+    localStorage.setItem('user-data', JSON.stringify(userData));
+  }
+
+  getUserData(): IUserData | null {
+    const userData = localStorage.getItem('user-data');
+    return userData === null ? null : JSON.parse(userData);
   }
 }
