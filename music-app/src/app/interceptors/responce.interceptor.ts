@@ -46,7 +46,8 @@ export class ResponseInterceptor implements HttpInterceptor {
           throw new refreshRequiredError('Требуется обновление данных о пользователе');
         }
         else {
-          console.log('Failed final attempt to refresh user token. Redirect to music')
+          console.log('Failed final attempt to refresh user token. Redirect to welcome')
+          this.router.navigate(['welcome']);
         }
        }
    }),
