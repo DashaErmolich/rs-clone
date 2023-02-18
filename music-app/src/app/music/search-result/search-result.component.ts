@@ -6,6 +6,7 @@ import { SearchType } from 'src/app/enums/endpoints';
 import {
   IAlbumResponse, IArtistResponse, IPlayListResponse, ITrackResponse,
 } from 'src/app/models/api-response.models';
+import { ILikedSearchResults, LikedSearchResults } from 'src/app/models/search.models';
 import { AudioService } from 'src/app/services/audio.service';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { StateService } from 'src/app/services/state.service';
@@ -50,7 +51,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   title!: string;
 
-  type!: string;
+  type!: LikedSearchResults;
 
   description!: string;
 
@@ -61,6 +62,10 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   albumRelease!: string;
 
   artistId!: number;
+
+  isLiked!: boolean;
+
+  likedSearchResults!: ILikedSearchResults;
 
   constructor(
     private myState: StateService,
@@ -95,6 +100,11 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
     this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     this.isPause$ = this.myAudio.isPause$.subscribe((res) => { this.isPause = res; });
+
+    this.myState.likedSearchResults$.subscribe((res) => {
+      this.likedSearchResults = res;
+      this.isTrackLiked();
+    });
   }
 
   ngOnDestroy(): void {
@@ -102,6 +112,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     if (this.isPause$) this.isPause$.unsubscribe();
     if (this.isPlay$) this.isPlay$.unsubscribe();
     if (this.routeParams$) this.routeParams$.unsubscribe();
+    if (this.result$) this.result$.unsubscribe();
   }
 
   getArtist(id: number) {
@@ -109,7 +120,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .getArtist(id)
       .subscribe((res) => {
         this.result = res;
-        this.type = res.type;
+        this.type = res.type as LikedSearchResults;
         this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
         this.title = res.name;
         this.description = `Albums:  ${res.nb_album},  ${res.nb_fan}  - fans`;
@@ -129,7 +140,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .getAlbum(id)
       .subscribe((res) => {
         this.result = res;
-        this.type = res.type;
+        this.type = res.type as LikedSearchResults;
         this.imgSrc = res.cover_medium ? res.cover_medium : DEFAULT_SRC;
         this.title = res.title;
         this.tracks = res.tracks.data;
@@ -146,7 +157,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .getPlayListTracks(id)
       .subscribe((res) => {
         this.result = res;
-        this.type = res.type;
+        this.type = res.type as LikedSearchResults;
         this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
         this.title = res.title;
         this.tracks = res.tracks.data;
@@ -168,4 +179,35 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       this.myAudio.play();
     }
   }
+
+  likeSearchResult() {
+    this.isLiked = !this.isLiked;
+    if (this.isLiked && typeof this.result.id === 'number') {
+      this.myState.setLikedSearchResult(this.type, this.result.id);
+    } else if (typeof this.result.id === 'number') {
+      this.myState.removeLikedSearchResult(this.type, this.result.id);
+    }
+  }
+
+  // isTrackLiked() {
+  //   const index = this.likedSearchResults[this.type]
+  //     .findIndex((searchResultId) => searchResultId === this.result.id);
+  //   const isLiked = index >= 0;
+  //   this.isLiked = isLiked;
+  //   return index >= 0;
+  //   //
+  //   // } if (this.type === 'artists') {
+  //   //   index = this.likedSearchResults.artists
+  //   //     .findIndex((searchResultId) => searchResultId === this.result.id);
+  //   //   const isLiked = index >= 0;
+  //   //   this.isLiked = isLiked;
+  //   //   return index >= 0;
+  //   // } if (this.type === 'playlists') {
+  //   //   index = this.likedSearchResults.playlists
+  //   //     .findIndex((searchResultId) => searchResultId === this.result.id);
+  //   //   const isLiked = index >= 0;
+  //   //   this.isLiked = isLiked;
+  //   //   return index >= 0;
+  //   // }
+  // }
 }

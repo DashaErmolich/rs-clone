@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ITrackResponse } from '../models/api-response.models';
+import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -17,6 +18,12 @@ export class StateService {
   searchValue$ = new BehaviorSubject<string>('');
 
   likedTracks$ = new BehaviorSubject<number[]>([]);
+
+  likedSearchResults$ = new BehaviorSubject<ILikedSearchResults>({
+    album: [],
+    artist: [],
+    playlist: [],
+  });
 
   constructor(private storage: LocalStorageService) {
     const trackListInfo = this.storage.getTrackListInfo();
@@ -58,5 +65,42 @@ export class StateService {
     }
     this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
+  }
+
+  setLikedSearchResult(type: LikedSearchResults, id: number) {
+    this.storage.setLikedSearchResult(type, id);
+    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+  }
+
+  removeLikedSearchResult(type: LikedSearchResults, id: number) {
+    const likedSearchResults = this.storage.getLikedSearchResults();
+    // console.log(likedSearchResults);
+    // const searchResultIndex = likedSearchResults[type].findIndex((searchResultId) => {
+    //   searchResultId === id;
+    // });
+    // let searchResultIndex: number;
+    // if (type === 'album') {
+    const searchResultIndex = likedSearchResults[type]
+      .findIndex((searchResultId) => searchResultId === id);
+    if (searchResultIndex >= 0) {
+      likedSearchResults[type].splice(searchResultIndex, 1);
+    }
+    // }
+    // if (type === 'artists') {
+    //   searchResultIndex = likedSearchResults.artists
+    //     .findIndex((searchResultId) => searchResultId === id);
+    //   if (searchResultIndex >= 0) {
+    //     likedSearchResults.artists.splice(searchResultIndex, 1);
+    //   }
+    // }
+    // if (type === 'playlist') {
+    //   searchResultIndex = likedSearchResults.playlists
+    //     .findIndex((searchResultId) => searchResultId === id);
+    //   if (searchResultIndex >= 0) {
+    //     likedSearchResults.playlists.splice(searchResultIndex, 1);
+    //   }
+    // }
+    this.storage.setLikedSearchResults(likedSearchResults);
+    this.likedSearchResults$.next(likedSearchResults);
   }
 }

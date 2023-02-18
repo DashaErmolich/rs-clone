@@ -3,6 +3,7 @@ import { IUserTheme } from '../models/theme.models';
 import { ITrackResponse } from '../models/api-response.models';
 import { ITrackListInfo, IPLayerInfo } from '../models/audio-player.models';
 import { IEqualizerPreset } from '../models/equalizer.models';
+import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 /* eslint-disable class-methods-use-this */
 
 @Injectable({
@@ -96,5 +97,25 @@ export class LocalStorageService {
   getLikedTracks(): number[] {
     const likedTracks = localStorage.getItem('likedTracks');
     return likedTracks === null ? [] : JSON.parse(likedTracks);
+  }
+
+  setLikedSearchResult(type: LikedSearchResults, id: number) {
+    const likedSearchResults = this.getLikedSearchResults();
+    likedSearchResults[type].push(id);
+
+    // if (type === 'album') likedSearchResults.albums.push(id);
+    // if (type === 'artist') likedSearchResults.artists.push(id);
+    // if (type === 'playlist') likedSearchResults.playlists.push(id);
+    localStorage.setItem('likedSearchResults', JSON.stringify(likedSearchResults));
+  }
+
+  setLikedSearchResults(likedSearchResults: ILikedSearchResults) {
+    localStorage.setItem('likedSearchResults', JSON.stringify(likedSearchResults));
+  }
+
+  getLikedSearchResults(): ILikedSearchResults {
+    const likedSearchResults = localStorage.getItem('likedSearchResults');
+    return likedSearchResults === null ? { album: [], artist: [], playlist: [] }
+      : JSON.parse(likedSearchResults);
   }
 }
