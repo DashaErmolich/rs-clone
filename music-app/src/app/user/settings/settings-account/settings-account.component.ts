@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
+import { Subscription } from 'rxjs';
 import { userIconsData } from '../../../../assets/user-icons/user-icons';
 import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
@@ -12,7 +13,7 @@ import { ThemeService } from '../../../services/theme.service';
   styleUrls: ['./settings-account.component.scss'],
 })
 
-export class SettingsAccountComponent extends ThemeHelper implements OnInit {
+export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnDestroy {
   userIcons: IUserIcons[] = userIconsData;
 
   userIconsPath: string[] = this.userIcons.map((icon) => icon.path);
@@ -23,6 +24,10 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit {
 
   userIconId!: number;
 
+  userIcon$ = new Subscription();
+
+  userName$ = new Subscription();
+
   constructor(
     private myState: StateService,
     myTheme: ThemeService,
@@ -31,11 +36,28 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit {
   }
 
   ngOnInit(): void {
-    this.myState.userName$.subscribe((data) => {
+    this.userName$ = this.myState.userName$.subscribe((data) => {
       this.userName = data;
     });
-    this.myState.userIconId$.subscribe((data) => {
+    this.userIcon$ = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.userIcon$.unsubscribe();
+    this.userName$.unsubscribe();
+  }
+
+  setUserIcon(iconIndex: number): void {
+    this.userIconId = iconIndex;
+    this.myState.setUserData(this.userName, this.userIconId);
+  }
+
+  setUserName(eventTarget: EventTarget | null): void {
+    if (eventTarget instanceof HTMLInputElement) {
+      this.userName = eventTarget.value;
+    }
+    this.myState.setUserData(this.userName, this.userIconId);
   }
 }

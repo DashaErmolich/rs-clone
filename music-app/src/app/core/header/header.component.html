@@ -9,7 +9,7 @@
   </div>
   <div>
     <ng-container *ngIf="isSearchRoute">
-      <mat-form-field class="search-input">
+      <mat-form-field class="search-input" appearance="outline">
         <input matInput type="text" placeholder="Search" [formControl]="searchControl">
         <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
         <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>

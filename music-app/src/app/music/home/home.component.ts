@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit {
     const hours = this.getCurrentTimeHours();
     let result = false;
 
-    if (hours < 21) {
+    if (hours >= 4 && hours < 21) {
       result = hours >= hoursStart && hours < hoursEnd;
     } else {
       result = hoursStart === this.greetings[this.greetings.length - 1].hoursStart
