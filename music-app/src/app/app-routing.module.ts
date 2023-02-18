@@ -14,7 +14,7 @@ import { SettingsThemeComponent } from './user/settings/settings-theme/settings-
 import { SettingsAccountComponent } from './user/settings/settings-account/settings-account.component';
 import { GenreComponent } from './music/genre/genre.component';
 import { LikedTracksComponent } from './music/liked-tracks/liked-tracks.component';
-import { ResultComponent } from './music/result/result.component';
+import { SearchResultComponent } from './music/search-result/search-result.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -28,11 +28,10 @@ const routes: Routes = [
       { path: 'search', component: SearchComponent },
       { path: 'library', component: LibraryComponent },
       { path: 'liked-tracks', component: LikedTracksComponent },
-      { path: 'genre/:genreId', component: GenreComponent },
-      { path: 'play-list/:playlist', component: ResultComponent },
+      { path: 'play-list/:playlist', component: SearchResultComponent },
       { path: 'genre/:genre', component: GenreComponent },
-      { path: 'artist/:artist', component: ResultComponent },
-      { path: 'album/:album', component: ResultComponent },
+      { path: 'artist/:artist', component: SearchResultComponent },
+      { path: 'album/:album', component: SearchResultComponent },
     ],
   },
   {
