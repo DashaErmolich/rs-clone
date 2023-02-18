@@ -1,0 +1,22 @@
+<div *ngIf="result" class="scrollable">
+  <div class="result-wrapper">
+    <div class="result-container">
+      <div class="result-image"><img [src]="imgSrc" [alt]="title"></div>
+      <div class="result-description">
+        <p class="result-type">{{type}}</p>
+        <h2 class="result-title">{{title}}</h2>
+        <div class="result-container-btns">
+          <button mat-fab color="primary" (click)="playPause(0)">
+            <mat-icon>{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
+          </button>
+          <button mat-fab color="basic">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container"></app-tracks>
