@@ -20,11 +20,14 @@ export class ThemeService {
 
   activeTheme: string;
 
+  isThemeDark$ = new Subject<boolean>();
+
   constructor(
     private localStorage: LocalStorageService,
   ) {
     this.activeThemeCssClass = this.getUserTheme().cssClass;
     this.isThemeDark = this.getUserTheme().isDark;
+    this.isThemeDark$.next(this.isThemeDark);
     this.activeTheme = this.getActiveTheme();
   }
 
@@ -79,6 +82,7 @@ export class ThemeService {
 
   toggleDarkness() {
     this.setActiveTheme(this.activeTheme, !this.isThemeDark);
+    console.log(this.isThemeDark);
   }
 
   setActiveCssClass(chosenTheme: string): void {

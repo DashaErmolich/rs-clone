@@ -3,7 +3,7 @@
   <div class="logo-container flex-column-2">
     <a routerLink="/music/home" ariaCurrentWhenActive="page">
       <svg class="logo-icon">
-        <use xlink:href="../../../assets/icons/sprite.svg#app-logo-large"></use>
+        <use [attr.xlink:href]="getLogoIconPath()"></use>
       </svg>
     </a>
   </div>

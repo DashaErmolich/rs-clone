@@ -9,5 +9,12 @@ export class ThemeHelper {
 
   constructor(
     private myTheme: ThemeService,
-  ) { }
+  ) {
+  }
+
+  getLogoIconPath(): string {
+    return this.myTheme.isThemeDark
+      ? '../../../assets/icons/sprite.svg#app-logo-large'
+      : '../../../assets/icons/sprite.svg#app-logo-large-dark';
+  }
 }

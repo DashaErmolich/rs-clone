@@ -9,6 +9,8 @@ import { StateService } from '../../services/state.service';
 import { IUserIcons } from '../../models/user-icons.models';
 
 import { userIconsData } from '../../../assets/user-icons/user-icons';
+import { ThemeHelper } from '../../helpers/theme-helper';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +18,7 @@ import { userIconsData } from '../../../assets/user-icons/user-icons';
   styleUrls: ['./header.component.scss'],
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
   searchControl: FormControl = new FormControl();
 
   isSearchRoute: boolean = false;
@@ -38,11 +40,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIconId!: number;
 
   constructor(
+    myTheme: ThemeService,
     private router: Router,
     private route: ActivatedRoute,
     private myState: StateService,
     private state: StateService,
-  ) {}
+  ) {
+    super(myTheme);
+  }
 
   ngOnInit(): void {
     this.queryParams$ = this.route.queryParams.subscribe((param) => {
