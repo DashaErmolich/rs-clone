@@ -18,6 +18,8 @@ import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-play
 import { StateService } from '../../services/state.service';
 import { AudioService } from '../../services/audio.service';
 import { LocalStorageService } from '../../services/local-storage.service';
+import { ThemeHelper } from '../../helpers/theme-helper';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-player',
@@ -36,7 +38,7 @@ import { LocalStorageService } from '../../services/local-storage.service';
   ],
 })
 
-export class PlayerComponent implements OnInit {
+export class PlayerComponent extends ThemeHelper implements OnInit {
   trackList!: Partial<ITrackResponse>[];
 
   currentTrackIndex!: number | null;
@@ -73,11 +75,14 @@ export class PlayerComponent implements OnInit {
   isSmall = false;
 
   constructor(
+    myTheme: ThemeService,
     private myState: StateService,
     private myAudio: AudioService,
     private myStorage: LocalStorageService,
     private responsive: BreakpointObserver,
-  ) { }
+  ) {
+    super(myTheme);
+  }
 
   ngOnInit(): void {
     this.myState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {

@@ -84,6 +84,10 @@
   gap: $container-p-large;
 }
 
+.player-controls__small {
+  gap: $container-p-small;
+}
+
 .player-buttons-group {
   gap: calc($container-p-small / 2);
 }
@@ -95,6 +99,11 @@
   flex-wrap: nowrap;
   align-items: center;
   gap: $container-p-small;
+}
+
+.time-progress-container__small {
+  margin-top: $container-p-small;
+  justify-content: center;
 }
 
 .audio-controls-container {
@@ -112,3 +121,18 @@
   z-index: $z-index-dynamic-window;
   overflow-x: hidden;
 }
+
+.volume-container-small {
+  .volume-slider {
+    position: absolute;
+    top: 0;
+    scale: 0;
+    transition: 0.2s;
+  }
+  &:hover {
+    .volume-slider {
+      scale: 1;
+    }
+  }
+}
+

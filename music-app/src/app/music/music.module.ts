@@ -18,6 +18,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CookieModule } from 'ngx-cookie';
@@ -82,6 +83,7 @@ import { LikedTracksComponent } from './liked-tracks/liked-tracks.component';
     MatSelectModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
+    MatMenuModule,
   ],
   exports: [
     MusicPageComponent,
