@@ -76,6 +76,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isFirstPlay = true;
+
     this.routeParams$ = this.route.params.subscribe((params) => {
       [this.resultType] = Object.keys(params);
       this.resultId = Number(params[this.resultType]);
@@ -100,10 +101,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
     this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     this.isPause$ = this.myAudio.isPause$.subscribe((res) => { this.isPause = res; });
-
     this.myState.likedSearchResults$.subscribe((res) => {
       this.likedSearchResults = res;
-      this.isTrackLiked();
     });
   }
 
@@ -125,6 +124,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.title = res.name;
         this.description = `Albums:  ${res.nb_album},  ${res.nb_fan}  - fans`;
         this.loading = false;
+        this.isSearchResultLiked();
       });
 
     this.tracks$ = this.deezerRestApiService
@@ -149,6 +149,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.artistName = res.artist.name!;
         this.albumRelease = res.release_date.slice(0, 4);
         this.artistId = Number(res.artist.id);
+        this.isSearchResultLiked();
       });
   }
 
@@ -163,6 +164,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.tracks = res.tracks.data;
         this.description = `Creator: ${res.creator.name}, ${res.nb_tracks} - songs`;
         this.loading = false;
+        this.isSearchResultLiked();
       });
   }
 
@@ -189,25 +191,11 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     }
   }
 
-  // isTrackLiked() {
-  //   const index = this.likedSearchResults[this.type]
-  //     .findIndex((searchResultId) => searchResultId === this.result.id);
-  //   const isLiked = index >= 0;
-  //   this.isLiked = isLiked;
-  //   return index >= 0;
-  //   //
-  //   // } if (this.type === 'artists') {
-  //   //   index = this.likedSearchResults.artists
-  //   //     .findIndex((searchResultId) => searchResultId === this.result.id);
-  //   //   const isLiked = index >= 0;
-  //   //   this.isLiked = isLiked;
-  //   //   return index >= 0;
-  //   // } if (this.type === 'playlists') {
-  //   //   index = this.likedSearchResults.playlists
-  //   //     .findIndex((searchResultId) => searchResultId === this.result.id);
-  //   //   const isLiked = index >= 0;
-  //   //   this.isLiked = isLiked;
-  //   //   return index >= 0;
-  //   // }
-  // }
+  isSearchResultLiked() {
+    const index = this.likedSearchResults[this.type]
+      .findIndex((searchResultId) => searchResultId === this.result.id);
+    const isLiked = index >= 0;
+    this.isLiked = isLiked;
+    return index >= 0;
+  }
 }

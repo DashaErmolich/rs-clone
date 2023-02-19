@@ -102,10 +102,6 @@ export class LocalStorageService {
   setLikedSearchResult(type: LikedSearchResults, id: number) {
     const likedSearchResults = this.getLikedSearchResults();
     likedSearchResults[type].push(id);
-
-    // if (type === 'album') likedSearchResults.albums.push(id);
-    // if (type === 'artist') likedSearchResults.artists.push(id);
-    // if (type === 'playlist') likedSearchResults.playlists.push(id);
     localStorage.setItem('likedSearchResults', JSON.stringify(likedSearchResults));
   }
 

@@ -31,6 +31,7 @@ export class StateService {
       this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
     }
     this.likedTracks$.next(this.storage.getLikedTracks());
+    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 
   setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
@@ -67,40 +68,19 @@ export class StateService {
     this.likedTracks$.next(likedTracks);
   }
 
-  setLikedSearchResult(type: LikedSearchResults, id: number) {
+  setLikedSearchResult(type: LikedSearchResults, id: number): void {
     this.storage.setLikedSearchResult(type, id);
     this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 
-  removeLikedSearchResult(type: LikedSearchResults, id: number) {
+  removeLikedSearchResult(type: LikedSearchResults, id: number): void {
     const likedSearchResults = this.storage.getLikedSearchResults();
-    // console.log(likedSearchResults);
-    // const searchResultIndex = likedSearchResults[type].findIndex((searchResultId) => {
-    //   searchResultId === id;
-    // });
-    // let searchResultIndex: number;
-    // if (type === 'album') {
     const searchResultIndex = likedSearchResults[type]
       .findIndex((searchResultId) => searchResultId === id);
     if (searchResultIndex >= 0) {
       likedSearchResults[type].splice(searchResultIndex, 1);
     }
-    // }
-    // if (type === 'artists') {
-    //   searchResultIndex = likedSearchResults.artists
-    //     .findIndex((searchResultId) => searchResultId === id);
-    //   if (searchResultIndex >= 0) {
-    //     likedSearchResults.artists.splice(searchResultIndex, 1);
-    //   }
-    // }
-    // if (type === 'playlist') {
-    //   searchResultIndex = likedSearchResults.playlists
-    //     .findIndex((searchResultId) => searchResultId === id);
-    //   if (searchResultIndex >= 0) {
-    //     likedSearchResults.playlists.splice(searchResultIndex, 1);
-    //   }
-    // }
     this.storage.setLikedSearchResults(likedSearchResults);
-    this.likedSearchResults$.next(likedSearchResults);
+    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 }
