@@ -30,7 +30,7 @@ const routes: Routes = [
       { path: 'library', component: LibraryComponent },
       { path: 'liked-tracks', component: LikedTracksComponent },
       { path: 'play-list/:playListId', component: PlayListComponent },
-      { path: 'genre/:genreId', component: GenreComponent },
+      { path: 'genre/:genre', component: GenreComponent },
       { path: 'artist/:artistId', component: ArtistComponent },
     ],
   },
