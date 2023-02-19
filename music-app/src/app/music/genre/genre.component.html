@@ -1,1 +1,9 @@
-<p>genre works!</p>
+<div *ngIf="artists">
+  <div *ngIf="!loading" class="titles-container">
+    <h1 class="genre-main-title">{{title}}</h1>
+    <h3 class="genre-title">Artists</h3>
+  </div>
+  <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+
+  <app-artists [artists]="artists" class="result-container"></app-artists>
+</div>
