@@ -1,4 +1,4 @@
-<div class="flex-column height-100 music-page-container">
+<div class="flex-column height-100" [ngClass]="!isHandset ? 'music-page-container' : 'music-page-container_handset'">
   <div class="flex-row flex-1 height-100">
     <div class="flex-column-2 container content-wrapper height-100">
       <app-aside></app-aside>
