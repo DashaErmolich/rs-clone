@@ -18,7 +18,7 @@ export class ThemeHelper {
       : '../../../assets/icons/sprite.svg#app-logo-large-dark';
   }
 
-  getColorClassName(): string {
-    return `${this.theme}-font-color theme-primary`;
+  getColorClassName(type: string = 'primary'): string {
+    return `${this.theme}-font-color theme-${type}`;
   }
 }

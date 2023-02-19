@@ -4,3 +4,8 @@
   max-height: calc(100% - $player-height);
   height: 100%;
 }
+
+.music-page-container_small {
+  max-height: calc(100% - $player-height-small);
+  height: 100%;
+}

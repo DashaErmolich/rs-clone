@@ -74,6 +74,8 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
 
   isSmall = false;
 
+  isHandset = false;
+
   constructor(
     myTheme: ThemeService,
     private myState: StateService,
@@ -125,15 +127,22 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
 
     this.responsive.observe([
       Breakpoints.Small,
-    ]).subscribe((result) => {
-      if (result.matches) {
-        this.isSmall = true;
-        console.log('small', result.breakpoints);
-      } else {
-        this.isSmall = false;
-      }
-      console.log(this.isSmall);
-    });
+      Breakpoints.HandsetPortrait,
+    ])
+      .subscribe((result) => {
+        if (result.breakpoints[Breakpoints.Small]
+        || result.breakpoints[Breakpoints.HandsetPortrait]) {
+          this.isSmall = true;
+        } else {
+          this.isSmall = false;
+        }
+
+        if (result.breakpoints[Breakpoints.HandsetPortrait]) {
+          this.isHandset = true;
+        } else {
+          this.isHandset = false;
+        }
+      });
   }
 
   playNext(): void {
