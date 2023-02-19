@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
 } from '@angular/core';
 
 import {
@@ -40,7 +39,7 @@ import { ThemeService } from '../../services/theme.service';
   ],
 })
 
-export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
+export class PlayerComponent extends ThemeHelper implements OnInit {
   trackList!: Partial<ITrackResponse>[];
 
   currentTrackIndex!: number | null;
@@ -183,12 +182,6 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
         }
       });
     this.subscriptions.push(this.breakpointsObserver$);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 
   playNext(): void {
