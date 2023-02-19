@@ -67,6 +67,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   likedSearchResults!: ILikedSearchResults;
 
+  likedSearchResults$!: Subscription;
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
@@ -101,7 +103,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
     this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     this.isPause$ = this.myAudio.isPause$.subscribe((res) => { this.isPause = res; });
-    this.myState.likedSearchResults$.subscribe((res) => {
+    this.likedSearchResults$ = this.myState.likedSearchResults$.subscribe((res) => {
       this.likedSearchResults = res;
     });
   }
@@ -112,6 +114,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     if (this.isPlay$) this.isPlay$.unsubscribe();
     if (this.routeParams$) this.routeParams$.unsubscribe();
     if (this.result$) this.result$.unsubscribe();
+    if (this.likedSearchResults$) this.likedSearchResults$.unsubscribe();
   }
 
   getArtist(id: number) {
@@ -174,7 +177,6 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
       this.isFirstPlay = false;
     }
-    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     if (this.isPlay) {
       this.myAudio.pause();
     } else {
