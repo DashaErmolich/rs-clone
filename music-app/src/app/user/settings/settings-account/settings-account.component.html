@@ -1,1 +1,21 @@
-<p>settings-account works!</p>
+<h2 l10nTranslate>settings.account.userIcon</h2>
+<div class="settings-user-icons-container mb-large">
+  <div *ngFor="let icon of userIcons, index as i" class="settings-user-icon-container"
+    [ngClass]="userIconId === icon.id
+      ? (theme + '-border' + ' theme-warn')
+      : (theme + '-border' + ' theme-primary')"
+    (click)="setUserIcon(i)">
+    <svg class="settings-user-icon">
+      <use attr.xlink:href="{{ icon.path }}"></use>
+    </svg>
+  </div>
+</div>
+
+<h2 l10nTranslate>settings.account.userName</h2>
+<mat-form-field class="mb-large" appearance="outline">
+  <input matInput placeholder="Username" required [value]="userName" (change)="setUserName($event.currentTarget)">
+</mat-form-field>
+
+<div class="mb-large">
+  <button mat-raised-button color="warn" l10nTranslate>settings.account.LogOut</button>
+</div>

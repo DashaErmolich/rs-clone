@@ -127,6 +127,11 @@ label {
   footer {
     border-top: 1px solid #121212;
   }
+
+  .logo-icon {
+    fill: white;
+    stroke: black;
+  }
 }
 
 .deep-purple-amber,
@@ -151,6 +156,11 @@ label {
 
   footer {
     border-top: 1px solid #fff;
+  }
+
+  .logo-icon {
+    fill: black;
+    stroke: white;
   }
 }
 
