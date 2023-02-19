@@ -40,6 +40,10 @@ a {
 
 .container {
   padding: $container-p-small $container-p-large;
+
+  @media screen and (max-width: 600px) {
+    padding: calc($container-p-small / 2) calc($container-p-large / 2);
+  }
 }
 
 .flex-1 {
@@ -206,4 +210,8 @@ header {
 
 .position-relative {
   position: relative;
+}
+
+.less-opacity {
+  opacity: 0.6;
 }

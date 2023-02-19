@@ -78,13 +78,13 @@
     }
 
     .theme-primary.#{$css-class}-font-color {
-      color: mat-color($primary);
+      color: mat-color($primary) !important;
     }
     .theme-accent.#{$css-class}-font-color {
-      color: mat-color($accent);
+      color: mat-color($accent) !important;
     }
     .theme-warn.#{$css-class}-font-color {
-      color: mat-color($warn);
+      color: mat-color($warn) !important;
     }
 
     .theme-primary.#{$css-class}-fill {

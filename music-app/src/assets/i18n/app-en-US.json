@@ -50,6 +50,14 @@
         "kHz": "kHz",
         "db": "dB"
       }
+    },
+    "player": {
+      "menu": {
+        "shuffle": "Shuffle",
+        "repeat-all": "Repeat All",
+        "repeat-one": "Repeat One",
+        "equalizer": "Equalizer"
+      }
     }
   },
   "home": {

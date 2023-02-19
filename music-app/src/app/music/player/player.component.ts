@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 
 import {
@@ -12,6 +13,7 @@ import {
 
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
+import { Subscription } from 'rxjs';
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
 
@@ -38,7 +40,7 @@ import { ThemeService } from '../../services/theme.service';
   ],
 })
 
-export class PlayerComponent extends ThemeHelper implements OnInit {
+export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
   trackList!: Partial<ITrackResponse>[];
 
   currentTrackIndex!: number | null;
@@ -78,6 +80,26 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
 
   isExtraSmall = false;
 
+  trackList$!: Subscription;
+
+  playingTrackIndex$!: Subscription;
+
+  audioState$!: Subscription;
+
+  audioIsPlay$!: Subscription;
+
+  audioIsTrackReady$!: Subscription;
+
+  audioIsMute$!: Subscription;
+
+  isEqualizerShown$!: Subscription;
+
+  likedTracks$!: Subscription;
+
+  breakpointsObserver$!: Subscription;
+
+  subscriptions: Subscription[] = [];
+
   constructor(
     myTheme: ThemeService,
     private myState: StateService,
@@ -89,45 +111,53 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
   }
 
   ngOnInit(): void {
-    this.myState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {
+    this.trackList$ = this.myState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {
       this.trackList = data;
     });
-    this.myState.playingTrackIndex$.subscribe((data: number | null) => {
+    this.subscriptions.push(this.trackList$);
+    this.playingTrackIndex$ = this.myState.playingTrackIndex$.subscribe((data: number | null) => {
       this.currentTrackIndex = data;
       this.checkTrackPosition();
       if (this.likedTracks) {
         this.isTrackLiked();
       }
     });
-    this.myAudio.state$.subscribe((data) => {
+    this.subscriptions.push(this.playingTrackIndex$);
+    this.audioState$ = this.myAudio.state$.subscribe((data) => {
       this.currentState = data;
     });
-    this.myAudio.isPlay$.subscribe((data) => {
+    this.subscriptions.push(this.audioState$);
+    this.audioIsPlay$ = this.myAudio.isPlay$.subscribe((data) => {
       this.isPlay = data;
     });
-    this.myAudio.isTrackReady$.subscribe((data) => {
+    this.subscriptions.push(this.audioIsPlay$);
+    this.audioIsTrackReady$ = this.myAudio.isTrackReady$.subscribe((data) => {
       this.isTrackReady = data;
     });
-    this.myAudio.isMute$.subscribe((data) => {
+    this.subscriptions.push(this.audioIsTrackReady$);
+    this.audioIsMute$ = this.myAudio.isMute$.subscribe((data) => {
       this.isMute = data;
     });
+    this.subscriptions.push(this.audioIsMute$);
     this.myAudio.audio.addEventListener('ended', () => {
       this.playNext();
     });
-    this.myState.isEqualizerShown$.subscribe((data) => {
+    this.isEqualizerShown$ = this.myState.isEqualizerShown$.subscribe((data) => {
       this.isEqualizerShown = data;
     });
+    this.subscriptions.push(this.isEqualizerShown$);
 
     if (this.currentTrackIndex !== null) {
       this.isInitialTrackSet = true;
     }
 
-    this.myState.likedTracks$.subscribe((data) => {
+    this.likedTracks$ = this.myState.likedTracks$.subscribe((data) => {
       this.likedTracks = data;
       this.isTrackLiked();
     });
+    this.subscriptions.push(this.likedTracks$);
 
-    this.responsive.observe([
+    this.breakpointsObserver$ = this.responsive.observe([
       Breakpoints.Small,
       Breakpoints.HandsetPortrait,
       '(max-width: 380px)',
@@ -152,6 +182,13 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
           this.isExtraSmall = false;
         }
       });
+    this.subscriptions.push(this.breakpointsObserver$);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   playNext(): void {
@@ -265,13 +302,13 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
     return trackTitle;
   }
 
-  getTrackAlbumTitle(): string {
-    const trackAlbumTitlePlaceholder = '';
-    let trackAlbumTitle = trackAlbumTitlePlaceholder;
+  getArtistTitle(): string {
+    const artistTitlePlaceholder = '';
+    let artistTitle = artistTitlePlaceholder;
     if (this.currentTrackIndex !== null && this.trackList.length) {
-      trackAlbumTitle = this.trackList[this.currentTrackIndex].album?.title!;
+      artistTitle = this.trackList[this.currentTrackIndex].artist?.name!;
     }
-    return trackAlbumTitle;
+    return artistTitle;
   }
 
   getTimeProgress(): string {

@@ -11,7 +11,7 @@
   z-index: $z-index-top;
  }
 
- .player-container_handset {
+ .player-container_small {
   height: $player-height-small;
  }
 
@@ -32,7 +32,6 @@
  .track-data__titles {
   display: flex;
   flex-direction: column;
-  gap: $container-p-small;
   align-items: flex-start;
   justify-content: center;
 }
@@ -130,11 +129,6 @@
   flex-wrap: nowrap;
   align-items: center;
   gap: $container-p-small;
-}
-
-.time-progress-container_small {
-  margin-top: $container-p-small;
-  justify-content: center;
 }
 
 .audio-controls-container {
