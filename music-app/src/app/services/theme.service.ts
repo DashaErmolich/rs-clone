@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
+
+import { OverlayContainer } from '@angular/cdk/overlay';
+
 import { IUserTheme } from '../models/theme.models';
 import { LocalStorageService } from './local-storage.service';
 import { THEME_DARKNESS_SUFFIX } from '../constants/constants';
@@ -24,6 +27,7 @@ export class ThemeService {
 
   constructor(
     private localStorage: LocalStorageService,
+    private overlayContainer: OverlayContainer,
   ) {
     this.activeThemeCssClass = this.getUserTheme().cssClass;
     this.isThemeDark = this.getUserTheme().isDark;
@@ -75,6 +79,13 @@ export class ThemeService {
       cssClass += THEME_DARKNESS_SUFFIX;
     }
 
+    const { classList } = this.overlayContainer.getContainerElement();
+    if (classList.contains(this.activeThemeCssClass)) {
+      classList.replace(this.activeThemeCssClass, cssClass);
+    } else {
+      classList.add(cssClass);
+    }
+
     this.activeThemeCssClass = cssClass;
     this.setActiveCssClass(cssClass);
     this.localStorage.setTheme(this.activeThemeCssClass, isDark);
@@ -82,7 +93,6 @@ export class ThemeService {
 
   toggleDarkness() {
     this.setActiveTheme(this.activeTheme, !this.isThemeDark);
-    console.log(this.isThemeDark);
   }
 
   setActiveCssClass(chosenTheme: string): void {
@@ -103,5 +113,10 @@ export class ThemeService {
 
   getActiveTheme(): string {
     return this.activeThemeCssClass.split(THEME_DARKNESS_SUFFIX).join('');
+  }
+
+  setOverlayContainerTheme() {
+    const { classList } = this.overlayContainer.getContainerElement();
+    classList.add(this.activeThemeCssClass);
   }
 }
