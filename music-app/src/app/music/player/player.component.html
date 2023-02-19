@@ -65,6 +65,7 @@
         (input)="setProgress($event)"
         (click)="setProgress($event)"
         class="player-slider"
+        [ngClass]="{'player-slider-small': isSmall}"
         >
         <input matSliderThumb [value]="currentState.progress">
       </mat-slider>

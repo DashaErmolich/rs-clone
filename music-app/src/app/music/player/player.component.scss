@@ -66,6 +66,18 @@
   width: 100%;
 }
 
+.player-slider-small {
+  position: absolute;
+  width: auto;
+  top: calc(($container-p-small + 6px) * (-1));
+  left: -8px;
+  right: -8px;
+
+  input {
+    width: 100% !important;
+  }
+}
+
 .player-controls {
   align-items: center;
   justify-content: center;

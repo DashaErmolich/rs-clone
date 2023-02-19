@@ -10,6 +10,8 @@ import {
   trigger,
 } from '@angular/animations';
 
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
 
@@ -68,10 +70,13 @@ export class PlayerComponent implements OnInit {
 
   volumeSaver: number | null = null;
 
+  isSmall = false;
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
     private myStorage: LocalStorageService,
+    private responsive: BreakpointObserver,
   ) { }
 
   ngOnInit(): void {
@@ -111,6 +116,18 @@ export class PlayerComponent implements OnInit {
     this.myState.likedTracks$.subscribe((data) => {
       this.likedTracks = data;
       this.isTrackLiked();
+    });
+
+    this.responsive.observe([
+      Breakpoints.Small,
+    ]).subscribe((result) => {
+      if (result.matches) {
+        this.isSmall = true;
+        console.log('small', result.breakpoints);
+      } else {
+        this.isSmall = false;
+      }
+      console.log(this.isSmall);
     });
   }
 

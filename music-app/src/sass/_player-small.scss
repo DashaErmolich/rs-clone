@@ -1,0 +1,22 @@
+.player-slider-small {
+  .mdc-slider__track--inactive,
+  .mdc-slider__track--active {
+    border-radius: 0 !important;
+  }
+
+  .mdc-slider__track--active {
+    height: 4px !important;
+  }
+
+  .mdc-slider__thumb-knob,
+  .mat-mdc-focus-indicator {
+    scale: 0;
+    transition: 0.2s;
+  }
+  &:hover {
+    .mdc-slider__thumb-knob,
+    .mat-mdc-focus-indicator {
+      scale: 1;
+    }
+  }
+}
