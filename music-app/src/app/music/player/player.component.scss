@@ -151,6 +151,11 @@
   overflow-x: hidden;
 }
 
+.equalizer_handset {
+  top: $header-height-handset;
+  height: calc(100vh - $header-height-handset - $player-height-small - $footer-height);
+}
+
 .volume-container_small {
   .volume-slider {
     position: absolute;

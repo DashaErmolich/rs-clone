@@ -22,12 +22,27 @@
   }
 }
 
+.header_handset {
+  height: $header-height-handset;
+}
+
 .logo-icon {
   width: 130px;
-  height: $header-height;
+}
+
+.logo-icon_handset {
+  padding-top: 10px;
+  width: 80px;
 }
 
 .search-btn {
   cursor: pointer;
 }
 
+.user-icon_handset {
+  margin-right: 24px;
+}
+
+.header-loader-bar {
+  z-index: $z-index-top;
+}

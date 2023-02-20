@@ -11,6 +11,7 @@ import { IUserIcons } from '../../models/user-icons.models';
 import { userIconsData } from '../../../assets/user-icons/user-icons';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-header',
@@ -39,12 +40,17 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   userIconId!: number;
 
+  isHandset = false;
+
+  isHandset$ = new Subscription();
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
     private route: ActivatedRoute,
     private myState: StateService,
     private state: StateService,
+    private responsive: ResponsiveService,
   ) {
     super(myTheme);
   }
@@ -82,6 +88,9 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
     });
     this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
+    });
+    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
     });
   }
 

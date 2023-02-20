@@ -92,6 +92,10 @@ a {
   height: 100%;
 }
 
+.content-wrapper_handset {
+  padding-top: $header-height-handset;
+}
+
 .scrollable-container {
   overflow-y: scroll;
 }
