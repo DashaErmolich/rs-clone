@@ -13,7 +13,7 @@
           <use xlink:href="../../../assets/icons/sprite.svg#musical-note"></use>
         </svg>
       </div>
-      <div *ngIf="!isHandset" class="track-data__titles">
+      <div *ngIf="!isExtraSmall" class="track-data__titles">
         <span class="one-line-text">{{ getTrackTitle() | titlecase }}</span>
         <span class="one-line-text less-opacity">{{
           getArtistTitle() | titlecase

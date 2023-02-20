@@ -24,6 +24,8 @@ export class StateService {
 
   likedTracks$ = new BehaviorSubject<number[]>([]);
 
+  isNavigationMenuShown$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private storage: LocalStorageService,
   ) {
@@ -78,5 +80,9 @@ export class StateService {
     }
     this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
+  }
+
+  setNavigationMenuVisibility(isVisible: boolean): void {
+    this.isNavigationMenuShown$.next(isVisible);
   }
 }

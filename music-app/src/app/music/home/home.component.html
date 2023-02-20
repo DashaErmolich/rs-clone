@@ -9,10 +9,10 @@
   <app-genres [genres]="genres" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-genres>
 </div>
 
-<!-- <div class="mb-large">
+<div class="mb-large">
     <h2 l10nTranslate>{{ chartRecommendations.tracks.title }}</h2>
-    <app-tracks [tracks]="chartRecommendations.tracks.data" class="suggestions-tracks" [ngClass]="{'suggestions-container_small': isSmall}"></app-tracks>
-</div> -->
+    <app-tracks [tracks]="chartRecommendations.tracks.data" class="suggestions-tracks" [ngClass]="{'suggestions-tracks_small': isSmall}"></app-tracks>
+</div>
 
 <div class="mb-large">
     <h2 l10nTranslate>{{ chartRecommendations.albums.title }}</h2>

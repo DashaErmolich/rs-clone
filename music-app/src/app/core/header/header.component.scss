@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   height: $header-height;
-  z-index: 10;
+  z-index: $z-index-header;
 
   .search-btn {
     cursor: pointer;

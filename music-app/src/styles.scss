@@ -219,3 +219,9 @@ header {
 .less-opacity {
   opacity: 0.6;
 }
+
+.navigation-container {
+  a {
+    margin-bottom: calc($container-p-small / 2);
+  }
+}

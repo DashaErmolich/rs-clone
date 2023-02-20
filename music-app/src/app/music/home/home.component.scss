@@ -26,3 +26,8 @@
 .suggestions-container_handset {
   @include grid-horizontal-scroll(6, 2, $container-p-small);
 }
+
+.suggestions-tracks_small {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+}
