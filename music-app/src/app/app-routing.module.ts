@@ -8,14 +8,13 @@ import { MusicPageComponent } from './music/music-page/music-page.component';
 import { HomeComponent } from './music/home/home.component';
 import { SearchComponent } from './music/search/search.component';
 import { LibraryComponent } from './music/library/library.component';
-import { PlayListComponent } from './music/play-list/play-list.component';
 import { SettingsPageComponent } from './user/settings/settings-page/settings-page.component';
 import { SettingsLanguageComponent } from './user/settings/settings-language/settings-language.component';
 import { SettingsThemeComponent } from './user/settings/settings-theme/settings-theme.component';
 import { SettingsAccountComponent } from './user/settings/settings-account/settings-account.component';
 import { GenreComponent } from './music/genre/genre.component';
-import { ArtistComponent } from './music/artist/artist.component';
 import { LikedTracksComponent } from './music/liked-tracks/liked-tracks.component';
+import { SearchResultComponent } from './music/search-result/search-result.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -29,9 +28,11 @@ const routes: Routes = [
       { path: 'search', component: SearchComponent },
       { path: 'library', component: LibraryComponent },
       { path: 'liked-tracks', component: LikedTracksComponent },
-      { path: 'play-list/:playListId', component: PlayListComponent },
+      { path: 'play-list/:playlist', component: SearchResultComponent },
       { path: 'genre/:genre', component: GenreComponent },
-      { path: 'artist/:artistId', component: ArtistComponent },
+      { path: 'artist/:artist', component: SearchResultComponent },
+      { path: 'album/:album', component: SearchResultComponent },
+
     ],
   },
   {
