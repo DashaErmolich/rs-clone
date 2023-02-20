@@ -22,6 +22,8 @@ import { LocalStorageService } from '../../services/local-storage.service';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
 
+const extraSmallBreakpoint = '(max-width: 380px)';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -159,7 +161,7 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
     this.breakpointsObserver$ = this.responsive.observe([
       Breakpoints.Small,
       Breakpoints.HandsetPortrait,
-      '(max-width: 380px)',
+      extraSmallBreakpoint,
     ])
       .subscribe((result) => {
         if (result.breakpoints[Breakpoints.Small]
@@ -175,7 +177,7 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
           this.isHandset = false;
         }
 
-        if (this.responsive.isMatched('(max-width: 380px)')) {
+        if (this.responsive.isMatched(extraSmallBreakpoint)) {
           this.isExtraSmall = true;
         } else {
           this.isExtraSmall = false;
