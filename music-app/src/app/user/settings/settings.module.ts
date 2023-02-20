@@ -11,6 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 import { L10nTranslationModule, L10nIntlModule } from 'angular-l10n';
 
@@ -55,6 +56,7 @@ import { l10nConfig, HttpTranslationLoader, AppStorage } from '../../I10n-config
     MatChipsModule,
     MatDividerModule,
     MatButtonModule,
+    MatInputModule,
   ],
   exports: [
     SettingsPageComponent,

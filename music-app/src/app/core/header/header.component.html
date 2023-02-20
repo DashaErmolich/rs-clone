@@ -1,35 +1,32 @@
 <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-<header class="header flex-row">
-  <div class="logo-container flex-column-2 container">
+<header class="header container">
+  <div class="logo-container flex-column-2">
     <a routerLink="/music/home" ariaCurrentWhenActive="page">
       <svg class="logo-icon">
-        <use xlink:href="../../../assets/icons/sprite.svg#app-logo-large"></use>
+        <use [attr.xlink:href]="getLogoIconPath()"></use>
       </svg>
     </a>
   </div>
-  <div class="flex-column-10 container">
-    <div class="flex-row">
-      <div class="">
-        <ng-container *ngIf="isSearchRoute">
-          <mat-form-field class="search-input">
-            <input matInput type="text" placeholder="Search" [formControl]="searchControl">
-            <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
-            <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
-          </mat-form-field>
-        </ng-container>
-      </div>
-      <div>
-        <a routerLink="/settings" ariaCurrentWhenActive="page">
-          <button mat-fab extended="" color="basic">
-            <mat-icon>
-              <svg class="icon">
-                <use xlink:href="../../../assets/icons/user-icons-sprite.svg#icons8-jake"></use>
-              </svg>
-            </mat-icon>
-            Jake
-          </button>
-        </a>
-      </div>
-    </div>
+  <div>
+    <ng-container *ngIf="isSearchRoute">
+      <mat-form-field class="search-input" appearance="outline">
+        <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+        <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
+        <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
+      </mat-form-field>
+    </ng-container>
+  </div>
+  <div>
+    <a routerLink="/settings" ariaCurrentWhenActive="page">
+      <button mat-fab extended="" color="basic">
+        <mat-icon>
+          <svg class="icon">
+            <use attr.xlink:href="{{ userIconsPath[userIconId] }}"></use>
+          </svg>
+        </mat-icon>
+        {{ userName }}
+      </button>
+    </a>
   </div>
 </header>
+

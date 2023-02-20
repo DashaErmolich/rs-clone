@@ -1,0 +1,28 @@
+@import '../../../../sass//abstracts/constants';
+
+.settings-user-icons-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: $container-p-small;
+}
+
+.settings-user-icon-container {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    .settings-user-icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.settings-user-icon {
+  transition: 0.2s;
+  width: 100%;
+  height: 100%;
+}
