@@ -21,7 +21,7 @@
 
 .navigation-menu-button {
   position: fixed;
-  top: 0;
+  top: $header-progress-bar-height + 8px;
   right: 0;
   z-index: $z-index-top;
 }

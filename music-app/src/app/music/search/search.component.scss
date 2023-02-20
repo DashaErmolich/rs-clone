@@ -1,4 +1,5 @@
 @import '../../../sass/abstracts/constants';
+@import '../../../sass/abstracts/mixins';
 
 .search-page {
   position: relative;
@@ -21,6 +22,12 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.tracks-container_small {
+  .track {
+    padding: 5px 10px !important;
+  }
 }
 
 .card {
@@ -104,13 +111,13 @@
   overflow-y: auto;
   padding-right: 0.5rem;
   &::-webkit-scrollbar {
-    width: 0.5rem; 
+    width: 0.5rem;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background-color: $hover-color-card;
     border-radius: 3px;
@@ -210,4 +217,14 @@ margin: 0;
   left: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
+}
+
+.search-container_small,
+.result-container_small {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.search-container_handset,
+.result-container_handset {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }

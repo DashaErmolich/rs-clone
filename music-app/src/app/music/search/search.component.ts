@@ -11,6 +11,7 @@ import { Limits, SearchType } from 'src/app/enums/endpoints';
 import { StateService } from 'src/app/services/state.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-search',
@@ -70,10 +71,27 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playingTrackIndex!: number;
 
+  isSmall = false;
+
+  isHandset = false;
+
+  isExtraSmall = false;
+
+  isSmall$ = new Subscription();
+
+  isHandset$ = new Subscription();
+
+  isExtraSmall$ = new Subscription();
+
+  forkJoinSubscription$ = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private state: StateService,
     private themeService: ThemeService,
+    private responsive: ResponsiveService,
   ) {}
 
   theme: string = this.themeService.activeTheme;
@@ -103,6 +121,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.playingTrackIndex$ = this.state.playingTrackIndex$.subscribe((index) => {
       this.playingTrackIndex = index!;
     });
+    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isSmall = data;
+    });
+    this.subscriptions.push(this.isSmall$);
+    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
+    });
+    this.subscriptions.push(this.isHandset$);
+    this.isExtraSmall$ = this.responsive.isExtraSmall$.subscribe((data) => {
+      this.isExtraSmall = data;
+    });
+    this.subscriptions.push(this.isExtraSmall$);
   }
 
   ngOnDestroy(): void {
@@ -115,6 +145,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
     if (this.trackList$) this.trackList$.unsubscribe();
     if (this.searchParam$) this.searchParam$.unsubscribe();
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   renderTracks() {

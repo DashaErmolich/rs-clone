@@ -15,6 +15,8 @@ export class AsideComponent {
   ) { }
 
   toggleNavigationMenuVisibility() {
-    this.myState.setNavigationMenuVisibility(!this.isNavigationMenuShown);
+    if (this.isNavigationMenuShown) {
+      this.myState.setNavigationMenuVisibility(!this.isNavigationMenuShown);
+    }
   }
 }

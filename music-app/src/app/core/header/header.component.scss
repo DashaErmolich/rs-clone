@@ -23,16 +23,18 @@
 }
 
 .header_handset {
+  padding-top: 10px;
   height: $header-height-handset;
 }
 
 .logo-icon {
   width: 130px;
+  height: $header-height;
 }
 
 .logo-icon_handset {
-  padding-top: 10px;
   width: 80px;
+  height: $header-height-handset;
 }
 
 .search-btn {
