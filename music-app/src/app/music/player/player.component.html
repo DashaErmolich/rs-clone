@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="player__items-group flex-1" ngClass="isHandset ? 'flex-column-9' : flex-column-6" [ngClass]="{'': isExtraSmall}">
-    <div class="flex-row player-controls" [ngClass]="{'player-controls_small': isSmall, 'player-controls_handset': isHandset}">
+    <div class="flex-row player-controls" [ngClass]="{'player-controls_small': isSmall, 'player-controls_handset': isHandset, 'player-controls_extra-small': isExtraSmall}">
       <div class="flex-row player-buttons-group">
         <button mat-mini-fab color="basic" (click)="likeTrack()">
           <mat-icon [color]="controlsState.isLiked ? 'warn' : 'basic'"

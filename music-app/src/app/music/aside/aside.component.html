@@ -1,4 +1,4 @@
-<nav class="flex-column mb-small">
+<nav *ngIf="!isSmall" class="flex-column mb-small">
   <a mat-button color="basic" routerLink="/music/home" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link">
     <mat-icon>home</mat-icon>
     <span l10nTranslate>aside.nav.home</span>

@@ -118,6 +118,10 @@
   justify-content: flex-end;
 }
 
+.player-controls_extra-small {
+  justify-content: center;
+}
+
 .player-buttons-group {
   gap: calc($container-p-small / 2);
 }

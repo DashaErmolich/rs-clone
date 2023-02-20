@@ -62,7 +62,7 @@ a {
 
   .flex-column-2 {
     @include flex-column(2);
-    min-width: 230px;
+    min-width: $aside-min-width;
   }
 
   .flex-column-3 {
@@ -79,6 +79,10 @@ a {
 
   .flex-column-10 {
     @include flex-column(10);
+  }
+
+  .flex-column-12 {
+    @include flex-column(12);
   }
 }
 

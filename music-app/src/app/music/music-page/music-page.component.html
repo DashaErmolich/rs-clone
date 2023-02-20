@@ -1,13 +1,13 @@
 <div class="flex-column height-100" [ngClass]="!isSmall ? 'music-page-container' : 'music-page-container_small'">
   <div class="flex-row flex-1 height-100">
-    <div class="flex-column-2 container content-wrapper height-100">
+    <div *ngIf="!isHandset"  class="flex-column-2 container content-wrapper height-100">
       <app-aside></app-aside>
     </div>
-    <div class="flex-column-10 container content-wrapper accent-wrapper">
+    <div class="flex-column-10 container content-wrapper accent-wrapper" [ngClass]="{'flex-column-12': isHandset}">
       <div class="scrollable-container position-relative">
         <router-outlet></router-outlet>
       </div>
     </div>
   </div>
 </div>
-<app-player></app-player>
+<app-player [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"></app-player>

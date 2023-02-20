@@ -3,3 +3,10 @@
   flex-direction: column;
   width: calc(100% / 12 * $size);
 }
+
+@mixin grid-horizontal-scroll($total-col-num, $col-num, $col-gap) {
+  overflow: scroll;
+  grid-gap: $col-gap;
+  grid-template-columns: repeat($total-col-num, calc((100% / $col-num) - 0.25 * $col-num * $col-gap));
+  grid-template-rows: 1fr;
+}

@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 import {
   ITrackResponse,
@@ -16,14 +16,15 @@ import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { IGreetings } from '../../models/greeting.models';
 import { IChartRecommendations } from '../../models/home.models';
 import { UtilsService } from '../../services/utils.service';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
-  itemsQtyDefault = 5;
+export class HomeComponent implements OnInit, OnDestroy {
+  itemsQtyDefault = 6;
 
   trackList!: Partial<ITrackResponse>[];
 
@@ -71,18 +72,35 @@ export class HomeComponent implements OnInit {
 
   isLoading = true;
 
+  isSmall = false;
+
+  isHandset = false;
+
+  isExtraSmall = false;
+
+  isSmall$ = new Subscription();
+
+  isHandset$ = new Subscription();
+
+  isExtraSmall$ = new Subscription();
+
+  forkJoinSubscription$ = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
   constructor(
     private myDeezer: DeezerRestApiService,
     private myUtils: UtilsService,
+    private responsive: ResponsiveService,
   ) { }
 
   ngOnInit(): void {
-    forkJoin({
+    this.forkJoinSubscription$ = forkJoin({
       genres: this.myDeezer.getGenres(),
       chartData: this.myDeezer.getChart(),
     }).subscribe((response) => {
       this.genres = this.getReadyData(response.genres.data);
-      this.chartRecommendations.tracks.data = this.getReadyData(response.chartData.tracks.data, 10);
+      this.chartRecommendations.tracks.data = response.chartData.tracks.data;
       this.chartRecommendations.albums.data = this.getReadyData(response.chartData.albums.data);
       this.chartRecommendations.artists.data = this.getReadyData(response.chartData.artists.data);
       this.chartRecommendations.playlists.data = this.getReadyData(
@@ -91,6 +109,23 @@ export class HomeComponent implements OnInit {
       this.chartRecommendations.podcasts.data = this.getReadyData(response.chartData.podcasts.data);
       this.isLoading = false;
     });
+    this.subscriptions.push(this.forkJoinSubscription$);
+    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isSmall = data;
+    });
+    this.subscriptions.push(this.isSmall$);
+    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
+    });
+    this.subscriptions.push(this.isHandset$);
+    this.isExtraSmall$ = this.responsive.isExtraSmall$.subscribe((data) => {
+      this.isExtraSmall = data;
+    });
+    this.subscriptions.push(this.isExtraSmall$);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   // eslint-disable-next-line class-methods-use-this

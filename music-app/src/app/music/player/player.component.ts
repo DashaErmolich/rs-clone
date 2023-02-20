@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  Input,
 } from '@angular/core';
 
 import {
@@ -10,7 +11,7 @@ import {
   trigger,
 } from '@angular/animations';
 
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { Subscription } from 'rxjs';
 import { ITrackResponse } from '../../models/api-response.models';
@@ -21,8 +22,6 @@ import { AudioService } from '../../services/audio.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
-
-const extraSmallBreakpoint = '(max-width: 380px)';
 
 @Component({
   selector: 'app-player',
@@ -42,6 +41,12 @@ const extraSmallBreakpoint = '(max-width: 380px)';
 })
 
 export class PlayerComponent extends ThemeHelper implements OnInit {
+  @Input() isSmall!: boolean;
+
+  @Input() isHandset!: boolean;
+
+  @Input() isExtraSmall!: boolean;
+
   trackList!: Partial<ITrackResponse>[];
 
   currentTrackIndex!: number | null;
@@ -75,12 +80,6 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
 
   volumeSaver: number | null = null;
 
-  isSmall = false;
-
-  isHandset = false;
-
-  isExtraSmall = false;
-
   trackList$!: Subscription;
 
   playingTrackIndex$!: Subscription;
@@ -96,8 +95,6 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
   isEqualizerShown$!: Subscription;
 
   likedTracks$!: Subscription;
-
-  breakpointsObserver$!: Subscription;
 
   subscriptions: Subscription[] = [];
 
@@ -157,33 +154,6 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
       this.isTrackLiked();
     });
     this.subscriptions.push(this.likedTracks$);
-
-    this.breakpointsObserver$ = this.responsive.observe([
-      Breakpoints.Small,
-      Breakpoints.HandsetPortrait,
-      extraSmallBreakpoint,
-    ])
-      .subscribe((result) => {
-        if (result.breakpoints[Breakpoints.Small]
-        || result.breakpoints[Breakpoints.HandsetPortrait]) {
-          this.isSmall = true;
-        } else {
-          this.isSmall = false;
-        }
-
-        if (result.breakpoints[Breakpoints.HandsetPortrait]) {
-          this.isHandset = true;
-        } else {
-          this.isHandset = false;
-        }
-
-        if (this.responsive.isMatched(extraSmallBreakpoint)) {
-          this.isExtraSmall = true;
-        } else {
-          this.isExtraSmall = false;
-        }
-      });
-    this.subscriptions.push(this.breakpointsObserver$);
   }
 
   playNext(): void {

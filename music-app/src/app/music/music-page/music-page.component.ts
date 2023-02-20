@@ -1,40 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-music-page',
   templateUrl: './music-page.component.html',
   styleUrls: ['./music-page.component.scss'],
 })
-export class MusicPageComponent implements OnInit {
+export class MusicPageComponent implements OnInit, OnDestroy {
   showFiller = false;
 
   isSmall = false;
 
   isHandset = false;
 
+  isExtraSmall = false;
+
+  isSmall$ = new Subscription();
+
+  isHandset$ = new Subscription();
+
+  isExtraSmall$ = new Subscription();
+
   constructor(
-    private responsive: BreakpointObserver,
+    private responsive: ResponsiveService,
   ) { }
 
   ngOnInit(): void {
-    this.responsive.observe([
-      Breakpoints.Small,
-      Breakpoints.HandsetPortrait,
-    ])
-      .subscribe((result) => {
-        if (result.breakpoints[Breakpoints.Small]
-        || result.breakpoints[Breakpoints.HandsetPortrait]) {
-          this.isSmall = true;
-        } else {
-          this.isSmall = false;
-        }
+    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isSmall = data;
+    });
+    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
+    });
+    this.isExtraSmall$ = this.responsive.isExtraSmall$.subscribe((data) => {
+      this.isExtraSmall = data;
+    });
+  }
 
-        if (result.breakpoints[Breakpoints.HandsetPortrait]) {
-          this.isHandset = true;
-        } else {
-          this.isHandset = false;
-        }
-      });
+  ngOnDestroy(): void {
+    this.isSmall$.unsubscribe();
+    this.isHandset$.unsubscribe();
+    this.isExtraSmall$.unsubscribe();
   }
 }
