@@ -8,7 +8,9 @@
   <mat-drawer-container *ngIf="isHandset && isSettingsMenuShown" class="aside-container_handset settings-container_handset container" @showSettingsMenu>
     <app-settings-aside [isSettingsMenuShown]="isSettingsMenuShown"></app-settings-aside>
   </mat-drawer-container>
-  <div class="flex-column-10 container content-wrapper accent-wrapper height-100" [ngClass]="{'flex-column-12': isHandset, 'content-wrapper_handset': isHandset}">
-    <router-outlet></router-outlet>
+  <div class="flex-column-10 content-wrapper accent-wrapper height-100" [ngClass]="{'flex-column-12': isHandset, 'content-wrapper_handset': isHandset}">
+    <div class="scrollable-container position-relative container">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

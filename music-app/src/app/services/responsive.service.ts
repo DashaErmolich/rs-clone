@@ -23,17 +23,20 @@ export class ResponsiveService {
     this.responsive.observe([
       Breakpoints.Small,
       Breakpoints.HandsetPortrait,
+      Breakpoints.HandsetLandscape,
       this.extraSmallBreakpoint,
     ])
       .subscribe((result) => {
         if (result.breakpoints[Breakpoints.Small]
-        || result.breakpoints[Breakpoints.HandsetPortrait]) {
+        || result.breakpoints[Breakpoints.HandsetPortrait]
+        || result.breakpoints[Breakpoints.HandsetLandscape]) {
           this.isSmall$.next(true);
         } else {
           this.isSmall$.next(false);
         }
 
-        if (result.breakpoints[Breakpoints.HandsetPortrait]) {
+        if (result.breakpoints[Breakpoints.HandsetPortrait]
+          || result.breakpoints[Breakpoints.HandsetLandscape]) {
           this.isHandset$.next(true);
         } else {
           this.isHandset$.next(false);
