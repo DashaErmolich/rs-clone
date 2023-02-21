@@ -11,9 +11,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-fab extended color="basic" (click)="resetEqualizerPreset()">
+      <button *ngIf="!isHandset" mat-fab extended color="basic" (click)="resetEqualizerPreset()">
         <mat-icon>refresh</mat-icon>
         <span l10nTranslate="">music.equalizer.presets-reset-button</span>
+      </button>
+      <button *ngIf="isHandset" mat-icon-button (click)="resetEqualizerPreset()">
+        <mat-icon>refresh</mat-icon>
       </button>
     </div>
     <div class="scrollable-container height-100">

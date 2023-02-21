@@ -231,7 +231,9 @@
   </div>
 </div>
 <app-equalizer
+  [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"
   *ngIf="isEqualizerShown"
   @showEqualizer
   class="equalizer"
+  [ngClass]="{'equalizer_small': isSmall, 'equalizer_handset': isHandset}"
 ></app-equalizer>

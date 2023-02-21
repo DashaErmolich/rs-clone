@@ -6,6 +6,8 @@ import {
   ViewChild,
   AfterViewInit,
   OnDestroy,
+  Input,
+  HostListener,
 } from '@angular/core';
 
 import { MatSelect } from '@angular/material/select';
@@ -28,6 +30,11 @@ const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../as
 
 const manualEqualizerSettingsTitle = 'manual';
 
+const canvasSmallStartMatch = window.matchMedia('(max-width: 1380px');
+const canvasSmallEndMatch = window.matchMedia('(min-width: 601px');
+
+const canvasHandsetBreakpointMatch = window.matchMedia('(max-width: 600px');
+
 @Component({
   selector: 'app-equalizer',
   templateUrl: './equalizer.component.html',
@@ -35,6 +42,12 @@ const manualEqualizerSettingsTitle = 'manual';
 })
 
 export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() isSmall!: boolean;
+
+  @Input() isHandset!: boolean;
+
+  @Input() isExtraSmall!: boolean;
+
   isShown!: boolean;
 
   @ViewChild('eqCanvas', { static: true }) myCanvas!: ElementRef;
@@ -116,19 +129,8 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setEqualizerCanvas() {
     this.canvas = this.myCanvas.nativeElement;
-    const layoutColumnCount = 12;
-    const EqualizerColumnCount = 10;
-    const canvasSizeCoefficient = EqualizerColumnCount / layoutColumnCount;
-    this.canvas.width = window.innerWidth * canvasSizeCoefficient;
     this.canvasContext = this.canvas.getContext('2d');
-    if (this.canvasContext) {
-      const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
-      const startColor = this.getCanvasStartFillColor();
-      const finishColor = this.getCanvasFinishFillColor();
-      gradient.addColorStop(0, startColor);
-      gradient.addColorStop(1, finishColor);
-      this.canvasContext.fillStyle = gradient;
-    }
+    this.setCanvasWidthAndColor();
   }
 
   getCanvasStartFillColor(): string {
@@ -282,5 +284,32 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
       hz16000: this.frequencies[9].initialVal,
     };
     return preset;
+  }
+
+  @HostListener('window:resize')
+  setCanvasWidthAndColor() {
+    if (canvasSmallStartMatch.matches && canvasSmallEndMatch.matches) {
+      const asideMinWidth = 230;
+      this.canvas.width = window.innerWidth - asideMinWidth;
+    } else if (canvasHandsetBreakpointMatch.matches) {
+      this.canvas.width = window.innerWidth;
+    } else {
+      const layoutColumnCount = 12;
+      const EqualizerColumnCount = 10;
+      const canvasSizeCoefficient = EqualizerColumnCount / layoutColumnCount;
+      this.canvas.width = window.innerWidth * canvasSizeCoefficient;
+    }
+    this.setCanvasFillStyleGradient();
+  }
+
+  setCanvasFillStyleGradient() {
+    if (this.canvasContext) {
+      const gradient = this.canvasContext.createLinearGradient(0, 0, window.innerWidth, 0);
+      const startColor = this.getCanvasStartFillColor();
+      const finishColor = this.getCanvasFinishFillColor();
+      gradient.addColorStop(0, startColor);
+      gradient.addColorStop(1, finishColor);
+      this.canvasContext.fillStyle = gradient;
+    }
   }
 }

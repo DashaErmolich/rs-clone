@@ -149,10 +149,19 @@
   height: calc(100vh - $header-height - $player-height - $footer-height);
   z-index: $z-index-dynamic-window;
   overflow-x: hidden;
+
+  @media screen and (max-width: 1380px) {
+    left: $aside-min-width;
+  }
+}
+
+.equalizer_small {
+  height: calc(100vh - $header-height - $player-height-small - $footer-height);
 }
 
 .equalizer_handset {
   top: $header-height-handset;
+  left: 0;
   height: calc(100vh - $header-height-handset - $player-height-small - $footer-height);
 }
 

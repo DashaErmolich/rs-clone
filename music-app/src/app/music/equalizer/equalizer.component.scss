@@ -25,6 +25,10 @@ $eq-canvas-height: 150px;
   margin-left: - $container-p-large;
   position: absolute;
   bottom: 0;
+  
+  @media screen and (max-width: $custom-small-breakpoint) {
+    margin-left: - $container-p-large / 2;
+  }
 }
 
 .equalizer-controls {
