@@ -54,7 +54,13 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   type!: LikedSearchResults;
 
-  description!: string;
+  descriptionTitle!: string;
+
+  descriptionSubTitle!: string;
+
+  descriptionTitleInfo!: string;
+
+  descriptionSubTitleInfo!: string;
 
   artistImg!: string;
 
@@ -79,6 +85,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   isHandset$ = new Subscription();
 
   subscriptions: Subscription[] = [];
+
+  typeToShow!: string;
 
   constructor(
     private myState: StateService,
@@ -146,9 +154,15 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.result = res;
         this.type = res.type as LikedSearchResults;
+        if (this.type === 'artist') {
+          this.typeToShow = 'search.results.artist';
+          this.descriptionTitle = 'search.results.description.artist.albums';
+          this.descriptionSubTitle = 'search.results.description.artist.fans';
+        }
         this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
         this.title = res.name;
-        this.description = `Albums:  ${res.nb_album},  ${res.nb_fan}  - fans`;
+        this.descriptionTitleInfo = `: ${res.nb_album}`;
+        this.descriptionSubTitleInfo = `: ${res.nb_fan}`;
         this.loading = false;
         this.isSearchResultLiked();
       });
@@ -167,6 +181,9 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.result = res;
         this.type = res.type as LikedSearchResults;
+        if (this.type === 'album') {
+          this.typeToShow = 'search.results.album';
+        }
         this.imgSrc = res.cover_medium ? res.cover_medium : DEFAULT_SRC;
         this.title = res.title;
         this.tracks = res.tracks.data;
@@ -185,10 +202,16 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.result = res;
         this.type = res.type as LikedSearchResults;
+        if (this.type === 'playlist') {
+          this.typeToShow = 'search.results.playlist';
+          this.descriptionTitle = 'search.results.description.playlist.creator';
+          this.descriptionSubTitle = 'search.results.description.playlist.songs';
+        }
         this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
         this.title = res.title;
         this.tracks = res.tracks.data;
-        this.description = `Creator: ${res.creator.name}, ${res.nb_tracks} - songs`;
+        this.descriptionTitleInfo = `: ${res.creator.name}`;
+        this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
         this.loading = false;
         this.isSearchResultLiked();
       });

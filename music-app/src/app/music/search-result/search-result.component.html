@@ -4,9 +4,16 @@
       <img [src]="imgSrc" [alt]="title">
     </div>
     <div class="search-result-block">
-      <div class="search-result-type">{{ type }}</div>
+      <div class="search-result-type" l10nTranslate>{{ typeToShow }}</div>
       <h2 class="search-result-title">{{ title }}</h2>
-      <div *ngIf="description" class="search-result-description less-opacity">{{ description }}</div>
+      <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
+        <span l10nTranslate>{{ descriptionTitle }}</span>
+        <span l10nTranslate>{{ descriptionTitleInfo }}</span>
+      </div>
+      <div *ngIf="descriptionSubTitle && descriptionSubTitle" class="search-result-description less-opacity">
+        <span l10nTranslate>{{ descriptionSubTitle }}</span>
+        <span l10nTranslate>{{ descriptionSubTitleInfo }}</span>
+      </div>
       <div *ngSwitchCase="'album'" class="search-result-description less-opacity">
         <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
         <div class="artist-name" [routerLink]="['/music/artist', artistId]">{{ artistName }}</div>

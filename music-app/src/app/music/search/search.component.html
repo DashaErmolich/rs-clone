@@ -10,10 +10,10 @@
 <div *ngIf="searchParam" class="search-page">
   <div class="chips-container">
     <mat-chip-listbox aria-label="Search selection">
-      <mat-chip-option (click)="renderTracks()" selected>Tracks</mat-chip-option>
-      <mat-chip-option (click)="renderArtists()">Artists</mat-chip-option>
-      <mat-chip-option (click)="renderAlbums()">Albums</mat-chip-option>
-      <mat-chip-option (click)="renderPlaylists()">Playlists</mat-chip-option>
+      <mat-chip-option (click)="renderTracks()" selected l10nTranslate>search.chips.tracks</mat-chip-option>
+      <mat-chip-option (click)="renderArtists()" l10nTranslate>search.chips.artists</mat-chip-option>
+      <mat-chip-option (click)="renderAlbums()" l10nTranslate>search.chips.albums</mat-chip-option>
+      <mat-chip-option (click)="renderPlaylists()" l10nTranslate>search.chips.playlists</mat-chip-option>
     </mat-chip-listbox>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
