@@ -10,6 +10,7 @@ import { ILikedSearchResults, LikedSearchResults } from 'src/app/models/search.m
 import { AudioService } from 'src/app/services/audio.service';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { StateService } from 'src/app/services/state.service';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-search-result',
@@ -69,11 +70,22 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   likedSearchResults$!: Subscription;
 
+  isSmall = false;
+
+  isHandset = false;
+
+  isSmall$ = new Subscription();
+
+  isHandset$ = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
     private deezerRestApiService: DeezerRestApiService,
     private route: ActivatedRoute,
+    private responsive: ResponsiveService,
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +118,16 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     this.likedSearchResults$ = this.myState.likedSearchResults$.subscribe((res) => {
       this.likedSearchResults = res;
     });
+    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isSmall = data;
+    });
+    this.subscriptions.push(this.isSmall$);
+
+    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
+    });
+
+    this.subscriptions.push(this.isHandset$);
   }
 
   ngOnDestroy(): void {
@@ -115,6 +137,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     if (this.routeParams$) this.routeParams$.unsubscribe();
     if (this.result$) this.result$.unsubscribe();
     if (this.likedSearchResults$) this.likedSearchResults$.unsubscribe();
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   getArtist(id: number) {

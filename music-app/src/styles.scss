@@ -282,3 +282,41 @@ header {
 .width-100 {
   width: 100% !important;
 }
+
+.search-container,
+.result-container {
+  grid-gap: $container-p-small;
+  display: grid;
+  grid-template-columns: repeat($count-cart-in-row, minmax(0, 1fr));
+  grid-template-rows: 1fr;
+  grid-auto-rows: auto;
+  margin-bottom: $container-p-small;
+}
+
+.search-container_small,
+.result-container_small {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.search-container_handset,
+.result-container_handset {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tracks-container {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.tracks-container_small {
+
+  .track {
+    padding: 5px 10px !important;
+    gap: $container-p-small / 2 !important;
+  }
+
+  .track-number-wrapper {
+    width: 20px !important;
+  }
+}

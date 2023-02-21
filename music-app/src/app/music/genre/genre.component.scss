@@ -1,14 +1,5 @@
 @import '../../../sass/abstracts/constants';
 
-.result-container {
-  grid-gap: $container-p-small;
-  display: grid;
-  grid-template-columns: repeat($count-cart-in-row, minmax(0, 1fr));
-  grid-template-rows: 1fr;
-  grid-auto-rows: auto;
-  margin-bottom: $container-p-small;
-}
-
 .spinner {
   margin: 0 auto;
   max-width: 2rem;
@@ -22,7 +13,7 @@
 }
 
 .genre-main-title {
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 900;
   line-height: normal;
 }

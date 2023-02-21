@@ -4,6 +4,5 @@
     <h3 class="genre-title">Artists</h3>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
-
-  <app-artists [artists]="artists" class="result-container"></app-artists>
+  <app-artists [artists]="artists" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-artists>
 </div>

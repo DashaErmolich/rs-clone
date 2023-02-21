@@ -1,26 +1,40 @@
 @import '../../../sass/abstracts/constants';
 
 .search-result-container {
-  display: flex;
   gap: $container-p-large;
   margin-bottom: $container-p-small;
 }
 
-.search-result-image {
-  width: 20%;
-
-  & img {
-    width: 100%;
-    display: block;
-  }
+.search-result-container_small {
+  gap: $container-p-small;
+  margin-bottom: $container-p-small / 2;
 }
 
 .search-result-block {
-  width: 80%;
   display: flex;
   flex-direction: column;
   gap: $container-p-small;
   justify-content: space-between;
+}
+
+.search-result__image {
+  width: 200px;
+  height: 200px;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.search-result__image_small {
+  width: 100px;
+  height: 100px;
+
+  img {
+    display: block;
+    width: 100%;
+  }
 }
 
 .search-result-type {
@@ -29,28 +43,22 @@
 
 .search-result-title {
   flex-grow: 1;
-  font-size: 3em;
+  font-size: 4vw;
   line-height: 100%;
   text-transform: capitalize;
-}
-
-.tracks-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
 
 .search-result-container-btns {
   display: flex;
   gap: $container-p-small;
   margin-bottom: $container-p-small;
+  align-items: center;
 }
 
 .search-result-description {
   font-size: 1rem;
   display: flex;
   align-items: center;
-  color: grey;
 }
 
 .artist-img {
