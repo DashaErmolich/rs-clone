@@ -1,6 +1,6 @@
 <div *ngIf="!searchParam" class="search-page">
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
-  <div class="scrollable">
+  <div class="">
     <h2 *ngIf="!loading">Genres</h2>
     <app-genres [genres]="genres" class="search-container" [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-genres>
     <h2 *ngIf="!loading">Playlists</h2>
@@ -17,7 +17,7 @@
     </mat-chip-listbox>
   </div>
   <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
-  <div [ngSwitch]="searchType" class="tracks scrollable">
+  <div [ngSwitch]="searchType" class="tracks">
     <div *ngSwitchCase="'tracks'">
       <app-tracks *ngIf="!loading"  [tracks]="tracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>
     </div>

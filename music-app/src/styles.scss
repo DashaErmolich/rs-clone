@@ -41,7 +41,7 @@ a {
 .container {
   padding: $container-p-small $container-p-large;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: $custom-small-breakpoint) {
     padding: calc($container-p-small / 2) calc($container-p-large / 2);
   }
 }
@@ -98,6 +98,27 @@ a {
 
 .scrollable-container {
   overflow-y: scroll;
+  margin-right: calc(($container-p-large - $scrollbar-width) / 2);
+  padding-right: calc(($container-p-large - $scrollbar-width) / 2);
+
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $hover-color-card;
+    border-radius: 3px;
+  }
+
+  @media screen and (max-width: $custom-small-breakpoint) {
+    margin-right: $scrollbar-width / 2;
+    padding-right: $scrollbar-width / 2;
+  }
+
 }
 
 .flex-column {
@@ -239,7 +260,7 @@ header {
 
 .aside-container_handset {
   position: absolute !important;
-  padding-top: 50px;
+  padding-top: 64px;
   top: $header-progress-bar-height;
   left: 0;
   right: 0;
