@@ -1,6 +1,8 @@
 <div class="flex-row height-100">
-  <div *ngIf="!isHandset" class="flex-column-2 container content-wrapper height-100">
-    <app-settings-aside></app-settings-aside>
+  <div *ngIf="!isHandset" class="flex-column-2 content-wrapper height-100">
+    <div class="scrollable-container position-relative container">
+      <app-settings-aside></app-settings-aside>
+    </div>
   </div>
   <button *ngIf="isHandset" mat-icon-button aria-label="Settings menu" class="aside-menu-button" (click)="toggleSettingsMenuVisibility()">
     <mat-icon>{{ isSettingsMenuShown ? 'close' : 'menu' }}</mat-icon>

@@ -27,21 +27,25 @@ export class ResponsiveService {
       this.extraSmallBreakpoint,
     ])
       .subscribe((result) => {
+        console.log(result.breakpoints);
         if (result.breakpoints[Breakpoints.Small]
         || result.breakpoints[Breakpoints.HandsetPortrait]
-        // || result.breakpoints[Breakpoints.HandsetLandscape]
         ) {
           this.isSmall$.next(true);
         } else {
           this.isSmall$.next(false);
         }
 
-        if (result.breakpoints[Breakpoints.HandsetPortrait]
-        // || result.breakpoints[Breakpoints.HandsetLandscape]
-        ) {
+        if (result.breakpoints[Breakpoints.HandsetPortrait]) {
           this.isHandset$.next(true);
         } else {
           this.isHandset$.next(false);
+        }
+
+        if (result.breakpoints[Breakpoints.HandsetLandscape]
+          && !result.breakpoints[Breakpoints.Small]) {
+          this.isSmall$.next(true);
+          this.isHandset$.next(true);
         }
 
         if (this.responsive.isMatched(this.extraSmallBreakpoint)) {
