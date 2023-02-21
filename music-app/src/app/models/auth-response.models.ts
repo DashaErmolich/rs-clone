@@ -1,7 +1,7 @@
-import { userModel } from 'src/app/models/userDto.models';
+import { IUserModel } from 'src/app/models/userModel.models';
 
-export interface AuthResponse {
+export interface IAuthResponse {
   accessToken: string;
   refreshToken: string;
-  user: userModel;
+  user: IUserModel;
 }

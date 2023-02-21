@@ -1,4 +1,4 @@
-export interface userModel {
+export interface IUserModel {
   username: string;
   email: string;
   isActivated: boolean;

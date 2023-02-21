@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { serverUrl } from 'src/app/constants/constants';
-import { AuthResponse } from 'src/app/models/auth-response.models';
-import { userModel } from 'src/app/models/userDto.models';
+import { IAuthResponse } from 'src/app/models/auth-response.models';
+import { IUserModel } from 'src/app/models/userModel.models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,11 @@ export class AuthorizationApiService {
   constructor(private http: HttpClient) {}
 
   login (username: string, email: string, password: string) {
-    return this.http.post<AuthResponse>(`${serverUrl}/login`, {username, email, password});
+    return this.http.post<IAuthResponse>(`${serverUrl}/login`, {username, email, password});
   }
 
   registration (username: string, email: string, password: string) {
-    return this.http.post<AuthResponse>(`${serverUrl}/registration`, {username, email, password});
+    return this.http.post<IAuthResponse>(`${serverUrl}/registration`, {username, email, password});
   }
 
   logout () {
@@ -24,10 +24,10 @@ export class AuthorizationApiService {
   }
 
   refresh () {
-    return this.http.get<AuthResponse>(`${serverUrl}/refresh`);
+    return this.http.get<IAuthResponse>(`${serverUrl}/refresh`);
   }
 
   fetchUsers () {
-    return this.http.get<userModel[]>(`${serverUrl}/users`)
+    return this.http.get<IUserModel[]>(`${serverUrl}/users`)
   }
 }

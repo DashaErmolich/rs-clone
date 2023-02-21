@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { userModel } from 'src/app/models/userDto.models';
+import { IUserModel } from 'src/app/models/userModel.models';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { LocalStorageService } from './local-storage.service';
@@ -16,7 +16,7 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
-  user = {} as userModel;
+  user = {} as IUserModel;
   isAuthorized = false;
 
   constructor(private storage: LocalStorageService, private authService: AuthorizationApiService) {
@@ -41,7 +41,7 @@ export class StateService {
     this.isAuthorized = authStatus;
   }
 
-  setUser(user: userModel) {
+  setUser(user: IUserModel) {
     this.user = user; 
   }
   

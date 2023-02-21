@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { serverUrl } from '../constants/constants';
+import { StatusCodes } from '../enums/StatusCodes';
 import { refreshRequiredError } from '../errors/refreshRequired.error';
 import { AuthorizationApiService } from '../services/authorization-api.service';
 import { LocalStorageService } from '../services/local-storage.service';
@@ -28,7 +29,7 @@ export class ResponseInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap({
        error: (error: HttpErrorResponse) => {
-        if (error.status === 401 && this.localStore.getToken()) {
+        if (error.status === StatusCodes.Unauthorized && this.localStore.getToken()) {
           try {
             this.localStore.removeToken();
             this.authService.refresh().pipe(take(1)).subscribe((res) => {

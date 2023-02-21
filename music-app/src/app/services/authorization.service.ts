@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { userModel } from 'src/app/models/userDto.models';
+import { IUserModel } from 'src/app/models/userModel.models';
 import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from './local-storage.service';
+import { StatusCodes } from '../enums/StatusCodes';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class AuthorizationService {
         this.authService.logout().pipe(take(1)).subscribe(() => {
           this.localStore.removeToken();
           this.state.setAuthorized(false);
-          this.state.setUser({} as userModel)
+          this.state.setUser({} as IUserModel)
         })
       } catch (e) {}
     }
@@ -69,7 +70,7 @@ export class AuthorizationService {
         this.authService.fetchUsers().pipe(
         take(1),  
         catchError(err => {
-          if (err.status === 403) {
+          if (err.status === StatusCodes.RefreshRequired) {
             setTimeout(() => {
               this.fetch();
             }, 500)
