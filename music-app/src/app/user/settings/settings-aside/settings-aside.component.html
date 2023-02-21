@@ -1,13 +1,13 @@
 <nav class="flex-column mb-small navigation-container">
-  <a mat-button color="basic" routerLink="/settings/language" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" [routerLinkActiveOptions]="{exact: true}">
+  <a mat-button color="basic" routerLink="/settings/language" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" [routerLinkActiveOptions]="{exact: true}" (click)="toggleSettingsMenuVisibility()">
     <mat-icon>language</mat-icon>
     <span l10nTranslate>settings.language.title</span>
   </a>
-  <a mat-button color="basic" routerLink="/settings/theme" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" [routerLinkActiveOptions]="{exact: true}">
+  <a mat-button color="basic" routerLink="/settings/theme" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" [routerLinkActiveOptions]="{exact: true}" (click)="toggleSettingsMenuVisibility()">
     <mat-icon>format_color_fill</mat-icon>
     <span l10nTranslate>settings.theme.title</span>
   </a>
-  <a mat-button color="basic" routerLink="/settings/account" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" [routerLinkActiveOptions]="{exact: true}">
+  <a mat-button color="basic" routerLink="/settings/account" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" [routerLinkActiveOptions]="{exact: true}" (click)="toggleSettingsMenuVisibility()">
     <mat-icon>account_box</mat-icon>
     <span l10nTranslate>settings.account.title</span>
   </a>

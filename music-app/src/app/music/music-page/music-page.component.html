@@ -3,10 +3,10 @@
     <div *ngIf="!isHandset" class="flex-column-2 container content-wrapper height-100">
       <app-aside></app-aside>
     </div>
-    <button *ngIf="isHandset" mat-icon-button aria-label="Navigation menu" class="navigation-menu-button" (click)="toggleNavigationMenuVisibility()">
+    <button *ngIf="isHandset" mat-icon-button aria-label="Navigation menu" class="aside-menu-button" (click)="toggleNavigationMenuVisibility()">
       <mat-icon>{{ isNavigationMenuShown ? 'close' : 'menu' }}</mat-icon>
     </button>
-    <mat-drawer-container *ngIf="isHandset && isNavigationMenuShown" class="aside-container_handset container" @showNavigationMenu>
+    <mat-drawer-container *ngIf="isHandset && isNavigationMenuShown" class="navigation-container_handset aside-container_handset container" @showNavigationMenu>
       <app-aside [isNavigationMenuShown]="isNavigationMenuShown"></app-aside>
     </mat-drawer-container>
     <div class="flex-column-10 container content-wrapper accent-wrapper" [ngClass]="{'flex-column-12': isHandset, 'content-wrapper_handset': isHandset}">

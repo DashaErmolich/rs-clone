@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { StateService } from '../../../services/state.service';
 
 @Component({
   selector: 'app-settings-aside',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./settings-aside.component.scss'],
 })
 export class SettingsAsideComponent {
+  @Input() isSettingsMenuShown!: boolean;
 
+  constructor(
+    private myState: StateService,
+  ) { }
+
+  toggleSettingsMenuVisibility() {
+    if (this.isSettingsMenuShown) {
+      this.myState.setSettingsMenuVisibility(!this.isSettingsMenuShown);
+    }
+  }
 }

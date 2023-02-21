@@ -229,3 +229,19 @@ header {
     margin-bottom: calc($container-p-small / 2);
   }
 }
+
+.aside-menu-button {
+  position: fixed !important;
+  top: $header-progress-bar-height + 8px;
+  right: 0;
+  z-index: $z-index-top !important;
+}
+
+.aside-container_handset {
+  position: absolute !important;
+  padding-top: 50px;
+  top: $header-progress-bar-height;
+  left: 0;
+  right: 0;
+  z-index: $z-index-dynamic-window !important;
+}

@@ -24,6 +24,10 @@ export class ResponsiveAsideHelper implements OnInit, OnDestroy {
 
   isNavigationMenuShown!: boolean;
 
+  isSettingsMenuShown$ = new Subscription();
+
+  isSettingsMenuShown!: boolean;
+
   constructor(
     private responsive: ResponsiveService,
     private myState: StateService,
@@ -42,6 +46,9 @@ export class ResponsiveAsideHelper implements OnInit, OnDestroy {
     this.isNavigationMenuShown$ = this.myState.isNavigationMenuShown$.subscribe((data) => {
       this.isNavigationMenuShown = data;
     });
+    this.isSettingsMenuShown$ = this.myState.isSettingsMenuShown$.subscribe((data) => {
+      this.isSettingsMenuShown = data;
+    });
   }
 
   ngOnDestroy(): void {
@@ -49,9 +56,14 @@ export class ResponsiveAsideHelper implements OnInit, OnDestroy {
     this.isHandset$.unsubscribe();
     this.isExtraSmall$.unsubscribe();
     this.isNavigationMenuShown$.unsubscribe();
+    this.isSettingsMenuShown$.unsubscribe();
   }
 
   toggleNavigationMenuVisibility() {
     this.myState.setNavigationMenuVisibility(!this.isNavigationMenuShown);
+  }
+
+  toggleSettingsMenuVisibility() {
+    this.myState.setSettingsMenuVisibility(!this.isSettingsMenuShown);
   }
 }

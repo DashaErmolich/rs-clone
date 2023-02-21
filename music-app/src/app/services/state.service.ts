@@ -26,6 +26,8 @@ export class StateService {
 
   isNavigationMenuShown$ = new BehaviorSubject<boolean>(false);
 
+  isSettingsMenuShown$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private storage: LocalStorageService,
   ) {
@@ -84,5 +86,9 @@ export class StateService {
 
   setNavigationMenuVisibility(isVisible: boolean): void {
     this.isNavigationMenuShown$.next(isVisible);
+  }
+
+  setSettingsMenuVisibility(isVisible: boolean): void {
+    this.isSettingsMenuShown$.next(isVisible);
   }
 }

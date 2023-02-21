@@ -9,19 +9,6 @@
   max-height: calc(100% - $player-height-small);
 }
 
-.aside-container_handset {
-  position: absolute;
-  padding-top: 50px;
-  top: $header-progress-bar-height;
-  left: 0;
-  right: 0;
+.navigation-container_handset {
   bottom: calc($player-height-small + $footer-height);
-  z-index: $z-index-dynamic-window;
-}
-
-.navigation-menu-button {
-  position: fixed;
-  top: $header-progress-bar-height + 8px;
-  right: 0;
-  z-index: $z-index-top;
 }

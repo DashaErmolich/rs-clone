@@ -11,8 +11,6 @@ import {
   trigger,
 } from '@angular/animations';
 
-import { BreakpointObserver } from '@angular/cdk/layout';
-
 import { Subscription } from 'rxjs';
 import { ITrackResponse } from '../../models/api-response.models';
 import { IAudioPlayerState, IPlayerControlsState } from '../../models/audio-player.models';
@@ -103,7 +101,6 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
     private myState: StateService,
     private myAudio: AudioService,
     private myStorage: LocalStorageService,
-    private responsive: BreakpointObserver,
   ) {
     super(myTheme);
   }
