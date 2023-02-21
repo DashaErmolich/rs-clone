@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlistsFromChart: Partial<IPlayListResponse>[] = [];
 
-  loading = true;
+  loading: boolean = true;
 
   searchParam: string = '';
 

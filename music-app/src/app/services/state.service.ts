@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ITrackResponse } from '../models/api-response.models';
+import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
 import IUserData from '../models/user-data.models';
 import { ITrackListInfo } from '../models/audio-player.models';
@@ -24,6 +25,12 @@ export class StateService {
 
   likedTracks$ = new BehaviorSubject<number[]>([]);
 
+  likedSearchResults$ = new BehaviorSubject<ILikedSearchResults>({
+    album: [],
+    artist: [],
+    playlist: [],
+  });
+
   isNavigationMenuShown$ = new BehaviorSubject<boolean>(false);
 
   isSettingsMenuShown$ = new BehaviorSubject<boolean>(false);
@@ -44,6 +51,7 @@ export class StateService {
       this.setUserData(userData.userName, userData.userIconId);
     }
     this.likedTracks$.next(this.storage.getLikedTracks());
+    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 
   setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
@@ -96,5 +104,21 @@ export class StateService {
 
   setSearchInputVisibility(isVisible: boolean): void {
     this.isSearchInputShown$.next(isVisible);
+  }
+
+  setLikedSearchResult(type: LikedSearchResults, id: number): void {
+    this.storage.setLikedSearchResult(type, id);
+    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+  }
+
+  removeLikedSearchResult(type: LikedSearchResults, id: number): void {
+    const likedSearchResults = this.storage.getLikedSearchResults();
+    const searchResultIndex = likedSearchResults[type]
+      .findIndex((searchResultId) => searchResultId === id);
+    if (searchResultIndex >= 0) {
+      likedSearchResults[type].splice(searchResultIndex, 1);
+    }
+    this.storage.setLikedSearchResults(likedSearchResults);
+    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 }
