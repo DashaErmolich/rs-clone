@@ -20,17 +20,27 @@ import { ResponsiveService } from '../../services/responsive.service';
 })
 
 export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
-  searchControl: FormControl = new FormControl();
-
-  isSearchRoute: boolean = false;
-
-  searchValue: string = '';
-
   queryParams$: Subscription = new Subscription();
 
   searchControl$: Subscription = new Subscription();
 
   events$: Subscription = new Subscription();
+
+  userName$: Subscription = new Subscription();
+
+  userIconId$: Subscription = new Subscription();
+
+  isHandset$: Subscription = new Subscription();
+
+  isSearchInputShown$: Subscription = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
+  searchControl: FormControl = new FormControl();
+
+  isSearchRoute: boolean = false;
+
+  searchValue: string = '';
 
   userIcons: IUserIcons[] = userIconsData;
 
@@ -41,14 +51,6 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
   userIconId!: number;
 
   isHandset = false;
-
-  isHandset$ = new Subscription();
-
-  isSmall = false;
-
-  isSmall$ = new Subscription();
-
-  isSearchInputShown$ = new Subscription();
 
   isSearchInputShown!: boolean;
 
@@ -72,6 +74,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
       }
       if (this.queryParams$) this.queryParams$.unsubscribe();
     });
+    this.subscriptions.push(this.queryParams$);
 
     this.searchControl$ = this.searchControl.valueChanges
       .subscribe((res) => {
@@ -79,6 +82,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
+    this.subscriptions.push(this.searchControl$);
 
     this.events$ = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -91,30 +95,31 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         }
       }
     });
-    this.myState.userName$.subscribe((data) => {
+    this.subscriptions.push(this.events$);
+
+    this.userName$ = this.myState.userName$.subscribe((data) => {
       this.userName = data;
     });
-    this.myState.userIconId$.subscribe((data) => {
+    this.subscriptions.push(this.userName$);
+
+    this.userIconId$ = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
+    this.subscriptions.push(this.userIconId$);
+
     this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
       this.isHandset = data;
     });
-    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
-      this.isSmall = data;
-    });
+    this.subscriptions.push(this.isHandset$);
+
     this.isSearchInputShown$ = this.myState.isSearchInputShown$.subscribe((data) => {
       this.isSearchInputShown = data;
     });
+    this.subscriptions.push(this.isSearchInputShown$);
   }
 
   ngOnDestroy(): void {
-    if (this.searchControl$) this.searchControl$.unsubscribe();
-    if (this.queryParams$) this.queryParams$.unsubscribe();
-    if (this.events$) this.events$.unsubscribe();
-    this.isSmall$.unsubscribe();
-    this.isHandset$.unsubscribe();
-    this.isSearchInputShown$.unsubscribe();
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   toggleSearchInputVisibility() {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ThemeService } from '../../services/theme.service';
+import { ThemeHelper } from '../../helpers/theme-helper';
 
 @Component({
   selector: 'app-not-found',
@@ -8,10 +8,6 @@ import { ThemeService } from '../../services/theme.service';
   styleUrls: ['./not-found.component.scss'],
 })
 
-export class NotFoundComponent {
-  constructor(
-    private myTheme: ThemeService,
-  ) { }
+export class NotFoundComponent extends ThemeHelper {
 
-  theme: string = this.myTheme.activeTheme;
 }

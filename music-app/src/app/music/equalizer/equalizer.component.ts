@@ -299,6 +299,7 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
       const canvasSizeCoefficient = EqualizerColumnCount / layoutColumnCount;
       this.canvas.width = window.innerWidth * canvasSizeCoefficient;
     }
+    this.canvas.height = window.innerHeight * 0.1;
     this.setCanvasFillStyleGradient();
   }
 

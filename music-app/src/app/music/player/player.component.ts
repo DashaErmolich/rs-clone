@@ -29,10 +29,10 @@ import { ThemeService } from '../../services/theme.service';
     trigger('showEqualizer', [
       transition(':enter', [
         style({ transform: 'translateY(100vh)' }),
-        animate('500ms', style({ transform: 'translateY(0)' })),
+        animate('300ms', style({ transform: 'translateY(0)' })),
       ]),
       transition(':leave', [
-        animate('500ms', style({ transform: 'translateY(100vh)' })),
+        animate('300ms', style({ transform: 'translateY(100vh)' })),
       ]),
     ]),
   ],
