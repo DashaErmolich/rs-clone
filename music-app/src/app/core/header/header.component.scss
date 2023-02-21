@@ -48,3 +48,12 @@
 .header-loader-bar {
   z-index: $z-index-top;
 }
+
+.search-input-container {
+  width: 100% !important;
+  padding-right: 48px;
+}
+
+.header-user-data-container {
+  align-self: flex-end;
+}

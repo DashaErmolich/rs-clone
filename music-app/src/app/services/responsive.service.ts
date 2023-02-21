@@ -29,14 +29,16 @@ export class ResponsiveService {
       .subscribe((result) => {
         if (result.breakpoints[Breakpoints.Small]
         || result.breakpoints[Breakpoints.HandsetPortrait]
-        || result.breakpoints[Breakpoints.HandsetLandscape]) {
+        // || result.breakpoints[Breakpoints.HandsetLandscape]
+        ) {
           this.isSmall$.next(true);
         } else {
           this.isSmall$.next(false);
         }
 
         if (result.breakpoints[Breakpoints.HandsetPortrait]
-          || result.breakpoints[Breakpoints.HandsetLandscape]) {
+        // || result.breakpoints[Breakpoints.HandsetLandscape]
+        ) {
           this.isHandset$.next(true);
         } else {
           this.isHandset$.next(false);

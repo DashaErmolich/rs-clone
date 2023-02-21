@@ -44,6 +44,14 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   isHandset$ = new Subscription();
 
+  isSmall = false;
+
+  isSmall$ = new Subscription();
+
+  isSearchInputShown$ = new Subscription();
+
+  isSearchInputShown!: boolean;
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
@@ -92,11 +100,24 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
     this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
       this.isHandset = data;
     });
+    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isSmall = data;
+    });
+    this.isSearchInputShown$ = this.myState.isSearchInputShown$.subscribe((data) => {
+      this.isSearchInputShown = data;
+    });
   }
 
   ngOnDestroy(): void {
     if (this.searchControl$) this.searchControl$.unsubscribe();
     if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.events$) this.events$.unsubscribe();
+    this.isSmall$.unsubscribe();
+    this.isHandset$.unsubscribe();
+    this.isSearchInputShown$.unsubscribe();
+  }
+
+  toggleSearchInputVisibility() {
+    this.myState.setSearchInputVisibility(!this.isSearchInputShown);
   }
 }

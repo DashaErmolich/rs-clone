@@ -28,6 +28,8 @@ export class StateService {
 
   isSettingsMenuShown$ = new BehaviorSubject<boolean>(false);
 
+  isSearchInputShown$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private storage: LocalStorageService,
   ) {
@@ -90,5 +92,9 @@ export class StateService {
 
   setSettingsMenuVisibility(isVisible: boolean): void {
     this.isSettingsMenuShown$.next(isVisible);
+  }
+
+  setSearchInputVisibility(isVisible: boolean): void {
+    this.isSearchInputShown$.next(isVisible);
   }
 }

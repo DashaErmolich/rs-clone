@@ -1,16 +1,27 @@
 <mat-progress-bar mode="determinate" value="40" class="header-loader-bar"></mat-progress-bar>
 <header class="header flex-row" [ngClass]="{'header_handset': isHandset}">
-  <div class="logo-container container" [ngClass]="{'flex-column-2': !isHandset}">
+  <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || !isSearchRoute || (isSearchRoute && !isHandset)" class="logo-container container" [ngClass]="{'flex-column-2': !isHandset}">
     <a routerLink="/music/home" ariaCurrentWhenActive="page">
       <svg class="logo-icon" [ngClass]="{'logo-icon_handset': isHandset}">
         <use [attr.xlink:href]="getLogoIconPath()"></use>
       </svg>
     </a>
   </div>
-  <div class="container" [ngClass]="{'flex-column-10': !isHandset}">
-    <div class="flex-row">
+  <div class="container" [ngClass]="{'flex-column-10': !isHandset, 'search-input-container': isSearchInputShown && isSearchRoute && isHandset}">
+    <div class="flex-row" [ngClass]="{'width-100': isSearchInputShown && isSearchRoute && isHandset}">
+      <div *ngIf="isSearchRoute && isHandset" class="flex-row" [ngClass]="{'width-100': isSearchInputShown && isSearchRoute && isHandset}">
+        <button *ngIf="isSearchRoute && isHandset" mat-icon-button aria-label="Search input" (click)="toggleSearchInputVisibility()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <div *ngIf="isSearchRoute && isHandset && isSearchInputShown" class="width-100">
+          <mat-form-field class="search-input width-100" appearance="outline">
+            <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+            <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
       <div>
-        <ng-container *ngIf="isSearchRoute">
+        <ng-container *ngIf="isSearchRoute && !isHandset">
           <mat-form-field class="search-input" appearance="outline">
             <input matInput type="text" placeholder="Search" [formControl]="searchControl">
             <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
@@ -18,7 +29,7 @@
           </mat-form-field>
         </ng-container>
       </div>
-      <div>
+      <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || !isSearchRoute || (isSearchRoute && !isHandset)" class="header-user-data-container">
         <a routerLink="/settings" ariaCurrentWhenActive="page">
           <button *ngIf="!isHandset" mat-fab extended color="basic">
             <mat-icon>
