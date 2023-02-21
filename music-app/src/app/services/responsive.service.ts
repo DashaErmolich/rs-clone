@@ -27,7 +27,6 @@ export class ResponsiveService {
       this.extraSmallBreakpoint,
     ])
       .subscribe((result) => {
-        console.log(result.breakpoints);
         if (result.breakpoints[Breakpoints.Small]
         || result.breakpoints[Breakpoints.HandsetPortrait]
         ) {

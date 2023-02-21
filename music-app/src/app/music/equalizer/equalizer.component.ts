@@ -7,7 +7,7 @@ import {
   AfterViewInit,
   OnDestroy,
   Input,
-  HostListener,
+  Renderer2,
 } from '@angular/core';
 
 import { MatSelect } from '@angular/material/select';
@@ -68,9 +68,15 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedPresetIndex!: number | null;
 
-  routerEventSubscription!: Subscription;
-
   isPlay!: boolean;
+
+  routerEventSubscription: Subscription = new Subscription();
+
+  isEqualizerShownSubscription: Subscription = new Subscription();
+
+  isAudioPlaySubscription: Subscription = new Subscription();
+
+  selectChangeSubscription: Subscription = new Subscription();
 
   constructor(
     private ngZone: NgZone,
@@ -79,13 +85,17 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
     private myStorage: LocalStorageService,
     private myTheme: ThemeService,
     private myRouter: Router,
+    private renderer2: Renderer2,
   ) {
   }
 
+  private unWindowResizeListener!: () => void;
+
   ngOnInit() {
-    this.myState.isEqualizerShown$.subscribe((data) => {
+    this.isEqualizerShownSubscription = this.myState.isEqualizerShown$.subscribe((data) => {
       this.isShown = data;
     });
+
     equalizerPresetsData.then((data: IEqualizerPresetsData) => {
       this.equalizerPresets = data.presets;
       this.equalizerPresetsInfo = {
@@ -109,13 +119,17 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
       this.myState.setEqualizerVisibility(false);
     });
 
-    this.myAudio.isPlay$.subscribe((data) => {
+    this.isAudioPlaySubscription = this.myAudio.isPlay$.subscribe((data) => {
       this.isPlay = data;
+    });
+
+    this.unWindowResizeListener = this.renderer2.listen('window', 'resize', () => {
+      this.setCanvasWidthAndColor();
     });
   }
 
   ngAfterViewInit(): void {
-    this.presetSelect.valueChange.subscribe((data) => {
+    this.selectChangeSubscription = this.presetSelect.valueChange.subscribe((data) => {
       this.setEqualizerPreset(Number(data));
       this.selectedPresetIndex = data;
     });
@@ -123,8 +137,11 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routerEventSubscription.unsubscribe();
-    this.presetSelect.valueChange.unsubscribe();
+    this.selectChangeSubscription.unsubscribe();
+    this.isAudioPlaySubscription.unsubscribe();
+    this.isEqualizerShownSubscription.unsubscribe();
     this.stopEqualizerAnimation();
+    this.unWindowResizeListener();
   }
 
   setEqualizerCanvas() {
@@ -286,7 +303,6 @@ export class EqualizerComponent implements OnInit, AfterViewInit, OnDestroy {
     return preset;
   }
 
-  @HostListener('window:resize')
   setCanvasWidthAndColor() {
     if (canvasSmallStartMatch.matches && canvasSmallEndMatch.matches) {
       const asideMinWidth = 230;

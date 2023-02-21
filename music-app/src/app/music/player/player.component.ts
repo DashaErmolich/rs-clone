@@ -2,6 +2,8 @@ import {
   Component,
   OnInit,
   Input,
+  OnDestroy,
+  Renderer2,
 } from '@angular/core';
 
 import {
@@ -38,7 +40,7 @@ import { ThemeService } from '../../services/theme.service';
   ],
 })
 
-export class PlayerComponent extends ThemeHelper implements OnInit {
+export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
   @Input() isSmall!: boolean;
 
   @Input() isHandset!: boolean;
@@ -63,16 +65,7 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
 
   isEqualizerShown!: boolean;
 
-  controlsState: IPlayerControlsState = {
-    isRepeatAllOn: this.myStorage.getPlayerInfo()?.isRepeatAllOn !== undefined
-      ? this.myStorage.getPlayerInfo()?.isRepeatAllOn! : false,
-    isRepeatOneOn: this.myStorage.getPlayerInfo()?.isRepeatOneOn !== undefined
-      ? this.myStorage.getPlayerInfo()?.isRepeatOneOn! : false,
-    isFirstTrack: false,
-    isLastTrack: false,
-    isLiked: false,
-    isShuffleOn: false,
-  };
+  controlsState!: IPlayerControlsState;
 
   likedTracks!: number[];
 
@@ -101,15 +94,30 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
     private myState: StateService,
     private myAudio: AudioService,
     private myStorage: LocalStorageService,
+    private renderer2: Renderer2,
   ) {
     super(myTheme);
   }
 
+  private unAudioEndedListener!: () => void;
+
   ngOnInit(): void {
+    this.controlsState = {
+      isRepeatAllOn: this.myStorage.getPlayerInfo()?.isRepeatAllOn !== undefined
+        ? this.myStorage.getPlayerInfo()?.isRepeatAllOn! : false,
+      isRepeatOneOn: this.myStorage.getPlayerInfo()?.isRepeatOneOn !== undefined
+        ? this.myStorage.getPlayerInfo()?.isRepeatOneOn! : false,
+      isFirstTrack: false,
+      isLastTrack: false,
+      isLiked: false,
+      isShuffleOn: false,
+    };
+
     this.trackList$ = this.myState.trackList$.subscribe((data: Partial<ITrackResponse>[]) => {
       this.trackList = data;
     });
     this.subscriptions.push(this.trackList$);
+
     this.playingTrackIndex$ = this.myState.playingTrackIndex$.subscribe((data: number | null) => {
       this.currentTrackIndex = data;
       this.checkTrackPosition();
@@ -118,25 +126,27 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
       }
     });
     this.subscriptions.push(this.playingTrackIndex$);
+
     this.audioState$ = this.myAudio.state$.subscribe((data) => {
       this.currentState = data;
     });
     this.subscriptions.push(this.audioState$);
+
     this.audioIsPlay$ = this.myAudio.isPlay$.subscribe((data) => {
       this.isPlay = data;
     });
     this.subscriptions.push(this.audioIsPlay$);
+
     this.audioIsTrackReady$ = this.myAudio.isTrackReady$.subscribe((data) => {
       this.isTrackReady = data;
     });
     this.subscriptions.push(this.audioIsTrackReady$);
+
     this.audioIsMute$ = this.myAudio.isMute$.subscribe((data) => {
       this.isMute = data;
     });
     this.subscriptions.push(this.audioIsMute$);
-    this.myAudio.audio.addEventListener('ended', () => {
-      this.playNext();
-    });
+
     this.isEqualizerShown$ = this.myState.isEqualizerShown$.subscribe((data) => {
       this.isEqualizerShown = data;
     });
@@ -151,6 +161,15 @@ export class PlayerComponent extends ThemeHelper implements OnInit {
       this.isTrackLiked();
     });
     this.subscriptions.push(this.likedTracks$);
+
+    this.unAudioEndedListener = this.renderer2.listen(this.myAudio.audio, 'ended', () => {
+      this.playNext();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.unAudioEndedListener();
   }
 
   playNext(): void {
