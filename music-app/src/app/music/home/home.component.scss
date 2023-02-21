@@ -1,0 +1,17 @@
+.suggestions-container {
+  grid-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: 1fr;
+  grid-auto-rows: auto;
+  margin-bottom: 1rem;
+}
+
+.suggestions-tracks {
+  grid-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-auto-flow: column;
+  margin-bottom: 1rem;
+}

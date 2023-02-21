@@ -3,14 +3,22 @@ import { FormControl } from '@angular/forms';
 import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
-import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+
+import { Subscription } from 'rxjs';
+import { StateService } from '../../services/state.service';
+import { IUserIcons } from '../../models/user-icons.models';
+
+import { userIconsData } from '../../../assets/user-icons/user-icons';
+import { ThemeHelper } from '../../helpers/theme-helper';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+
+export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
   searchControl: FormControl = new FormControl();
 
   isSearchRoute: boolean = false;
@@ -23,17 +31,38 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   events$: Subscription = new Subscription();
 
+  userIcons: IUserIcons[] = userIconsData;
+
+  userIconsPath: string[] = this.userIcons.map((icon) => icon.path);
+
+  userName!: string;
+
+  userIconId!: number;
+
   constructor(
+    myTheme: ThemeService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+    private myState: StateService,
+    private state: StateService,
+  ) {
+    super(myTheme);
+  }
 
   ngOnInit(): void {
-    this.queryParams$ = this.route.queryParams.subscribe((param) => this.searchControl.setValue(param['q']));
+    this.queryParams$ = this.route.queryParams.subscribe((param) => {
+      if (param['q'] !== undefined) {
+        this.searchControl.setValue(param['q']);
+      } else {
+        this.searchControl.setValue('');
+      }
+      if (this.queryParams$) this.queryParams$.unsubscribe();
+    });
+
     this.searchControl$ = this.searchControl.valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((res) => {
         this.searchValue = res;
+        this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
 
@@ -48,11 +77,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.myState.userName$.subscribe((data) => {
+      this.userName = data;
+    });
+    this.myState.userIconId$.subscribe((data) => {
+      this.userIconId = data;
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.searchControl$) this.searchControl$.unsubscribe();
+    if (this.queryParams$) this.queryParams$.unsubscribe();
     if (this.events$) this.events$.unsubscribe();
   }
 }

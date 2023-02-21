@@ -3,6 +3,8 @@ import { IUserTheme } from '../models/theme.models';
 import { ITrackResponse } from '../models/api-response.models';
 import { ITrackListInfo, IPLayerInfo } from '../models/audio-player.models';
 import { IEqualizerPreset } from '../models/equalizer.models';
+import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
+import IUserData from '../models/user-data.models';
 /* eslint-disable class-methods-use-this */
 
 @Injectable({
@@ -81,6 +83,53 @@ export class LocalStorageService {
   getEqualizerState(): IEqualizerPreset | null {
     const data = localStorage.getItem('EQ');
     return data === null ? null : JSON.parse(data);
+  }
+
+  setUserData(
+    newUserName: string,
+    newUserIconId: number,
+  ): void {
+    const userData: IUserData = {
+      userName: newUserName,
+      userIconId: newUserIconId,
+    };
+    localStorage.setItem('user-data', JSON.stringify(userData));
+  }
+
+  getUserData(): IUserData | null {
+    const userData = localStorage.getItem('user-data');
+    return userData === null ? null : JSON.parse(userData);
+  }
+
+  setLikedTrack(trackDeezerlId: number): void {
+    const likedTracks = this.getLikedTracks();
+    likedTracks.push(trackDeezerlId);
+    localStorage.setItem('likedTracks', JSON.stringify(likedTracks));
+  }
+
+  setLikedTracks(likedTracksId: number[]): void {
+    localStorage.setItem('likedTracks', JSON.stringify(likedTracksId));
+  }
+
+  getLikedTracks(): number[] {
+    const likedTracks = localStorage.getItem('likedTracks');
+    return likedTracks === null ? [] : JSON.parse(likedTracks);
+  }
+
+  setLikedSearchResult(type: LikedSearchResults, id: number) {
+    const likedSearchResults = this.getLikedSearchResults();
+    likedSearchResults[type].push(id);
+    localStorage.setItem('likedSearchResults', JSON.stringify(likedSearchResults));
+  }
+
+  setLikedSearchResults(likedSearchResults: ILikedSearchResults) {
+    localStorage.setItem('likedSearchResults', JSON.stringify(likedSearchResults));
+  }
+
+  getLikedSearchResults(): ILikedSearchResults {
+    const likedSearchResults = localStorage.getItem('likedSearchResults');
+    return likedSearchResults === null ? { album: [], artist: [], playlist: [] }
+      : JSON.parse(likedSearchResults);
   }
 
   setToken(token: string):void {

@@ -13,7 +13,9 @@
     "favorites": "Favorites"
   },
   "settings": {
-    "language": "Language",
+    "language": {
+      "title": "Language"
+    },
     "theme": {
       "title": "Theme",
       "dark-mode": "Dark Mode",
@@ -24,8 +26,12 @@
         "purple-green": "Purple Green"
       }
     },
-    "account": "Account"
-
+    "account": {
+      "title": "Account",
+      "userIcon": "User icon",
+      "userName": "User name",
+      "LogOut": "Log out"
+    }
   },
   "welcome": {
     "greeting": "Welcome to RS Music App"
@@ -55,6 +61,14 @@
       "afternoon": "Good afternoon",
       "evening": "Good evening",
       "night": "Good night"
-    }
+    },
+    "charts": {
+      "tracks": "Today's biggest hits",
+      "albums": "Popular albums",
+      "artists": "Popular artists",
+      "playlists": "Trending now playlists",
+      "podcasts": "You may like this podcasts"
+    },
+    "genres": "Popular genres"
   }
 }

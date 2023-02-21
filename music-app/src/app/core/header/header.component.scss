@@ -1,6 +1,6 @@
 @import '../../../sass/abstracts/constants';
 
-header {
+.header {
   position: absolute;
   top: 0;
   left: 0;
@@ -11,13 +11,23 @@ header {
   height: $header-height;
   z-index: 10;
 
-  h1 {
-    margin: 0;
-  }
-
   .search-btn {
     cursor: pointer;
   }
 
+  .flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.logo-icon {
+  width: 130px;
+  height: $header-height;
+}
+
+.search-btn {
+  cursor: pointer;
 }
 

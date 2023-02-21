@@ -56,6 +56,7 @@ import { l10nConfig, HttpTranslationLoader, AppStorage } from '../../I10n-config
     MatChipsModule,
     MatDividerModule,
     MatButtonModule,
+    MatInputModule,
   ],
   exports: [
     SettingsPageComponent,
