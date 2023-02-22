@@ -4,7 +4,7 @@ import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from './local-storage.service';
-import { StatusCodes } from '../enums/StatusCodes';
+import { statusCodes } from '../enums/statusCodes';
 
 @Injectable({
   providedIn: 'root'
@@ -70,7 +70,7 @@ export class AuthorizationService {
         this.authService.fetchUsers().pipe(
         take(1),  
         catchError(err => {
-          if (err.status === StatusCodes.RefreshRequired) {
+          if (err.status === statusCodes.RefreshRequired) {
             setTimeout(() => {
               this.fetch();
             }, 500)
