@@ -1,6 +1,6 @@
 import { IChartResponse } from './api-response.models';
 
-export interface IChartRecommendations {
+export interface ICategoriesData {
   tracks: {
     title: string,
     data: IChartResponse['tracks']['data'],

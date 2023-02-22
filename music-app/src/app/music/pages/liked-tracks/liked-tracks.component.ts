@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+} from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -12,6 +17,12 @@ import { StateService } from '../../../services/state.service';
   styleUrls: ['./liked-tracks.component.scss'],
 })
 export class LikedTracksComponent implements OnInit, OnDestroy {
+  @Input() isSmall!: boolean;
+
+  @Input() isHandset!: boolean;
+
+  @Input() isExtraSmall!: boolean;
+
   trackList: Partial<ITrackResponse>[] = [];
 
   trackList$ = new Subscription();
