@@ -4,8 +4,8 @@
       <img [src]="imgSrc" [alt]="title">
     </div>
     <div class="search-result-block">
-      <div class="search-result-type" l10nTranslate>{{ typeToShow }}</div>
-      <h2 class="search-result-title">{{ title }}</h2>
+      <span class="search-result-type one-line-text" l10nTranslate>{{ typeToShow }}</span>
+      <span class="search-result-title text-wrap">{{ title }}</span>
       <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
         <span l10nTranslate>{{ descriptionTitle }}</span>
         <span l10nTranslate>{{ descriptionTitleInfo }}</span>
