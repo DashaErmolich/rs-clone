@@ -27,7 +27,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   limitPlaylists: number = Limits.playlists;
 
-  index: number = 0;
+  index = 0;
 
   searchType: string = SearchType.tracks;
 
@@ -35,9 +35,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   playlistsFromChart: Partial<IPlayListResponse>[] = [];
 
-  loading: boolean = true;
+  loading = true;
 
-  searchParam: string = '';
+  searchParam = '';
 
   tracks: Partial<ITrackResponse>[] = [];
 

@@ -38,9 +38,9 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   searchControl: FormControl = new FormControl();
 
-  isSearchRoute: boolean = false;
+  isSearchRoute = false;
 
-  searchValue: string = '';
+  searchValue = '';
 
   userIcons: IUserIcons[] = userIconsData;
 

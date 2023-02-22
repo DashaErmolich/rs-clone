@@ -13,7 +13,7 @@ import { ResponsiveService } from '../../../services/responsive.service';
 export class GenreComponent implements OnInit, OnDestroy {
   genreId!: number;
 
-  loading: boolean = true;
+  loading = true;
 
   artists: Partial<IArtistResponse>[] = [];
 

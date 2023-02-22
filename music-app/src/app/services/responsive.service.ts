@@ -15,7 +15,7 @@ export class ResponsiveService {
 
   isExtraSmall$ = new BehaviorSubject<boolean>(false);
 
-  extraSmallBreakpoint = extraSmallBreakpoint;
+  extraSmallBreakpoint: string = extraSmallBreakpoint;
 
   constructor(
     private responsive: BreakpointObserver,
