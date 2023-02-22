@@ -28,7 +28,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   tracks$!: Subscription;
 
-  loading: boolean = true;
+  loading = true;
 
   tracksOfState: Partial<ITrackResponse>[] = [];
 
