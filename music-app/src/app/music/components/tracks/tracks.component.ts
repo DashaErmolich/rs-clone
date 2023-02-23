@@ -13,7 +13,11 @@ import { DEFAULT_SRC } from '../../../constants/constants';
 @Component({
   selector: 'app-tracks',
   templateUrl: './tracks.component.html',
+<<<<<<< HEAD:music-app/src/app/music/components/tracks/tracks.component.ts
   styleUrls: ['../../pages/search/search.component.scss'],
+=======
+  styleUrls: ['./tracks.component.scss'],
+>>>>>>> 1e575b4 (feat: add styles to tack):music-app/src/app/music/shared/tracks/tracks.component.ts
 })
 
 export class TracksComponent implements OnInit, OnDestroy {
@@ -43,6 +47,12 @@ export class TracksComponent implements OnInit, OnDestroy {
 
   isEnd!: boolean;
 
+  isLikedTrack: boolean = false;
+
+  likedTracks: number[] = [];
+
+  likedTracks$!: Subscription;
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
@@ -65,6 +75,13 @@ export class TracksComponent implements OnInit, OnDestroy {
     this.trackList$ = this.myState.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
     });
+
+    this.likedTracks$ = this.myState.likedTracks$
+      .subscribe((data) => {
+        this.likedTracks = data;
+        // console.log(this.likedTracks);
+      // this.isTrackLiked();
+      });
   }
 
   ngOnDestroy(): void {
@@ -92,4 +109,60 @@ export class TracksComponent implements OnInit, OnDestroy {
       this.myAudio.play();
     }
   }
+
+  isLiked(trackIndex: number): boolean {
+    const index = this.likedTracks
+      .findIndex((trackId) => trackId === this.tracks[trackIndex].id);
+    const isLiked = index >= 0;
+    // this.isLikedTrack = isLiked;
+    // return index >= 0;
+    return isLiked;
+  }
+
+  likeTrack(trackIndex: number): void {
+    const index = this.likedTracks
+      .findIndex((trackId) => trackId === this.tracks[trackIndex].id);
+    const isLiked = index >= 0;
+    if (!isLiked) {
+      this.myState.setLikedTrack(this.tracks[trackIndex].id!);
+    } else {
+      this.myState.removeLikedTrack(this.tracks[trackIndex].id!);
+    }
+  }
+
+  getDuration(trackIndex: number) {
+    console.log(trackIndex);
+    console.log(this.tracks);
+    const audio = new Audio(this.tracks[trackIndex].preview);
+    let duration;
+    // audio.addEventListener('loadedmetadata', () => {
+    //   duration = audio.duration;
+    //   console.log(duration);
+    // });
+    // return duration;
+    // getFormattedTime(sec: number, format: string = 'mm:ss'): string {
+    //   return moment.utc(sec * 1000).format(format);
+    // }
+  }
+  // async getDuration(trackIndex: number) {
+  //   const audio = new Audio(this.tracks[trackIndex].preview);
+  //   // here api POST request where i should pass duration
+  //   const duration = await this.get(audio);
+  // }
+
+  // // eslint-disable-next-line class-methods-use-this
+  // async get(audio: HTMLAudioElement) {
+  //   return new Promise((resolve) => {
+  //     // const audio = document.createElement("audio");
+  //     // audio.muted = true;
+  //     // const source = document.createElement("source");
+  //     // source.src = url; //--> blob URL
+  //     // audio.preload= "metadata";
+  //     // audio.appendChild(source);
+  //     // eslint-disable-next-line no-param-reassign
+  //     audio.onloadedmetadata = function () {
+  //       resolve(audio.duration);
+  //     };
+  //   });
+  // }
 }

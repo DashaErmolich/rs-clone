@@ -81,101 +81,19 @@
   float: right;
 }
 
-.track-play {
-  display: none;
-}
-
-.track {
-  flex: 1 1 0;
-  display: flex;
-  padding: 0.3rem 1.25rem !important;
-  justify-content: space-between;
-  align-items: center;
-  gap: $container-p-small;
-
-  &:hover {
-    background: $hover-color-track;
-
-    .track-img {
-      transform: scale(1.1);
-    }
-
-    .track-number {
-      display: none;
-    }
-
-    .track-play {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-    }
+.scrollable {
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  &::-webkit-scrollbar {
+    width: 0.5rem; 
   }
-}
-
-.track-img-wrapper {
-  overflow: hidden;
-  width: 40px;
-  height: 40px;
-}
-
-.track-description {
-  flex: 2 1 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 5px;
-  overflow: hidden;
-}
-
-.track-number-wrapper {
-  position: relative;
-  width: 2rem;
-}
-
-.track-img {
-  display: block;
-  width: 100%;
-  transition: 0.4s;
-}
-
-.track-title {
-  font-size: 1rem;
-  margin-bottom: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-}
-
-.track-artist {
-  font-size: 0.9rem;
-  font-weight: 200;
-  margin-bottom: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.track-album {
-  flex: 1 1 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.track-number{
-text-align: center;
-margin: 0;
-}
-
-.track-pause {
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: $hover-color-card;
+    border-radius: 3px;
+  }
 }
