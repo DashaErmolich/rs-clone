@@ -18,7 +18,7 @@ export class AuthorizationService {
     private localStore: LocalStorageService
     ) {}
 
-    login(email: string, password: string) { //todo: split this logic => compare to sign in
+    login(email: string, password: string) { 
       try {
         this.authService.login(email, password).pipe(take(1), 
         catchError(err => {
@@ -31,7 +31,7 @@ export class AuthorizationService {
       } catch (e) {}
     }
   
-    registration(username: string, email: string, password: string) { //todo: split this logic => compare to sign up
+    registration(username: string, email: string, password: string) {
         this.authService.registration(username, email, password).pipe(take(1),
         ).subscribe((res) => {
           this.localStore.setToken(res.accessToken)

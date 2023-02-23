@@ -1,11 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import {FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
+import {FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';  
 import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { statusCodes } from 'src/app/enums/statusCodes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -24,10 +25,9 @@ export class SignUpComponent {
 
   constructor(
     private state: StateService,
-    private authServe: AuthorizationService,
     private authApiServe: AuthorizationApiService,
-    private builder: FormBuilder,
-    private localStore: LocalStorageService
+    private localStore: LocalStorageService,
+    private router: Router,
   ) { }
 
   onSubmit(form: FormGroup) {
@@ -47,7 +47,7 @@ export class SignUpComponent {
           this.authApiServe.registration(formValue.name, formValue.email, formValue.password).pipe(take(1),
           catchError((err)=> {         
             if (err instanceof HttpErrorResponse) {
-              if (err.status === 400) {
+              if (err.status === statusCodes.BadRequest) {
                 const errReason = err.error.message.split(' ')[0];
                 const emailField = this.registerForm.get('email');
                 switch (errReason) {
@@ -71,7 +71,8 @@ export class SignUpComponent {
           ).subscribe((res) => {
             this.localStore.setToken(res.accessToken)
             this.state.setAuthorized(true);
-            this.state.setUser(res.user)
+            this.state.setUser(res.user);
+            this.router.navigate(['music/home']);
           })
       }
     }

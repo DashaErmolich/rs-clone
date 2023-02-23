@@ -1,11 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
 import { catchError, take } from 'rxjs';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
+import { statusCodes } from 'src/app/enums/statusCodes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -24,7 +26,8 @@ export class SignInComponent {
     private state: StateService,
     private authServe: AuthorizationService,
     private authApiServe: AuthorizationApiService,
-    private localStore: LocalStorageService
+    private localStore: LocalStorageService,
+    private router: Router,
   ) { }
 
   onSubmit(form: FormGroup) {
@@ -36,7 +39,7 @@ export class SignInComponent {
       if (formValue.email && formValue.password) {
           this.authApiServe.login(formValue.email, formValue.password).pipe(take(1), 
           catchError(err => {
-            if (err instanceof HttpErrorResponse && err.status === 400) {
+            if (err instanceof HttpErrorResponse && err.status === statusCodes.BadRequest) {
                 const errReason = err.error.message.split(' ')[1];
                 switch (errReason) {
                   case 'email' : {
@@ -59,9 +62,8 @@ export class SignInComponent {
           })).subscribe((res) => {
             this.localStore.setToken(res.accessToken)
             this.state.setAuthorized(true);
-            this.state.setUser(res.user)
-            console.log(this.state.user);
-            
+            this.state.setUser(res.user);
+            this.router.navigate(['music/home']);
           })
       }
       
