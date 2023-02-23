@@ -24,7 +24,7 @@ export class StateService {
   searchValue$ = new BehaviorSubject<string>('');
 
   likedTracks$ = new BehaviorSubject<number[]>([]);
-  
+
   likedSearchResults$ = new BehaviorSubject<ILikedSearchResults>({
     album: [],
     artist: [],

@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 import {
   ITrackResponse,
@@ -16,13 +16,14 @@ import { DeezerRestApiService } from '../../services/deezer-api.service';
 import { IGreetings } from '../../models/greeting.models';
 import { IChartRecommendations } from '../../models/home.models';
 import { UtilsService } from '../../services/utils.service';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   itemsQtyDefault = 5;
 
   trackList!: Partial<ITrackResponse>[];
@@ -71,13 +72,18 @@ export class HomeComponent implements OnInit {
 
   isLoading = true;
 
+  isLoadingSubscription = new Subscription();
+
+  subscription = new Subscription();
+
   constructor(
     private myDeezer: DeezerRestApiService,
     private myUtils: UtilsService,
+    private myState: StateService,
   ) { }
 
   ngOnInit(): void {
-    forkJoin({
+    this.subscription = forkJoin({
       genres: this.myDeezer.getGenres(),
       chartData: this.myDeezer.getChart(),
     }).subscribe((response) => {
@@ -89,8 +95,11 @@ export class HomeComponent implements OnInit {
         response.chartData.playlists.data,
       );
       this.chartRecommendations.podcasts.data = this.getReadyData(response.chartData.podcasts.data);
-      this.isLoading = false;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   // eslint-disable-next-line class-methods-use-this

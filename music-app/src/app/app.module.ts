@@ -7,12 +7,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MusicModule } from './music/music.module';
 import { UserModule } from './user/user.module';
+import { ProgressLoaderInterceptor } from './interceptors/progress-loader.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +31,11 @@ import { UserModule } from './user/user.module';
     HttpClientModule,
     MatSidenavModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: ProgressLoaderInterceptor, multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export default class AppModule {}

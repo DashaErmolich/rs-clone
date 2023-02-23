@@ -82,7 +82,6 @@ export class ThemeService {
 
   toggleDarkness() {
     this.setActiveTheme(this.activeTheme, !this.isThemeDark);
-    console.log(this.isThemeDark);
   }
 
   setActiveCssClass(chosenTheme: string): void {

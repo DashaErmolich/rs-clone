@@ -11,6 +11,7 @@ import { IUserIcons } from '../../models/user-icons.models';
 import { userIconsData } from '../../../assets/user-icons/user-icons';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
+import { ProgressLoaderService } from '../../services/progress-loader.service';
 
 @Component({
   selector: 'app-header',
@@ -25,11 +26,11 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   searchValue: string = '';
 
-  queryParams$: Subscription = new Subscription();
+  queryParamsSubscription: Subscription = new Subscription();
 
-  searchControl$: Subscription = new Subscription();
+  searchControlSubscription: Subscription = new Subscription();
 
-  events$: Subscription = new Subscription();
+  eventsSubscription: Subscription = new Subscription();
 
   userIcons: IUserIcons[] = userIconsData;
 
@@ -39,34 +40,49 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   userIconId!: number;
 
+  isLoading!: boolean;
+
+  isLoadingSubscription = new Subscription();
+
+  userNameSubscription = new Subscription();
+
+  userIconIdSubscription = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
     private route: ActivatedRoute,
     private myState: StateService,
     private state: StateService,
+    public progressLoader: ProgressLoaderService,
   ) {
     super(myTheme);
   }
 
   ngOnInit(): void {
-    this.queryParams$ = this.route.queryParams.subscribe((param) => {
+    this.queryParamsSubscription = this.route.queryParams.subscribe((param) => {
       if (param['q'] !== undefined) {
         this.searchControl.setValue(param['q']);
       } else {
         this.searchControl.setValue('');
       }
-      if (this.queryParams$) this.queryParams$.unsubscribe();
+      if (this.queryParamsSubscription) this.queryParamsSubscription.unsubscribe();
     });
 
-    this.searchControl$ = this.searchControl.valueChanges
+    this.subscriptions.push(this.queryParamsSubscription);
+
+    this.searchControlSubscription = this.searchControl.valueChanges
       .subscribe((res) => {
         this.searchValue = res;
         this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
 
-    this.events$ = this.router.events.subscribe((event) => {
+    this.subscriptions.push(this.searchControlSubscription);
+
+    this.eventsSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         const { url } = event;
 
@@ -77,17 +93,28 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         }
       }
     });
-    this.myState.userName$.subscribe((data) => {
+    this.subscriptions.push(this.eventsSubscription);
+
+    this.userNameSubscription = this.myState.userName$.subscribe((data) => {
       this.userName = data;
     });
-    this.myState.userIconId$.subscribe((data) => {
+
+    this.subscriptions.push(this.userNameSubscription);
+
+    this.userIconIdSubscription = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
+
+    this.subscriptions.push(this.userIconIdSubscription);
+
+    this.isLoadingSubscription = this.progressLoader.isLoading.subscribe((data) => {
+      this.isLoading = data;
+    });
+
+    this.subscriptions.push(this.isLoadingSubscription);
   }
 
   ngOnDestroy(): void {
-    if (this.searchControl$) this.searchControl$.unsubscribe();
-    if (this.queryParams$) this.queryParams$.unsubscribe();
-    if (this.events$) this.events$.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
