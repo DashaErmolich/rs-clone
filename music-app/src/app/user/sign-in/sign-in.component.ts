@@ -63,6 +63,7 @@ export class SignInComponent {
             this.localStore.setToken(res.accessToken)
             this.state.setAuthorized(true);
             this.state.setUser(res.user);
+            
             this.router.navigate(['music/home']);
           })
       }
