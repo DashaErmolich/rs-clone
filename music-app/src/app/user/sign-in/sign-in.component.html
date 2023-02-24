@@ -1,1 +1,31 @@
-<p>sign-in works!</p>
+<div class="container content-wrapper">
+  <p l10nTranslate>sign-in.submit-btn</p>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" class="example-form">
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Email" formControlName="email" name="email">
+      <mat-error *ngIf="loginForm.get('email')!.hasError('required')">This field is required</mat-error>
+      <mat-error *ngIf="loginForm.get('email')!.hasError('email')">Must be your e-mail address</mat-error>
+      <mat-error *ngIf="loginForm.get('email')!.errors?.['emailError']">
+        {{ loginForm.get('email')!.errors?.['emailError'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Password" formControlName="password" type="password">
+      <mat-error *ngIf="loginForm.get('password')!.hasError('required')">This field is required</mat-error>
+      <mat-error *ngIf="loginForm.get('password')!.hasError('pattern')">Password must be between 6 to 16 characters and a combination of letters and numbers </mat-error>
+      <mat-error *ngIf="loginForm.get('password')!.errors?.['passwordError']">
+        {{ loginForm.get('password')!.errors?.['passwordError'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" [disabled]="!loginForm.valid">Sign in</button>
+  </form>
+
+  <div>    
+    <h3 class="mt-30">Don't have an account?</h3>
+    <button mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active">Sign up</button>
+    <button mat-stroked-button color="warn" (click)="submitLogout()">Log out</button>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,13 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MusicModule } from './music/music.module';
 import { UserModule } from './user/user.module';
+import { AuthorizedGuard } from './guards/isAuthorized.guard'; 
+
+function initializeApp(): Promise<void> {
+  return new Promise((resolve, reject) => { 
+    resolve();
+  });
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +37,14 @@ import { UserModule } from './user/user.module';
     HttpClientModule,
     MatSidenavModule,
   ],
-  providers: [],
+  providers: [
+    AuthorizedGuard,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => initializeApp,
+      multi: true
+     }
+  ],
   bootstrap: [AppComponent],
 })
 export default class AppModule {}
