@@ -1,33 +1,54 @@
 <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
 <mat-progress-bar *ngIf="!isLoading" mode="determinate" value="100"></mat-progress-bar>
-<header class="header container">
-  <div class="logo-container flex-column-2">
+<header class="header flex-row" [ngClass]="{'header_handset': isHandset}">
+  <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || !isSearchRoute || (isSearchRoute && !isHandset)" class="logo-container container" [ngClass]="{'flex-column-2': !isHandset}">
     <a routerLink="/music/home" ariaCurrentWhenActive="page">
-      <svg class="logo-icon">
+      <svg class="logo-icon" [ngClass]="{'logo-icon_handset': isHandset}">
         <use [attr.xlink:href]="getLogoIconPath()"></use>
       </svg>
     </a>
   </div>
-  <div>
-    <ng-container *ngIf="isSearchRoute">
-      <mat-form-field class="search-input" appearance="outline">
-        <input matInput type="text" placeholder="Search" [formControl]="searchControl">
-        <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
-        <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
-      </mat-form-field>
-    </ng-container>
-  </div>
-  <div>
-    <a routerLink="/settings" ariaCurrentWhenActive="page">
-      <button mat-fab extended="" color="basic">
-        <mat-icon>
-          <svg class="icon">
-            <use attr.xlink:href="{{ userIconsPath[userIconId] }}"></use>
-          </svg>
-        </mat-icon>
-        {{ userName }}
-      </button>
-    </a>
+  <div class="container" [ngClass]="{'flex-column-10': !isHandset, 'search-input-container': isSearchInputShown && isSearchRoute && isHandset}">
+    <div class="flex-row" [ngClass]="{'width-100': isSearchInputShown && isSearchRoute && isHandset}">
+      <div *ngIf="isSearchRoute && isHandset" class="flex-row" [ngClass]="{'width-100': isSearchInputShown && isSearchRoute && isHandset}">
+        <button *ngIf="isSearchRoute && isHandset" mat-icon-button aria-label="Search input" (click)="toggleSearchInputVisibility()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <div *ngIf="isSearchRoute && isHandset && isSearchInputShown" class="width-100">
+          <mat-form-field class="search-input width-100" appearance="outline">
+            <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+            <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <ng-container *ngIf="isSearchRoute && !isHandset">
+          <mat-form-field class="search-input" appearance="outline">
+            <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+            <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
+            <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
+          </mat-form-field>
+        </ng-container>
+      </div>
+      <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || !isSearchRoute || (isSearchRoute && !isHandset)" class="header-user-data-container">
+        <a routerLink="/settings" ariaCurrentWhenActive="page">
+          <button *ngIf="!isHandset" mat-fab extended color="basic">
+            <mat-icon>
+              <svg class="icon">
+                <use attr.xlink:href="{{ userIconsPath[userIconId] }}"></use>
+              </svg>
+            </mat-icon>
+            {{ userName}}
+          </button>
+          <button *ngIf="isHandset" mat-icon-button color="basic" class="user-icon_handset">
+            <mat-icon>
+              <svg class="icon">
+                <use attr.xlink:href="{{ userIconsPath[userIconId] }}"></use>
+              </svg>
+            </mat-icon>
+          </button>
+        </a>
+      </div>
+    </div>
   </div>
 </header>
-

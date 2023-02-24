@@ -1,0 +1,8 @@
+<div *ngIf="artists">
+  <div *ngIf="!loading" class="titles-container">
+    <h1 class="genre-main-title text-wrap">{{title}}</h1>
+    <h3 class="genre-title" l10nTranslate>search.chips.artists</h3>
+  </div>
+  <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+  <app-artists [artists]="artists" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-artists>
+</div>

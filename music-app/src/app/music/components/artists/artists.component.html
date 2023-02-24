@@ -1,0 +1,7 @@
+<mat-card *ngFor="let artist of artists" class="artist-card" [routerLink]="['/music/artist', artist.id]">
+  <div class="image-wrapper">
+    <img src="{{artist.picture_medium ? artist.picture_medium : defaultImg}}" alt={{artist.name}}>
+  </div>
+  <mat-card-content class="title-h1">{{artist.name | titlecase}}</mat-card-content>
+  <mat-card-content class="title-h2 one-line-text"l10nTranslate>search.results.artist</mat-card-content>
+</mat-card>

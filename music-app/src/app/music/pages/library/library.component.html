@@ -1,0 +1,18 @@
+<div class="mb-large">
+  <h2 l10nTranslate>{{ favoritesCategories.artists.title }}</h2>
+  <app-artists [artists]="artists" class="search-container" [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-artists>
+</div>
+
+<div class="mb-large">
+  <app-liked-tracks [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"></app-liked-tracks>
+</div>
+
+<div class="mb-large">
+  <h2 l10nTranslate>{{ favoritesCategories.albums.title }}</h2>
+  <app-albums [albums]="albums" class="search-container" [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-albums>
+</div>
+
+<div class="mb-large">
+<h2 l10nTranslate>{{ favoritesCategories.playlists.title }}</h2>
+<app-playlists [playlists]="playlists" class="search-container" [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-playlists>
+</div>

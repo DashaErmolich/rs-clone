@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { IUserModel } from 'src/app/models/userModel.models';
+import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
@@ -17,6 +19,10 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
+  user = {} as IUserModel;
+
+  isAuthorized = false;
+
   userName$ = new BehaviorSubject<string>('Jake');
 
   userIconId$ = new BehaviorSubject<number>(0);
@@ -31,8 +37,15 @@ export class StateService {
     playlist: [],
   });
 
+  isNavigationMenuShown$ = new BehaviorSubject<boolean>(false);
+
+  isSettingsMenuShown$ = new BehaviorSubject<boolean>(false);
+
+  isSearchInputShown$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private storage: LocalStorageService,
+    private authService: AuthorizationApiService,
   ) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
     const userData: IUserData | null = this.storage.getUserData();
@@ -57,6 +70,14 @@ export class StateService {
   setPlayingTrackIndex(index: number) {
     this.playingTrackIndex$.next(index);
     this.storage.setTrackListInfo(this.trackList$.value, index);
+  }
+
+  setAuthorized(authStatus: boolean) {
+    this.isAuthorized = authStatus;
+  }
+
+  setUser(user: IUserModel) {
+    this.user = user;
   }
 
   setEqualizerVisibility(isVisible: boolean): void {
@@ -86,6 +107,18 @@ export class StateService {
     }
     this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
+  }
+
+  setNavigationMenuVisibility(isVisible: boolean): void {
+    this.isNavigationMenuShown$.next(isVisible);
+  }
+
+  setSettingsMenuVisibility(isVisible: boolean): void {
+    this.isSettingsMenuShown$.next(isVisible);
+  }
+
+  setSearchInputVisibility(isVisible: boolean): void {
+    this.isSearchInputShown$.next(isVisible);
   }
 
   setLikedSearchResult(type: LikedSearchResults, id: number): void {

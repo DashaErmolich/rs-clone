@@ -5,16 +5,17 @@ import { WelcomeComponent } from './core/welcome/welcome.component';
 import { SignInComponent } from './user/sign-in/sign-in.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { MusicPageComponent } from './music/music-page/music-page.component';
-import { HomeComponent } from './music/home/home.component';
-import { SearchComponent } from './music/search/search.component';
-import { LibraryComponent } from './music/library/library.component';
+import { HomeComponent } from './music/pages/home/home.component';
+import { SearchComponent } from './music/pages/search/search.component';
+import { LibraryComponent } from './music/pages/library/library.component';
 import { SettingsPageComponent } from './user/settings/settings-page/settings-page.component';
 import { SettingsLanguageComponent } from './user/settings/settings-language/settings-language.component';
 import { SettingsThemeComponent } from './user/settings/settings-theme/settings-theme.component';
 import { SettingsAccountComponent } from './user/settings/settings-account/settings-account.component';
-import { GenreComponent } from './music/genre/genre.component';
-import { LikedTracksComponent } from './music/liked-tracks/liked-tracks.component';
-import { SearchResultComponent } from './music/search-result/search-result.component';
+import { GenreComponent } from './music/pages/genre/genre.component';
+import { LikedTracksComponent } from './music/pages/liked-tracks/liked-tracks.component';
+import { SearchResultComponent } from './music/pages/search-result/search-result.component';
+import { AuthorizedGuard } from './guards/isAuthorized.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -22,6 +23,7 @@ const routes: Routes = [
   {
     path: 'music',
     component: MusicPageComponent,
+    canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -38,6 +40,7 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsPageComponent,
+    canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'language', pathMatch: 'full' },
       { path: 'language', component: SettingsLanguageComponent },

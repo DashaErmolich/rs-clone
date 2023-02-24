@@ -10,6 +10,8 @@ import { ThemeService } from './services/theme.service';
 export class AppComponent {
   title = 'music-app';
 
+  isAuthorized!: boolean;
+
   constructor(
     private themeService: ThemeService,
   ) {}
@@ -19,6 +21,7 @@ export class AppComponent {
   }
 
   getStartClass() {
+    this.themeService.setOverlayContainerTheme();
     return this.themeService.activeThemeCssClass;
   }
 }

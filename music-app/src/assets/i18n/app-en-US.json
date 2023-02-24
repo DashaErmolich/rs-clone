@@ -3,7 +3,7 @@
     "nav": {
       "home": "Home",
       "search": "Search",
-      "library": "Your Library"
+      "library": "Library"
     },
     "buttons": {
       "create-play-list": "Create playlist",
@@ -36,6 +36,9 @@
   "welcome": {
     "greeting": "Welcome to RS Music App"
   },
+  "sign-in": {
+    "submit-btn": "Submit"
+  },
   "not-found": {
     "title": "Page not found",
     "message": "The page you are looking for may have been moved, deleted, or possibly never existed",
@@ -49,6 +52,14 @@
         "hz": "Hz",
         "kHz": "kHz",
         "db": "dB"
+      }
+    },
+    "player": {
+      "menu": {
+        "shuffle": "Shuffle",
+        "repeat-all": "Repeat All",
+        "repeat-one": "Repeat One",
+        "equalizer": "Equalizer"
       }
     }
   },
@@ -67,5 +78,35 @@
       "podcasts": "You may like this podcasts"
     },
     "genres": "Popular genres"
+  },
+  "search": {
+    "chips": {
+      "tracks": "Tracks",
+      "artists": "Artists",
+      "albums": "Albums",
+      "playlists": "Playlists"
+    },
+    "results": {
+      "track": "Track",
+      "artist": "Artist",
+      "album": "Album",
+      "playlist": "Playlist",
+      "description": {
+        "playlist": {
+          "creator": "Creator",
+          "songs": "Tracks"
+        },
+        "artist": {
+          "albums": "Albums",
+          "fans": "Fans"
+        }
+      }
+    }
+  },
+  "library": {
+    "artists": "Your favorite artists",
+    "albums": "Your favorite albums",
+    "playlists": "Your favorite playlists",
+    "tracks": "Your favorite tracks"
   }
 }

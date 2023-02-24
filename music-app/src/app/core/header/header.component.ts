@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+
 import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
 
 import { Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 import { StateService } from '../../services/state.service';
 import { IUserIcons } from '../../models/user-icons.models';
 
@@ -12,6 +13,7 @@ import { userIconsData } from '../../../assets/user-icons/user-icons';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
 import { ProgressLoaderService } from '../../services/progress-loader.service';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-header',
@@ -20,17 +22,27 @@ import { ProgressLoaderService } from '../../services/progress-loader.service';
 })
 
 export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
+  queryParamsSubscription = new Subscription();
+
+  searchControlSubscription = new Subscription();
+
+  routerEventsSubscription = new Subscription();
+
+  userNameSubscription = new Subscription();
+
+  userIconIdSubscription = new Subscription();
+
+  isHandsetSubscription = new Subscription();
+
+  isSearchInputShownSubscription = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
   searchControl: FormControl = new FormControl();
 
-  isSearchRoute: boolean = false;
+  isSearchRoute = false;
 
-  searchValue: string = '';
-
-  queryParamsSubscription: Subscription = new Subscription();
-
-  searchControlSubscription: Subscription = new Subscription();
-
-  eventsSubscription: Subscription = new Subscription();
+  searchValue = '';
 
   userIcons: IUserIcons[] = userIconsData;
 
@@ -40,15 +52,13 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   userIconId!: number;
 
+  isHandset = false;
+
+  isSearchInputShown!: boolean;
+
   isLoading!: boolean;
 
   isLoadingSubscription = new Subscription();
-
-  userNameSubscription = new Subscription();
-
-  userIconIdSubscription = new Subscription();
-
-  subscriptions: Subscription[] = [];
 
   constructor(
     myTheme: ThemeService,
@@ -56,6 +66,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private myState: StateService,
     private state: StateService,
+    private responsive: ResponsiveService,
     public progressLoader: ProgressLoaderService,
   ) {
     super(myTheme);
@@ -82,7 +93,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.searchControlSubscription);
 
-    this.eventsSubscription = this.router.events.subscribe((event) => {
+    this.routerEventsSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         const { url } = event;
 
@@ -93,7 +104,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         }
       }
     });
-    this.subscriptions.push(this.eventsSubscription);
+    this.subscriptions.push(this.routerEventsSubscription);
 
     this.userNameSubscription = this.myState.userName$.subscribe((data) => {
       this.userName = data;
@@ -107,6 +118,18 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.userIconIdSubscription);
 
+    this.isHandsetSubscription = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
+    });
+
+    this.subscriptions.push(this.isHandsetSubscription);
+
+    this.isSearchInputShownSubscription = this.myState.isSearchInputShown$.subscribe((data) => {
+      this.isSearchInputShown = data;
+    });
+
+    this.subscriptions.push(this.isSearchInputShownSubscription);
+
     this.isLoadingSubscription = this.progressLoader.isLoading.subscribe((data) => {
       this.isLoading = data;
     });
@@ -115,6 +138,10 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  toggleSearchInputVisibility() {
+    this.myState.setSearchInputVisibility(!this.isSearchInputShown);
   }
 }

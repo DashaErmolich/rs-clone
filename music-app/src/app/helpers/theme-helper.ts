@@ -14,7 +14,17 @@ export class ThemeHelper {
 
   getLogoIconPath(): string {
     return this.myTheme.isThemeDark
-      ? '../../../assets/icons/sprite.svg#app-logo-large'
-      : '../../../assets/icons/sprite.svg#app-logo-large-dark';
+      ? '../../../assets/icons/sprite.svg#app-logo'
+      : '../../../assets/icons/sprite.svg#app-logo-dark';
+  }
+
+  getColorClassName(type: string = 'primary'): string {
+    return `${this.theme}-font-color theme-${type}`;
+  }
+
+  getRssLogoIconPath(): string {
+    return this.myTheme.isThemeDark
+      ? '../../assets/icons/rs_school_js.svg'
+      : '../../assets/icons/rs_school_js_dark.svg';
   }
 }
