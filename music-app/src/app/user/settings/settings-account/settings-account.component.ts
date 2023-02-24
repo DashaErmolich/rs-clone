@@ -66,7 +66,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
   }
 
   submitLogout() {
-    this.myState.updateUserData();
+    // this.myState.updateUserData();
     this.muAuth.logout();
     this.myRouter.navigate(['welcome']);
   }

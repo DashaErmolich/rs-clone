@@ -52,7 +52,7 @@ export class StateService {
       if (!this.isEmptyObject(data)) {
         this.user = data as IUserModel;
         this.isAuthorized = true;
-        this.setUserData(this.user.username, this.user.userIconId);
+        this.setUserData(this.user.username, this.user.userIconId, false);
         this.likedTracks$.next(this.user.userFavorites.tracks);
         this.likedSearchResults$.next({
           album: this.user.userFavorites.albums,
@@ -90,11 +90,13 @@ export class StateService {
     this.isEqualizerShown$.next(isVisible);
   }
 
-  setUserData(userName: string, userIconId: number) {
+  setUserData(userName: string, userIconId: number, isUserUpdateNeeded: boolean = true) {
     this.userName$.next(userName);
     this.userIconId$.next(userIconId);
     this.storage.setUserData(userName, userIconId);
-    this.updateUserData();
+    if (isUserUpdateNeeded) {
+      this.updateUserData();
+    }
   }
 
   setSearchParam(searchValue: string) {
