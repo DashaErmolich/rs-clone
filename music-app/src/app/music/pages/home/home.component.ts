@@ -14,7 +14,7 @@ import {
 
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { IGreetings } from '../../../models/greeting.models';
-import { IChartRecommendations } from '../../../models/home.models';
+import { ICategoriesData } from '../../../models/home.models';
 import { UtilsService } from '../../../services/utils.service';
 import { ResponsiveService } from '../../../services/responsive.service';
 
@@ -23,6 +23,7 @@ import { ResponsiveService } from '../../../services/responsive.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
+
 export class HomeComponent implements OnInit, OnDestroy {
   itemsQtyDefault = 6;
 
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   artistsFromChart!: Partial<IArtistResponse>[];
 
-  chartRecommendations: IChartRecommendations = {
+  chartRecommendations: ICategoriesData = {
     tracks: {
       title: 'home.charts.tracks',
       data: [],

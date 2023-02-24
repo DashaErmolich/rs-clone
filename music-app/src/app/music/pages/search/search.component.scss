@@ -179,13 +179,3 @@ margin: 0;
   transform: translate(-50%, -50%);
   cursor: pointer;
 }
-
-.search-container_small,
-.result-container_small {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.search-container_handset,
-.result-container_handset {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}

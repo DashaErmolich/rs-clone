@@ -3,7 +3,7 @@
     "nav": {
       "home": "Home",
       "search": "Search",
-      "library": "Your Library"
+      "library": "Library"
     },
     "buttons": {
       "create-play-list": "Create playlist",
@@ -102,5 +102,11 @@
         }
       }
     }
+  },
+  "library": {
+    "artists": "Your favorite artists",
+    "albums": "Your favorite albums",
+    "playlists": "Your favorite playlists",
+    "tracks": "Your favorite tracks"
   }
 }
