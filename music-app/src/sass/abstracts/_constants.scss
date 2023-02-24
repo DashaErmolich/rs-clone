@@ -30,4 +30,4 @@ $z-index-header: 8;
 
 $custom-small-breakpoint: 600px;
 
-$scrollbar-width: $container-p-small / 2;
+$scrollbar-width: calc($container-p-small / 2);

@@ -77,6 +77,10 @@
     "genres": "Популлярные жанры"
   },
   "search": {
+    "titles": {
+      "genres": "Жанры",
+      "playlists": "Плейлисты"
+    },
     "chips": {
       "tracks": "Треки",
       "artists": "Исполнители",
@@ -108,5 +112,10 @@
     "albums": "Ваши любимые альбомы",
     "playlists": "Ваши любимые плейлисты",
     "tracks": "Ваши любимые песни"
+  },
+  "core": {
+    "header": {
+      "search-input-placeholder": "Поиск"
     }
+  }
 }

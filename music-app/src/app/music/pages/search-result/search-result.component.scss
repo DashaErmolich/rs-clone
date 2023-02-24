@@ -7,7 +7,7 @@
 
 .search-result-container_small {
   gap: $container-p-small;
-  margin-bottom: $container-p-small / 2;
+  margin-bottom: calc($container-p-small / 2);
 }
 
 .search-result-block {

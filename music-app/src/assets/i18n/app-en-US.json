@@ -80,6 +80,10 @@
     "genres": "Popular genres"
   },
   "search": {
+    "titles": {
+      "genres": "Genres",
+      "playlists": "Playlists"
+    },
     "chips": {
       "tracks": "Tracks",
       "artists": "Artists",
@@ -108,5 +112,10 @@
     "albums": "Your favorite albums",
     "playlists": "Your favorite playlists",
     "tracks": "Your favorite tracks"
+  },
+  "core": {
+    "header": {
+      "search-input-placeholder": "Search"
+    }
   }
 }

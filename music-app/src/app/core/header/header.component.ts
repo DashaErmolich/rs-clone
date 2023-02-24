@@ -60,6 +60,8 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   isLoadingSubscription = new Subscription();
 
+  searchInputPlaceholder = 'core.header.search-input-placeholder';
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
