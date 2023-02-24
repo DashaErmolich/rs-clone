@@ -11,8 +11,8 @@ export class AuthorizationApiService {
 
   constructor(private http: HttpClient) {}
 
-  login (username: string, email: string, password: string) {
-    return this.http.post<IAuthResponse>(`${serverUrl}/login`, {username, email, password});
+  login (email: string, password: string) {
+    return this.http.post<IAuthResponse>(`${serverUrl}/login`, {email, password});
   }
 
   registration (username: string, email: string, password: string) {

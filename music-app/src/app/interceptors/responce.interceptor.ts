@@ -29,17 +29,15 @@ export class ResponseInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap({
        error: (error: HttpErrorResponse) => {
-        if (error.status === statusCodes.Unauthorized && this.localStore.getToken()) {
-          try {
+        if (error.status === statusCodes.Unauthorized) {
+          if (this.localStore.getToken()) {
             this.localStore.removeToken();
             this.authService.refresh().pipe(take(1)).subscribe((res) => {
               if (res.accessToken) this.localStore.setToken(res.accessToken);
             })
-          } catch (e) {}
-          throw new refreshRequiredError('Users data refresh required');
-        }
-        else {
-          this.router.navigate(['welcome']);
+            throw new refreshRequiredError('Users data refresh required');
+          }
+          else this.router.navigate(['welcome']);
         }
        }
    }),

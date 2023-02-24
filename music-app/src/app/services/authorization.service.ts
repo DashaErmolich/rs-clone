@@ -5,6 +5,7 @@ import { AuthorizationApiService } from 'src/app/services/authorization-api.serv
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from './local-storage.service';
 import { statusCodes } from '../enums/statusCodes';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,12 @@ export class AuthorizationService {
     private localStore: LocalStorageService
     ) {}
 
-    login(username: string, email: string, password: string) {
+    login(email: string, password: string) { 
       try {
-        this.authService.login(username, email, password).pipe(take(1)).subscribe((res) => {
+        this.authService.login(email, password).pipe(take(1), 
+        catchError(err => {
+          return []
+        })).subscribe((res) => {
           this.localStore.setToken(res.accessToken)
           this.state.setAuthorized(true);
           this.state.setUser(res.user)
@@ -28,13 +32,12 @@ export class AuthorizationService {
     }
   
     registration(username: string, email: string, password: string) {
-      try {
-        this.authService.registration(username, email, password).pipe(take(1)).subscribe((res) => {
+        this.authService.registration(username, email, password).pipe(take(1),
+        ).subscribe((res) => {
           this.localStore.setToken(res.accessToken)
           this.state.setAuthorized(true);
           this.state.setUser(res.user)
         })
-      } catch (e) {}
     }
   
     logout() {

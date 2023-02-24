@@ -1,15 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+import { catchError, take } from 'rxjs';
+import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import { statusCodes } from 'src/app/enums/statusCodes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -17,33 +15,63 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
-  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
 
-  matcher = new MyErrorStateMatcher();
-
-  hide = true;
+  saving = false;
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)]),
+    password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
+  });
 
   constructor(
+    private state: StateService,
     private authServe: AuthorizationService,
-    private store: StateService,
+    private authApiServe: AuthorizationApiService,
+    private localStore: LocalStorageService,
+    private router: Router,
   ) { }
 
-  signInForm: any = {
-    username: '',
-    email: '',
-    password: ''
-  }
+  onSubmit(form: FormGroup) {
+    const formValue = this.loginForm.value;
 
-  submitLoginForm() {
-    this.authServe.login(this.signInForm.username, this.signInForm.email, this.signInForm.password)
-  }
+    if (form.valid) {
+      this.saving = true;
+      
+      if (formValue.email && formValue.password) {
+          this.authApiServe.login(formValue.email, formValue.password).pipe(take(1), 
+          catchError(err => {
+            if (err instanceof HttpErrorResponse && err.status === statusCodes.BadRequest) {
+                const errReason = err.error.message.split(' ')[1];
+                switch (errReason) {
+                  case 'email' : {
+                    const emailField = this.loginForm.get('email');
+                    emailField?.setErrors({
+                      emailError: 'Incorrect email'
+                    })
+                    break;
+                  }
+                  case 'password' : {
+                    const passwordField = this.loginForm.get('password');
+                    passwordField?.setErrors({
+                      passwordError: 'Incorrect password'
+                    })
+                    break;
+                  }
+                }
+            }
+            return []
+          })).subscribe((res) => {
+            this.localStore.setToken(res.accessToken)
+            this.state.setAuthorized(true);
+            this.state.setUser(res.user);
+            
+            this.router.navigate(['music/home']);
+          })
+      }
+      
+    }
+  } 
+ 
   submitLogout() {
     this.authServe.logout();
-  }
-  submitFetch() {
-    this.authServe.fetch();
-  }
-  submitRefresh() {
-    this.authServe.checkAuth();
   }
 }
