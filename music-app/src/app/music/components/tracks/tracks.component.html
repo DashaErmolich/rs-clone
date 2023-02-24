@@ -1,5 +1,5 @@
 <mat-card *ngFor="let track of tracks; index as i">
-  <mat-card-content [attr.class]="(isTrackPlaying(i) && ((isPlay$ | async) || (isPause$ | async)) && !isEnd)
+  <mat-card-content [attr.class]="(isTrackPlaying(i) && !isEnd)
     ? theme + '-border' + ' theme-primary'+ ' track' : 'track'" (dblclick)="setTracksInfo(i)">
     <div class="track-number-wrapper">
       <p class="track-number" *ngIf="!isTrackPlaying(i) ||
@@ -20,23 +20,17 @@
     </div>
     <div class="track-btn-wrapper">
       <div [attr.class]="isLiked(i) ? 'like-btn-liked' : 'like-btn'">
-      <!-- <button mat-mini-fab color="basic" (click)="likeTrack(i)">
-        <mat-icon [color]="isLiked(i) ? 'warn' : 'basic'">favorite</mat-icon>
-      </button> -->
-
-      <!-- <button mat-mini-fab matTooltip="Primary" color="primary" aria-label="Example mini fab with a heart icon">
-        <mat-icon>favorite_border</mat-icon>
-      </button> -->
-
-      <button mat-icon-button color="basic" (click)="likeTrack(i)"  >
-        <mat-icon [color]="isLiked(i) ? 'warn' : 'basic'" class="material-symbols-outlined">favorite_border</mat-icon>
-      </button>
-</div>
+        <button mat-icon-button color="basic" (click)="likeTrack(i)">
+          <mat-icon [color]="isLiked(i) ? 'warn' : 'basic'" class="material-symbols-outlined">favorite_border</mat-icon>
+        </button>
+        <!-- <button mat-mini-fab color="basic" (click)="likeTrack(i)">
+          <mat-icon [color]="isLiked(i) ? 'warn' : 'basic'" class="material-symbols-outlined">favorite_border</mat-icon>
+        </button> -->
+      </div>
     </div>
     <div class="track-album">
       <p [routerLink]="['/music/album', track.album?.id]">{{track.album?.title | titlecase}}</p>
     </div>
-    <!-- <div>00:30</div> -->
-    <div>{{getDuration(i)}}</div>
+    <div>00:30</div>
   </mat-card-content>
 </mat-card>

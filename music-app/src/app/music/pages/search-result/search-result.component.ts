@@ -121,8 +121,9 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       this.tracksOfState = tracks;
     });
 
-    this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     this.isPause$ = this.myAudio.isPause$.subscribe((res) => { this.isPause = res; });
+    // this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+
     this.likedSearchResults$ = this.myState.likedSearchResults$.subscribe((res) => {
       this.likedSearchResults = res;
     });
@@ -223,6 +224,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
       this.isFirstPlay = false;
     }
+    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+
     if (this.isPlay) {
       this.myAudio.pause();
     } else {
@@ -230,6 +233,23 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     }
   }
 
+  // --------------------------------
+  // setTracksInfo(trackIndex: number) {
+  //   this.myState.setTrackListInfo(this.tracks, trackIndex);
+  //   this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
+  //   this.isPlay = !this.isPlay;
+  // }
+
+  // playPause() {
+  //   this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+  //   if (this.isPlay) {
+  //     this.myAudio.pause();
+  //   } else {
+  //     this.myAudio.play();
+  //   }
+  // }
+
+  // --------------------
   likeSearchResult() {
     this.isLiked = !this.isLiked;
     if (this.isLiked && typeof this.result.id === 'number') {
