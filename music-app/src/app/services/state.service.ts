@@ -29,12 +29,18 @@ export class StateService {
   searchValue$ = new BehaviorSubject<string>('');
 
   likedTracks$ = new BehaviorSubject<number[]>([]);
-  
+
   likedSearchResults$ = new BehaviorSubject<ILikedSearchResults>({
     album: [],
     artist: [],
     playlist: [],
   });
+
+  isNavigationMenuShown$ = new BehaviorSubject<boolean>(false);
+
+  isSettingsMenuShown$ = new BehaviorSubject<boolean>(false);
+
+  isSearchInputShown$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private storage: LocalStorageService,
@@ -99,6 +105,18 @@ export class StateService {
     }
     this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
+  }
+
+  setNavigationMenuVisibility(isVisible: boolean): void {
+    this.isNavigationMenuShown$.next(isVisible);
+  }
+
+  setSettingsMenuVisibility(isVisible: boolean): void {
+    this.isSettingsMenuShown$.next(isVisible);
+  }
+
+  setSearchInputVisibility(isVisible: boolean): void {
+    this.isSearchInputShown$.next(isVisible);
   }
 
   setLikedSearchResult(type: LikedSearchResults, id: number): void {

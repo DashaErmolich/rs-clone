@@ -1,0 +1,36 @@
+<div *ngIf="!searchParam" class="search-page">
+  <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+  <div class="">
+    <h2 *ngIf="!loading">Genres</h2>
+    <app-genres [genres]="genres" class="search-container" [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-genres>
+    <h2 *ngIf="!loading">Playlists</h2>
+    <app-playlists [playlists]="playlistsFromChart" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-playlists>
+  </div>
+</div>
+<div *ngIf="searchParam" class="search-page">
+  <div class="chips-container">
+    <mat-chip-listbox aria-label="Search selection">
+      <mat-chip-option (click)="renderTracks()" selected l10nTranslate>search.chips.tracks</mat-chip-option>
+      <mat-chip-option (click)="renderArtists()" l10nTranslate>search.chips.artists</mat-chip-option>
+      <mat-chip-option (click)="renderAlbums()" l10nTranslate>search.chips.albums</mat-chip-option>
+      <mat-chip-option (click)="renderPlaylists()" l10nTranslate>search.chips.playlists</mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+  <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+  <div [ngSwitch]="searchType" class="tracks">
+    <div *ngSwitchCase="'tracks'">
+      <app-tracks *ngIf="!loading"  [tracks]="tracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>
+    </div>
+    <div *ngSwitchCase="'artists'">
+      <app-artists [artists]="artists" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-artists>
+    </div>
+    <div *ngSwitchCase="'albums'">
+      <app-albums [albums]="albums" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-albums>
+    </div>
+    <div *ngSwitchCase="'playlists'">
+      <app-playlists [playlists]="playlists" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-playlists>
+    </div>
+    <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
+  </div>
+
+</div>

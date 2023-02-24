@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-aside',
@@ -6,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./aside.component.scss'],
 })
 export class AsideComponent {
+  @Input() isNavigationMenuShown!: boolean;
 
+  constructor(
+    private myState: StateService,
+  ) { }
+
+  toggleNavigationMenuVisibility() {
+    if (this.isNavigationMenuShown) {
+      this.myState.setNavigationMenuVisibility(!this.isNavigationMenuShown);
+    }
+  }
 }

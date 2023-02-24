@@ -1,0 +1,33 @@
+@import '../../../../sass/abstracts/constants';
+@import '../../../../sass/abstracts/mixins';
+
+.suggestions-container {
+  grid-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: 1fr;
+  grid-auto-rows: auto;
+  margin-bottom: 1rem;
+}
+
+.suggestions-tracks {
+  grid-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-auto-flow: column;
+  margin-bottom: 1rem;
+}
+
+.suggestions-container_small {
+  @include grid-horizontal-scroll(6, 3, $container-p-small);
+}
+
+.suggestions-container_handset {
+  @include grid-horizontal-scroll(6, 2, $container-p-small);
+}
+
+.suggestions-tracks_small {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+}

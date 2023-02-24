@@ -1,8 +1,11 @@
 $header-height: 80px;
+$header-height-handset: 64px;
 $header-progress-bar-height: 4px;
 $footer-height: 50px;
 $player-height: 120px;
+$player-height-small: 80px;
 $icon-size: 24px;
+$aside-min-width: 230px;
 
 $container-p-small: 1rem;
 $container-p-large: 2rem;
@@ -23,3 +26,8 @@ $count-cart-in-row: 6;
 
 $z-index-top: 10;
 $z-index-dynamic-window: 9;
+$z-index-header: 8;
+
+$custom-small-breakpoint: 600px;
+
+$scrollbar-width: $container-p-small / 2;

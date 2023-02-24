@@ -50,6 +50,14 @@
         "kHz": "кГц",
         "db": "дБ"
       }
+    },
+    "player": {
+      "menu": {
+        "shuffle": "Перемешать",
+        "repeat-all": "Повторить все",
+        "repeat-one": "Повторить трек",
+        "equalizer": "Эквалайзер"
+      }
     }
   },
   "home": {
@@ -67,6 +75,30 @@
       "podcasts": "Вам могут понравиться эти подкасты"
     },
     "genres": "Популлярные жанры"
+  },
+  "search": {
+    "chips": {
+      "tracks": "Треки",
+      "artists": "Исполнители",
+      "albums": "Альбомы",
+      "playlists": "Плейлисты"
+    },
+    "results": {
+      "track": "Треи",
+      "artist": "Исполнитель",
+      "album": "Альбом",
+      "playlist": "Плейлист",
+      "description": {
+        "playlist": {
+          "creator": "Создатель",
+          "songs": "Треков"
+        },
+        "artist": {
+          "albums": "Альбомов",
+          "fans": "Поклонников"
+        }
+      }
+    }
   },
   "sign-in": {
     "submit-btn": "Зарегистрироваться"

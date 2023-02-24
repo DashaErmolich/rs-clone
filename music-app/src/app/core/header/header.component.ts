@@ -11,6 +11,7 @@ import { IUserIcons } from '../../models/user-icons.models';
 import { userIconsData } from '../../../assets/user-icons/user-icons';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-header',
@@ -19,17 +20,27 @@ import { ThemeService } from '../../services/theme.service';
 })
 
 export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
-  searchControl: FormControl = new FormControl();
-
-  isSearchRoute: boolean = false;
-
-  searchValue: string = '';
-
   queryParams$: Subscription = new Subscription();
 
   searchControl$: Subscription = new Subscription();
 
   events$: Subscription = new Subscription();
+
+  userName$: Subscription = new Subscription();
+
+  userIconId$: Subscription = new Subscription();
+
+  isHandset$: Subscription = new Subscription();
+
+  isSearchInputShown$: Subscription = new Subscription();
+
+  subscriptions: Subscription[] = [];
+
+  searchControl: FormControl = new FormControl();
+
+  isSearchRoute = false;
+
+  searchValue = '';
 
   userIcons: IUserIcons[] = userIconsData;
 
@@ -39,12 +50,17 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   userIconId!: number;
 
+  isHandset = false;
+
+  isSearchInputShown!: boolean;
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
     private route: ActivatedRoute,
     private myState: StateService,
     private state: StateService,
+    private responsive: ResponsiveService,
   ) {
     super(myTheme);
   }
@@ -58,6 +74,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
       }
       if (this.queryParams$) this.queryParams$.unsubscribe();
     });
+    this.subscriptions.push(this.queryParams$);
 
     this.searchControl$ = this.searchControl.valueChanges
       .subscribe((res) => {
@@ -65,6 +82,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
+    this.subscriptions.push(this.searchControl$);
 
     this.events$ = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -77,17 +95,34 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         }
       }
     });
-    this.myState.userName$.subscribe((data) => {
+    this.subscriptions.push(this.events$);
+
+    this.userName$ = this.myState.userName$.subscribe((data) => {
       this.userName = data;
     });
-    this.myState.userIconId$.subscribe((data) => {
+    this.subscriptions.push(this.userName$);
+
+    this.userIconId$ = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
+    this.subscriptions.push(this.userIconId$);
+
+    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+      this.isHandset = data;
+    });
+    this.subscriptions.push(this.isHandset$);
+
+    this.isSearchInputShown$ = this.myState.isSearchInputShown$.subscribe((data) => {
+      this.isSearchInputShown = data;
+    });
+    this.subscriptions.push(this.isSearchInputShown$);
   }
 
   ngOnDestroy(): void {
-    if (this.searchControl$) this.searchControl$.unsubscribe();
-    if (this.queryParams$) this.queryParams$.unsubscribe();
-    if (this.events$) this.events$.unsubscribe();
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  toggleSearchInputVisibility() {
+    this.myState.setSearchInputVisibility(!this.isSearchInputShown);
   }
 }

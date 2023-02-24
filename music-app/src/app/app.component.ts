@@ -20,6 +20,7 @@ export class AppComponent {
   }
 
   getStartClass() {
+    this.themeService.setOverlayContainerTheme();
     return this.themeService.activeThemeCssClass;
   }
 }
