@@ -23,11 +23,11 @@
   </div>
   <div class="search-result-container-btns">
     <button mat-fab color="primary" (click)="playPause(0)">
-      <mat-icon>{{ !isPlay ? 'play_arrow' : 'pause' }}</mat-icon>
+      <mat-icon>{{ isPlay ? 'pause' : 'play_arrow'}}</mat-icon>
     </button>
     <button mat-fab extended color="primary" (click)="likeSearchResult()">
-      <mat-icon>favorite</mat-icon>
-      {{isLiked ? 'FOLLOW' :'ADD TO FAVS' }}
+      <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
+      <span l10nTranslate>{{isLiked ? 'search.results.subscription.subscribed' : 'search.results.subscription.subscribe' }}</span>
     </button>
   </div>
   <app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>

@@ -100,6 +100,10 @@
           "albums": "Albums",
           "fans": "Fans"
         }
+      },
+      "subscription": {
+        "subscribe": "Subscribe",
+        "subscribed": "Subscribed"
       }
     }
   },

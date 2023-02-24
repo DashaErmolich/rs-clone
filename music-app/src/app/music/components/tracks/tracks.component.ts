@@ -92,7 +92,6 @@ export class TracksComponent implements OnInit, OnDestroy {
   setTracksInfo(trackIndex: number) {
     this.myState.setTrackListInfo(this.tracks, trackIndex);
     this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
-    this.isPlay = !this.isPlay;
   }
 
   playPause() {
