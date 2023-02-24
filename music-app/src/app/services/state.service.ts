@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { IUserModel } from 'src/app/models/userModel.models';
+import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
@@ -17,6 +19,9 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
+  user = {} as IUserModel;
+  isAuthorized = false;
+
   userName$ = new BehaviorSubject<string>('Jake');
 
   userIconId$ = new BehaviorSubject<number>(0);
@@ -33,7 +38,7 @@ export class StateService {
 
   constructor(
     private storage: LocalStorageService,
-  ) {
+    private authService: AuthorizationApiService) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
     const userData: IUserData | null = this.storage.getUserData();
 
@@ -59,6 +64,14 @@ export class StateService {
     this.storage.setTrackListInfo(this.trackList$.value, index);
   }
 
+  setAuthorized(authStatus: boolean) {
+    this.isAuthorized = authStatus;
+  }
+
+  setUser(user: IUserModel) {
+    this.user = user; 
+  }
+  
   setEqualizerVisibility(isVisible: boolean): void {
     this.isEqualizerShown$.next(isVisible);
   }
@@ -104,3 +117,4 @@ export class StateService {
     this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 }
+

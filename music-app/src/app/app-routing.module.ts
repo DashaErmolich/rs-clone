@@ -15,6 +15,7 @@ import { SettingsAccountComponent } from './user/settings/settings-account/setti
 import { GenreComponent } from './music/genre/genre.component';
 import { LikedTracksComponent } from './music/liked-tracks/liked-tracks.component';
 import { SearchResultComponent } from './music/search-result/search-result.component';
+import { AuthorizedGuard } from './guards/isAuthorized.guard'; 
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -22,6 +23,7 @@ const routes: Routes = [
   {
     path: 'music',
     component: MusicPageComponent,
+    canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -38,6 +40,7 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsPageComponent,
+    canActivateChild: [AuthorizedGuard],
     children: [
       { path: '', redirectTo: 'language', pathMatch: 'full' },
       { path: 'language', component: SettingsLanguageComponent },
