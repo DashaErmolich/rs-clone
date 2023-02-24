@@ -28,6 +28,18 @@ export class AuthorizationApiService {
   }
 
   fetchUsers () {
-    return this.http.get<IUserModel[]>(`${serverUrl}/users`)
+    return this.http.get<IUserModel[]>(`${serverUrl}/users`);
+  }
+
+  setAccountSettings (email: string, username: string, userIconId: number) {
+    return this.http.post<IUserModel>(`${serverUrl}/settings`, {email, username, userIconId});
+  }
+
+  setUser (changedUser: IUserModel) {
+    return this.http.post<IUserModel>(`${serverUrl}/setter`, {changedUser});
+  }
+
+  getUser () {
+    return this.http.get<IUserModel | {}>(`${serverUrl}/user`);
   }
 }

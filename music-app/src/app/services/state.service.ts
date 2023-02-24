@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IUserModel } from 'src/app/models/userModel.models';
-import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
+import { AuthorizationApiService } from './authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
@@ -19,7 +19,7 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
-  user = {} as IUserModel;
+  user = {} as IUserModel | {};
   isAuthorized = false;
 
   userName$ = new BehaviorSubject<string>('Jake');
@@ -47,6 +47,10 @@ export class StateService {
     private authService: AuthorizationApiService) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
     const userData: IUserData | null = this.storage.getUserData();
+    this.authService.getUser().subscribe((data) => {
+      this.user = data;
+      this.isAuthorized = this.user ? true : false;
+    })
 
     if (trackListInfo !== null) {
       this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
@@ -134,5 +138,13 @@ export class StateService {
     this.storage.setLikedSearchResults(likedSearchResults);
     this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
+
+  // accChanger() {
+  //   const updatedUser: IUserModel = Object.assign({}, this.user);
+
+  //   updatedUser.userFavorites.tracks.push(...this.likedTracks$.value)
+    
+  //   this.setUser(updatedUser);
+  // }
 }
 

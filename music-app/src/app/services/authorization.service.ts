@@ -84,4 +84,28 @@ export class AuthorizationService {
         })
     }
 
+    changeAccountSettings(email: string, username: string, userIconId: number) {
+      this.authService.setAccountSettings(email, username, userIconId).pipe(
+        take(1),
+        catchError(err => {
+          return [];
+        })).subscribe((response) => {
+          this.state.user = response;
+        })
+    }
+
+    setUser (changedUser: IUserModel) {
+      this.authService.setUser(changedUser).pipe(
+        take(1),
+        catchError(err => {
+          return [];
+        })).subscribe((response) => {
+          this.state.user = response;
+          console.log(this.state.user);
+        })
+    }
+
+    getUser () {
+      return this.authService.refresh()
+  }
 }

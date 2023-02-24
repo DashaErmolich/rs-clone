@@ -8,6 +8,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
 import { statusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
+import { IUserModel } from 'src/app/models/userModel.models';
 
 @Component({
   selector: 'app-sign-in',

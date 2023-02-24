@@ -7,6 +7,7 @@ import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { statusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
+import { AuthorizationService } from 'src/app/services/authorization.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,6 +29,7 @@ export class SignUpComponent {
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
+    private authServe: AuthorizationService
   ) { }
 
   onSubmit(form: FormGroup) {
