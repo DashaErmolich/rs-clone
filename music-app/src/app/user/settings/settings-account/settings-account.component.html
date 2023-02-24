@@ -11,11 +11,13 @@
   </div>
 </div>
 
-<h2 l10nTranslate>settings.account.userName</h2>
-<mat-form-field class="mb-large" appearance="outline">
-  <input matInput placeholder="Username" required [value]="userName" (change)="setUserName($event.currentTarget)">
-</mat-form-field>
+<div>
+  <h2 l10nTranslate>settings.account.userName</h2>
+  <mat-form-field class="mb-large" appearance="outline">
+    <input matInput placeholder="Username" required [value]="userName" (change)="setUserName($event.currentTarget)">
+  </mat-form-field>
+</div>
 
 <div class="mb-large">
-  <button mat-raised-button color="warn" l10nTranslate>settings.account.LogOut</button>
+  <button mat-raised-button color="warn" l10nTranslate (click)="submitLogout()">settings.account.LogOutButton</button>
 </div>

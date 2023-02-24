@@ -13,10 +13,10 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MusicModule } from './music/music.module';
 import { UserModule } from './user/user.module';
-import { AuthorizedGuard } from './guards/isAuthorized.guard'; 
+import { AuthorizedGuard } from './guards/isAuthorized.guard';
 
 function initializeApp(): Promise<void> {
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     resolve();
   });
 }
@@ -42,8 +42,8 @@ function initializeApp(): Promise<void> {
     {
       provide: APP_INITIALIZER,
       useFactory: () => initializeApp,
-      multi: true
-     }
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

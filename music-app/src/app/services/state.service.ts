@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IUserModel } from 'src/app/models/userModel.models';
 import { AuthorizationApiService } from './authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
-import IUserData from '../models/user-data.models';
 import { ITrackListInfo } from '../models/audio-player.models';
 
 @Injectable({
@@ -19,7 +18,8 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
-  user = {} as IUserModel | {};
+  user!: IUserModel;
+
   isAuthorized = false;
 
   userName$ = new BehaviorSubject<string>('Jake');
@@ -44,23 +44,27 @@ export class StateService {
 
   constructor(
     private storage: LocalStorageService,
-    private authService: AuthorizationApiService) {
+    private authService: AuthorizationApiService,
+  ) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
-    const userData: IUserData | null = this.storage.getUserData();
     this.authService.getUser().subscribe((data) => {
-      this.user = data;
-      this.isAuthorized = this.user ? true : false;
-    })
+      console.log('state data subscribe');
+      if (!this.isEmptyObject(data)) {
+        this.user = data as IUserModel;
+        this.isAuthorized = true;
+        this.setUserData(this.user.username, this.user.userIconId);
+        this.likedTracks$.next(this.user.userFavorites.tracks);
+        this.likedSearchResults$.next({
+          album: this.user.userFavorites.albums,
+          artist: this.user.userFavorites.artists,
+          playlist: this.user.userFavorites.playlists,
+        });
+      }
+    });
 
     if (trackListInfo !== null) {
       this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
     }
-
-    if (userData !== null) {
-      this.setUserData(userData.userName, userData.userIconId);
-    }
-    this.likedTracks$.next(this.storage.getLikedTracks());
-    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 
   setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
@@ -78,10 +82,10 @@ export class StateService {
     this.isAuthorized = authStatus;
   }
 
-  setUser(user: IUserModel) {
-    this.user = user; 
+  setUserToState(user: IUserModel) {
+    this.user = user;
   }
-  
+
   setEqualizerVisibility(isVisible: boolean): void {
     this.isEqualizerShown$.next(isVisible);
   }
@@ -90,6 +94,7 @@ export class StateService {
     this.userName$.next(userName);
     this.userIconId$.next(userIconId);
     this.storage.setUserData(userName, userIconId);
+    this.updateUserData();
   }
 
   setSearchParam(searchValue: string) {
@@ -99,6 +104,7 @@ export class StateService {
   setLikedTrack(trackDeezerId: number): void {
     this.storage.setLikedTrack(trackDeezerId);
     this.likedTracks$.next(this.storage.getLikedTracks());
+    this.updateUserData();
   }
 
   removeLikedTrack(trackDeezerId: number): void {
@@ -109,6 +115,7 @@ export class StateService {
     }
     this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
+    this.updateUserData();
   }
 
   setNavigationMenuVisibility(isVisible: boolean): void {
@@ -126,6 +133,7 @@ export class StateService {
   setLikedSearchResult(type: LikedSearchResults, id: number): void {
     this.storage.setLikedSearchResult(type, id);
     this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+    this.updateUserData();
   }
 
   removeLikedSearchResult(type: LikedSearchResults, id: number): void {
@@ -137,14 +145,29 @@ export class StateService {
     }
     this.storage.setLikedSearchResults(likedSearchResults);
     this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+    this.updateUserData();
   }
 
-  // accChanger() {
-  //   const updatedUser: IUserModel = Object.assign({}, this.user);
+  // eslint-disable-next-line class-methods-use-this
+  isEmptyObject(obj: Object): boolean {
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
 
-  //   updatedUser.userFavorites.tracks.push(...this.likedTracks$.value)
-    
-  //   this.setUser(updatedUser);
-  // }
+  updateUserData(): void {
+    console.log(1234);
+    const updatedUser: IUserModel = { ...this.user };
+    updatedUser.username = this.userName$.value;
+    updatedUser.userIconId = this.userIconId$.value;
+    updatedUser.userFavorites = {
+      tracks: this.likedTracks$.value,
+      albums: this.likedSearchResults$.value.album,
+      artists: this.likedSearchResults$.value.artist,
+      playlists: this.likedSearchResults$.value.playlist,
+      podcasts: [],
+    };
+    updatedUser.customPlaylists = [];
+    this.authService.setUser(updatedUser).subscribe((res) => {
+      this.user = res;
+    });
+  }
 }
-

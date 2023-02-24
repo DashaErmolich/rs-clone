@@ -30,7 +30,9 @@
       "title": "Account",
       "userIcon": "User icon",
       "userName": "User name",
-      "LogOut": "Log out"
+      "LogOutButton": "Log out",
+      "SaveButton": "Save changes",
+      "DiscardButton": "Discard changes"
     }
   },
   "welcome": {

@@ -6,6 +6,8 @@ import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
 import { StateService } from '../../../services/state.service';
 import { ThemeService } from '../../../services/theme.service';
+import { AuthorizationService } from '../../../services/authorization.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings-account',
@@ -31,6 +33,8 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
   constructor(
     private myState: StateService,
     myTheme: ThemeService,
+    private muAuth: AuthorizationService,
+    private myRouter: Router,
   ) {
     super(myTheme);
   }
@@ -59,5 +63,11 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
       this.userName = eventTarget.value;
     }
     this.myState.setUserData(this.userName, this.userIconId);
+  }
+
+  submitLogout() {
+    this.myState.updateUserData();
+    this.muAuth.logout();
+    this.myRouter.navigate(['welcome']);
   }
 }

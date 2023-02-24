@@ -1,22 +1,22 @@
 export interface IUserModel {
+  readonly email: string;
+  readonly isActivated: boolean;
+  readonly id: string;
   username: string;
-  email: string;
-  isActivated: boolean;
-  id: string;
   userIconId: number;
   userFavorites: IFavoritesModel;
-  customPlaylists: [ICustomPlaylistModel]
-};
+  customPlaylists: ICustomPlaylistModel[]
+}
 
 interface IFavoritesModel {
-  tracks: [number];
-  albums: [number];
-  artists: [number];
-  playlists: [number];
-  podcasts: [number];
-};
+  tracks: number[];
+  albums: number[];
+  artists: number[];
+  playlists: number[];
+  podcasts:number[];
+}
 
 interface ICustomPlaylistModel {
   playlistName: string;
-  playlistTracks: [number];
-};
+  playlistTracks: number[];
+}
