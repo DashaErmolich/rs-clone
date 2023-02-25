@@ -18,6 +18,8 @@ import {
   ITracksByArtist,
   IPlayListsResponse,
   ITracksResponse,
+  IRadiosResponse,
+  ITracksByRadio,
 } from '../models/api-response.models';
 
 @Injectable({
@@ -119,8 +121,16 @@ export class DeezerRestApiService {
     return this.http.get<IGenresResponse>(`${BASE_URL}${Endpoints.genre}`);
   }
 
+  getRadios(): Observable<IRadiosResponse> {
+    return this.http.get<IRadiosResponse>(`${BASE_URL}${Endpoints.radio}/top?limit=23`);
+  }
+
   getRadio(id: number): Observable<IRadioResponse> {
     return this.http.get<IRadioResponse>(`${BASE_URL}${Endpoints.radio}/${id}`);
+  }
+
+  getTracksByRadio(id: number): Observable<ITracksByRadio> {
+    return this.http.get<ITracksByRadio>(`${BASE_URL}${Endpoints.radio}/${id}${Endpoints.tracks}`);
   }
 
   getPlayListTracks(id: number): Observable<IPlayListResponse> {

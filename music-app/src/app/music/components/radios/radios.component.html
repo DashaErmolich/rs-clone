@@ -1,0 +1,7 @@
+<mat-card *ngFor="let radio of radios; let i=index" class="radio-card" [routerLink]="['/music/radio', radio.id]">
+<mat-card-content class="radio-title">{{radio.title | titlecase}}</mat-card-content>
+  <div class="radio-img-wrapper" [ngStyle]="{'background-image': 'url(' + radio.picture_medium + ')'}">
+    <img class="radio-img" src="{{radio.picture_medium ? radio.picture_medium : defaultImg}}" alt={{radio.title}}>
+  </div>
+</mat-card>
+

@@ -35,6 +35,7 @@ export class StateService {
     album: [],
     artist: [],
     playlist: [],
+    radio: [],
   });
 
   isNavigationMenuShown$ = new BehaviorSubject<boolean>(false);

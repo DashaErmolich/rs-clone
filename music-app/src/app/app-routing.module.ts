@@ -34,7 +34,7 @@ const routes: Routes = [
       { path: 'genre/:genre', component: GenreComponent },
       { path: 'artist/:artist', component: SearchResultComponent },
       { path: 'album/:album', component: SearchResultComponent },
-
+      { path: 'radio/:radio', component: SearchResultComponent },
     ],
   },
   {

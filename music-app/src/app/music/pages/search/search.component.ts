@@ -5,6 +5,7 @@ import {
   ITrackResponse,
   IArtistResponse,
   IAlbumResponse,
+  IRadioResponse,
 } from 'src/app/models/api-response.models';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { Limits, SearchType } from 'src/app/enums/endpoints';
@@ -87,6 +88,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  radios!: IRadioResponse[];
+
+  radios$!: Subscription;
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private state: StateService,
@@ -111,6 +116,10 @@ export class SearchComponent implements OnInit, OnDestroy {
           });
           this.playlistsFromChart$ = this.deezerRestApiService.getChart().subscribe((playlists) => {
             this.playlistsFromChart = playlists.playlists.data;
+          });
+
+          this.radios$ = this.deezerRestApiService.getRadios().subscribe((radios) => {
+            this.radios = radios.data;
           });
           this.searchType = SearchType.tracks;
         }
@@ -145,6 +154,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.playingTrackIndex$) this.playingTrackIndex$.unsubscribe();
     if (this.trackList$) this.trackList$.unsubscribe();
     if (this.searchParam$) this.searchParam$.unsubscribe();
+    if (this.radios$) this.radios$.unsubscribe();
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
