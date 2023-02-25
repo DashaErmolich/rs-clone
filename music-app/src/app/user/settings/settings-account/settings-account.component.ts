@@ -32,15 +32,9 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   userName$ = new Subscription();
 
-  userNameMinLength = USER_NAME_MIN_LENGTH;
-
-  userNameMaxLength = USER_NAME_MAX_LENGTH;
-
   isUserNameChanged$ = new BehaviorSubject<boolean>(false);
 
   isUserIconChanged$ = new BehaviorSubject<boolean>(false);
-
-  isChangesSaved = false;
 
   userNameFormControl!: FormControl;
 
