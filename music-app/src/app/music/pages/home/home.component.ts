@@ -63,6 +63,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'home.charts.podcasts',
       data: [],
     },
+    radios: {
+      title: 'home.charts.radios',
+      data: [],
+    },
   };
 
   greetings: IGreetings[] = [
@@ -105,6 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.forkJoinSubscription$ = forkJoin({
       genres: this.myDeezer.getGenres(),
       chartData: this.myDeezer.getChart(),
+      radios: this.myDeezer.getRadios(),
     }).subscribe((response) => {
       this.genres = this.getReadyData(response.genres.data);
       this.chartRecommendations.tracks.data = response.chartData.tracks.data;
@@ -114,6 +119,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         response.chartData.playlists.data,
       );
       this.chartRecommendations.podcasts.data = this.getReadyData(response.chartData.podcasts.data);
+      this.chartRecommendations.radios.data = this.getReadyData(response.radios.data);
+      this.isLoading = false;
     });
     this.subscriptions.push(this.forkJoinSubscription$);
     this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
