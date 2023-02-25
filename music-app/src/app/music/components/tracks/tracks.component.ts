@@ -13,7 +13,7 @@ import { DEFAULT_SRC } from '../../../constants/constants';
 @Component({
   selector: 'app-tracks',
   templateUrl: './tracks.component.html',
-  styleUrls: ['../../pages/search/search.component.scss'],
+  styleUrls: ['./tracks.component.scss'],
 })
 
 export class TracksComponent implements OnInit, OnDestroy {
@@ -43,6 +43,12 @@ export class TracksComponent implements OnInit, OnDestroy {
 
   isEnd!: boolean;
 
+  isLikedTrack: boolean = false;
+
+  likedTracks: number[] = [];
+
+  likedTracks$!: Subscription;
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
@@ -65,6 +71,11 @@ export class TracksComponent implements OnInit, OnDestroy {
     this.trackList$ = this.myState.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
     });
+
+    this.likedTracks$ = this.myState.likedTracks$
+      .subscribe((data) => {
+        this.likedTracks = data;
+      });
   }
 
   ngOnDestroy(): void {
@@ -81,7 +92,6 @@ export class TracksComponent implements OnInit, OnDestroy {
   setTracksInfo(trackIndex: number) {
     this.myState.setTrackListInfo(this.tracks, trackIndex);
     this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
-    this.isPlay = !this.isPlay;
   }
 
   playPause() {
@@ -90,6 +100,19 @@ export class TracksComponent implements OnInit, OnDestroy {
       this.myAudio.pause();
     } else {
       this.myAudio.play();
+    }
+  }
+
+  isLiked(trackIndex: number): boolean {
+    return this.likedTracks.includes(Number(this.tracks[trackIndex].id));
+  }
+
+  likeTrack(trackIndex: number): void {
+    const isLiked = this.isLiked(trackIndex);
+    if (!isLiked) {
+      this.myState.setLikedTrack(this.tracks[trackIndex].id!);
+    } else {
+      this.myState.removeLikedTrack(this.tracks[trackIndex].id!);
     }
   }
 }

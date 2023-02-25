@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { serverUrl } from 'src/app/constants/constants';
 import { IAuthResponse } from 'src/app/models/auth-response.models';
-import { IUserModel } from 'src/app/models/userModel.models';
+import { IUserModel } from 'src/app/models/user-model.models';
 
 @Injectable({
   providedIn: 'root',

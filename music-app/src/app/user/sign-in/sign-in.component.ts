@@ -6,7 +6,7 @@ import { AuthorizationApiService } from 'src/app/services/authorization-api.serv
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
-import { StatusCodes } from 'src/app/enums/statusCodes';
+import { StatusCodes } from 'src/app/enums/status-codes';
 import { Router } from '@angular/router';
 
 @Component({

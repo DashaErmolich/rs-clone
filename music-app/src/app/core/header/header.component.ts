@@ -1,16 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+
 import {
   ActivatedRoute, NavigationStart, Router,
 } from '@angular/router';
 
 import { Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 import { StateService } from '../../services/state.service';
 import { IUserIcons } from '../../models/user-icons.models';
 
 import { userIconsData } from '../../../assets/user-icons/user-icons';
 import { ThemeHelper } from '../../helpers/theme-helper';
 import { ThemeService } from '../../services/theme.service';
+import { ProgressLoaderService } from '../../services/progress-loader.service';
 import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
@@ -20,19 +22,19 @@ import { ResponsiveService } from '../../services/responsive.service';
 })
 
 export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
-  queryParams$: Subscription = new Subscription();
+  queryParamsSubscription = new Subscription();
 
-  searchControl$: Subscription = new Subscription();
+  searchControlSubscription = new Subscription();
 
-  events$: Subscription = new Subscription();
+  routerEventsSubscription = new Subscription();
 
-  userName$: Subscription = new Subscription();
+  userNameSubscription = new Subscription();
 
-  userIconId$: Subscription = new Subscription();
+  userIconIdSubscription = new Subscription();
 
-  isHandset$: Subscription = new Subscription();
+  isHandsetSubscription = new Subscription();
 
-  isSearchInputShown$: Subscription = new Subscription();
+  isSearchInputShownSubscription = new Subscription();
 
   subscriptions: Subscription[] = [];
 
@@ -56,6 +58,12 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   isUserDataShown = true;
 
+  isLoading!: boolean;
+
+  isLoadingSubscription = new Subscription();
+
+  searchInputPlaceholder = 'core.header.search-input-placeholder';
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
@@ -63,30 +71,33 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
     private myState: StateService,
     private state: StateService,
     private responsive: ResponsiveService,
+    public progressLoader: ProgressLoaderService,
   ) {
     super(myTheme);
   }
 
   ngOnInit(): void {
-    this.queryParams$ = this.route.queryParams.subscribe((param) => {
+    this.queryParamsSubscription = this.route.queryParams.subscribe((param) => {
       if (param['q'] !== undefined) {
         this.searchControl.setValue(param['q']);
       } else {
         this.searchControl.setValue('');
       }
-      if (this.queryParams$) this.queryParams$.unsubscribe();
+      if (this.queryParamsSubscription) this.queryParamsSubscription.unsubscribe();
     });
-    this.subscriptions.push(this.queryParams$);
 
-    this.searchControl$ = this.searchControl.valueChanges
+    this.subscriptions.push(this.queryParamsSubscription);
+
+    this.searchControlSubscription = this.searchControl.valueChanges
       .subscribe((res) => {
         this.searchValue = res;
         this.state.setSearchParam(this.searchValue);
         this.router.navigate(['music/search'], { queryParams: { q: this.searchValue } });
       });
-    this.subscriptions.push(this.searchControl$);
 
-    this.events$ = this.router.events.subscribe((event) => {
+    this.subscriptions.push(this.searchControlSubscription);
+
+    this.routerEventsSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         const { url } = event;
 
@@ -103,27 +114,37 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
         }
       }
     });
-    this.subscriptions.push(this.events$);
+    this.subscriptions.push(this.routerEventsSubscription);
 
-    this.userName$ = this.myState.userName$.subscribe((data) => {
+    this.userNameSubscription = this.myState.userName$.subscribe((data) => {
       this.userName = data;
     });
-    this.subscriptions.push(this.userName$);
 
-    this.userIconId$ = this.myState.userIconId$.subscribe((data) => {
+    this.subscriptions.push(this.userNameSubscription);
+
+    this.userIconIdSubscription = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
-    this.subscriptions.push(this.userIconId$);
 
-    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+    this.subscriptions.push(this.userIconIdSubscription);
+
+    this.isHandsetSubscription = this.responsive.isHandset$.subscribe((data) => {
       this.isHandset = data;
     });
-    this.subscriptions.push(this.isHandset$);
 
-    this.isSearchInputShown$ = this.myState.isSearchInputShown$.subscribe((data) => {
+    this.subscriptions.push(this.isHandsetSubscription);
+
+    this.isSearchInputShownSubscription = this.myState.isSearchInputShown$.subscribe((data) => {
       this.isSearchInputShown = data;
     });
-    this.subscriptions.push(this.isSearchInputShown$);
+
+    this.subscriptions.push(this.isSearchInputShownSubscription);
+
+    this.isLoadingSubscription = this.progressLoader.isLoading.subscribe((data) => {
+      this.isLoading = data;
+    });
+
+    this.subscriptions.push(this.isLoadingSubscription);
   }
 
   ngOnDestroy(): void {

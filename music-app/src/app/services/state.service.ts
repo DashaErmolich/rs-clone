@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IUserModel } from 'src/app/models/userModel.models';
+import { IUserModel } from 'src/app/models/user-model.models';
 import { AuthorizationApiService } from './authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';

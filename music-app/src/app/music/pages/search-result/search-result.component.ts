@@ -121,8 +121,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       this.tracksOfState = tracks;
     });
 
-    this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
     this.isPause$ = this.myAudio.isPause$.subscribe((res) => { this.isPause = res; });
+
     this.likedSearchResults$ = this.myState.likedSearchResults$.subscribe((res) => {
       this.likedSearchResults = res;
     });
@@ -223,6 +223,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
       this.isFirstPlay = false;
     }
+    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+
     if (this.isPlay) {
       this.myAudio.pause();
     } else {

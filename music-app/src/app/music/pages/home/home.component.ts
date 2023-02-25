@@ -17,6 +17,7 @@ import { IGreetings } from '../../../models/greeting.models';
 import { ICategoriesData } from '../../../models/home.models';
 import { UtilsService } from '../../../services/utils.service';
 import { ResponsiveService } from '../../../services/responsive.service';
+import { StateService } from '../../../services/state.service';
 
 @Component({
   selector: 'app-home',
@@ -73,6 +74,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isLoading = true;
 
+  isLoadingSubscription = new Subscription();
+
+  subscription = new Subscription();
+
   isSmall = false;
 
   isHandset = false;
@@ -92,6 +97,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private myDeezer: DeezerRestApiService,
     private myUtils: UtilsService,
+    private myState: StateService,
     private responsive: ResponsiveService,
   ) { }
 
@@ -108,7 +114,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         response.chartData.playlists.data,
       );
       this.chartRecommendations.podcasts.data = this.getReadyData(response.chartData.podcasts.data);
-      this.isLoading = false;
     });
     this.subscriptions.push(this.forkJoinSubscription$);
     this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {

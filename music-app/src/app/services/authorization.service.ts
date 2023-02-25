@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IUserModel } from 'src/app/models/userModel.models';
+import { IUserModel } from 'src/app/models/user-model.models';
 import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from './local-storage.service';
-import { StatusCodes } from '../enums/statusCodes';
+import { StatusCodes } from '../enums/status-codes';
 
 @Injectable({
   providedIn: 'root',

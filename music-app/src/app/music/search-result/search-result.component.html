@@ -1,0 +1,32 @@
+<div *ngIf="result" class="search-result-wrapper">
+  <div [ngSwitch]="resultType" class="search-result-container">
+    <div class="search-result-image"><img [src]="imgSrc" [alt]="title"></div>
+    <div class="search-result-block">
+      <p class="search-result-type">{{type}}</p>
+      <h2 class="search-result-title">{{title}}</h2>
+      <p *ngIf="description" class="search-result-description">{{description}}</p>
+      <div *ngSwitchCase="'album'" class="search-result-description">
+        <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
+        <div class="artist-name" [routerLink]="['/music/artist', artistId]">{{artistName}}</div>
+        <div *ngIf="albumRelease" class="album-release">{{albumRelease}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="search-result-container-btns">
+    <button mat-fab color="primary" (click)="playPause(0)">
+      <mat-icon>{{ isPlay ? 'pause' : 'play_arrow'}}</mat-icon>
+    </button>
+    <button mat-fab color="primary" (click)="likeSearchResult()"  >
+      <mat-icon [color]="isLiked ? 'warn' : 'basic'" class="material-symbols-outlined">favorite_border</mat-icon>
+    </button>
+    <button mat-fab color="primary" (click)="likeSearchResult()"  >
+      <mat-icon [color]="isLiked ? 'warn' : 'basic'" class="material-symbols-outlined">favorite</mat-icon>
+    </button>
+    <button mat-fab extended color="primary" (click)="likeSearchResult()">
+      <mat-icon [color]="isLiked ? 'warn' : 'basic'">favorite</mat-icon>
+      {{isLiked ? 'UNFOLLOW' :'ADD TO FAVS' }}
+    </button>
+
+  </div>
+  <app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container"></app-tracks>
+</div>
