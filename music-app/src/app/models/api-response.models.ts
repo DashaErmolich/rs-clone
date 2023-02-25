@@ -200,7 +200,7 @@ export interface IGenresResponse {
 }
 
 export interface IRadioResponse {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   share?: string;
