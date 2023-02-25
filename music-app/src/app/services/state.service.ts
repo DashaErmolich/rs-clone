@@ -6,6 +6,7 @@ import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
 import { ITrackListInfo } from '../models/audio-player.models';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class StateService {
 
   isAuthorized = false;
 
-  userName$ = new BehaviorSubject<string>('Jake');
+  userName$ = new BehaviorSubject<string>('');
 
   userIconId$ = new BehaviorSubject<number>(0);
 
@@ -45,22 +46,10 @@ export class StateService {
   constructor(
     private storage: LocalStorageService,
     private authService: AuthorizationApiService,
+    private myUtils: UtilsService,
   ) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
-    this.authService.getUser().subscribe((data) => {
-      console.log('state data subscribe');
-      if (!this.isEmptyObject(data)) {
-        this.user = data as IUserModel;
-        this.isAuthorized = true;
-        this.setUserData(this.user.username, this.user.userIconId, false);
-        this.likedTracks$.next(this.user.userFavorites.tracks);
-        this.likedSearchResults$.next({
-          album: this.user.userFavorites.albums,
-          artist: this.user.userFavorites.artists,
-          playlist: this.user.userFavorites.playlists,
-        });
-      }
-    });
+    this.updateState();
 
     if (trackListInfo !== null) {
       this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
@@ -93,7 +82,6 @@ export class StateService {
   setUserData(userName: string, userIconId: number, isUserUpdateNeeded: boolean = true) {
     this.userName$.next(userName);
     this.userIconId$.next(userIconId);
-    this.storage.setUserData(userName, userIconId);
     if (isUserUpdateNeeded) {
       this.updateUserData();
     }
@@ -104,18 +92,18 @@ export class StateService {
   }
 
   setLikedTrack(trackDeezerId: number): void {
-    this.storage.setLikedTrack(trackDeezerId);
-    this.likedTracks$.next(this.storage.getLikedTracks());
+    const likedTracks = this.likedTracks$.value;
+    likedTracks.push(trackDeezerId);
+    this.likedTracks$.next(likedTracks);
     this.updateUserData();
   }
 
   removeLikedTrack(trackDeezerId: number): void {
-    const likedTracks = this.storage.getLikedTracks();
+    const likedTracks = this.likedTracks$.value;
     const trackIndex = likedTracks.findIndex((trackId) => trackId === trackDeezerId);
     if (trackIndex >= 0) {
       likedTracks.splice(trackIndex, 1);
     }
-    this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
     this.updateUserData();
   }
@@ -133,30 +121,25 @@ export class StateService {
   }
 
   setLikedSearchResult(type: LikedSearchResults, id: number): void {
-    this.storage.setLikedSearchResult(type, id);
-    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+    const likedSearchResults = this.likedSearchResults$.value;
+    likedSearchResults[type].push(id);
+    this.likedSearchResults$.next(likedSearchResults);
     this.updateUserData();
   }
 
   removeLikedSearchResult(type: LikedSearchResults, id: number): void {
-    const likedSearchResults = this.storage.getLikedSearchResults();
+    const likedSearchResults = this.likedSearchResults$.value;
     const searchResultIndex = likedSearchResults[type]
       .findIndex((searchResultId) => searchResultId === id);
+
     if (searchResultIndex >= 0) {
       likedSearchResults[type].splice(searchResultIndex, 1);
     }
-    this.storage.setLikedSearchResults(likedSearchResults);
-    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+    this.likedSearchResults$.next(likedSearchResults);
     this.updateUserData();
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  isEmptyObject(obj: Object): boolean {
-    return JSON.stringify(obj) === JSON.stringify({});
-  }
-
   updateUserData(): void {
-    console.log(1234);
     const updatedUser: IUserModel = { ...this.user };
     updatedUser.username = this.userName$.value;
     updatedUser.userIconId = this.userIconId$.value;
@@ -170,6 +153,26 @@ export class StateService {
     updatedUser.customPlaylists = [];
     this.authService.setUser(updatedUser).subscribe((res) => {
       this.user = res;
+    });
+  }
+
+  setUserDataFromService(userData: IUserModel): void {
+    this.setUserData(userData.username, userData.userIconId, false);
+    this.likedTracks$.next(userData.userFavorites.tracks);
+    this.likedSearchResults$.next({
+      album: userData.userFavorites.albums,
+      artist: userData.userFavorites.artists,
+      playlist: userData.userFavorites.playlists,
+    });
+  }
+
+  updateState() {
+    this.authService.getUser().subscribe((data) => {
+      if (!this.myUtils.isEmptyObject(data)) {
+        this.user = data as IUserModel;
+        this.isAuthorized = true;
+        this.setUserDataFromService(this.user);
+      }
     });
   }
 }

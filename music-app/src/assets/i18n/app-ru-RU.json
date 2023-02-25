@@ -31,8 +31,8 @@
       "userIcon": "Иконка пользователя",
       "userName": "Имя пользователя",
       "LogOutButton": "Выйти из аккаунта",
-      "SaveButton": "Сохранить изменения",
-      "DiscardButton": "Отменить изменения"
+      "saveButton": "Сохранить изменения",
+      "discardButton": "Отменить изменения"
     }
   },
   "welcome": {

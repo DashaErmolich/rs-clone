@@ -31,8 +31,8 @@
       "userIcon": "User icon",
       "userName": "User name",
       "LogOutButton": "Log out",
-      "SaveButton": "Save changes",
-      "DiscardButton": "Discard changes"
+      "saveButton": "Save changes",
+      "discardButton": "Discard changes"
     }
   },
   "welcome": {

@@ -16,7 +16,7 @@ import { UserModule } from './user/user.module';
 import { AuthorizedGuard } from './guards/isAuthorized.guard';
 
 function initializeApp(): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     resolve();
   });
 }

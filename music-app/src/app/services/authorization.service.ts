@@ -4,7 +4,7 @@ import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from './local-storage.service';
-import { statusCodes } from '../enums/statusCodes';
+import { StatusCodes } from '../enums/statusCodes';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +20,13 @@ export class AuthorizationService {
     try {
       this.authService.login(email, password).pipe(
         take(1),
-        catchError((err) => []),
+        catchError(() => []),
       ).subscribe((res) => {
         this.localStore.setToken(res.accessToken);
         this.state.setAuthorized(true);
         this.state.setUserToState(res.user);
       });
+    // eslint-disable-next-line no-empty
     } catch (e) {}
   }
 
@@ -44,6 +45,7 @@ export class AuthorizationService {
         this.state.setAuthorized(false);
         this.state.setUserToState({} as IUserModel);
       });
+    // eslint-disable-next-line no-empty
     } catch (e) {}
   }
 
@@ -53,7 +55,7 @@ export class AuthorizationService {
 
       this.authService.refresh().pipe(
         take(1),
-        catchError((err) => []),
+        catchError(() => []),
       ).subscribe((res) => {
         if (res.accessToken) {
           this.localStore.setToken(res.accessToken);
@@ -61,6 +63,7 @@ export class AuthorizationService {
           this.state.setUserToState(res.user);
         }
       });
+    // eslint-disable-next-line no-empty
     } catch (e) {}
   }
 
@@ -68,14 +71,14 @@ export class AuthorizationService {
     this.authService.fetchUsers().pipe(
       take(1),
       catchError((err) => {
-        if (err.status === statusCodes.RefreshRequired) {
+        if (err.status === StatusCodes.RefreshRequired) {
           setTimeout(() => {
             this.fetch();
           }, 500);
         }
         return [];
       }),
-    ).subscribe((res) => {
+    ).subscribe(() => {
       // this logic will be used to save and load favorite songs.
     });
   }
@@ -83,21 +86,11 @@ export class AuthorizationService {
   changeAccountSettings(email: string, username: string, userIconId: number) {
     this.authService.setAccountSettings(email, username, userIconId).pipe(
       take(1),
-      catchError((err) => []),
+      catchError(() => []),
     ).subscribe((response) => {
       this.state.user = response;
     });
   }
-
-  // setUserToState(changedUser: IUserModel) {
-  //   this.authService.setUserToState(changedUser).pipe(
-  //     take(1),
-  //     catchError((err) => []),
-  //   ).subscribe((response) => {
-  //     this.state.user = response;
-  //     console.log(this.state.user);
-  //   });
-  // }
 
   getUser() {
     return this.authService.refresh();

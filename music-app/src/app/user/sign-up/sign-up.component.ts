@@ -5,7 +5,7 @@ import { AuthorizationApiService } from 'src/app/services/authorization-api.serv
 import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-import { statusCodes } from 'src/app/enums/statusCodes';
+import { StatusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 
@@ -19,7 +19,7 @@ export class SignUpComponent {
 
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.minLength(6), Validators.maxLength(16), Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)]),
+    email: new FormControl('', [Validators.required, Validators.pattern(/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/)]),
     password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
     confirm: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
   });
@@ -50,7 +50,7 @@ export class SignUpComponent {
           take(1),
           catchError((err) => {
             if (err instanceof HttpErrorResponse) {
-              if (err.status === statusCodes.BadRequest) {
+              if (err.status === StatusCodes.BadRequest) {
                 const errReason = err.error.message.split(' ')[0];
                 const emailField = this.registerForm.get('email');
                 switch (errReason) {
@@ -75,6 +75,7 @@ export class SignUpComponent {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
           this.state.setUserToState(res.user);
+          this.state.updateState();
           this.router.navigate(['music/home']);
         });
       }

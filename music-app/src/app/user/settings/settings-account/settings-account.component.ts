@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { userIconsData } from '../../../../assets/user-icons/user-icons';
 import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
 import { StateService } from '../../../services/state.service';
 import { ThemeService } from '../../../services/theme.service';
 import { AuthorizationService } from '../../../services/authorization.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings-account',
@@ -55,19 +55,20 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   setUserIcon(iconIndex: number): void {
     this.userIconId = iconIndex;
-    this.myState.setUserData(this.userName, this.userIconId);
   }
 
   setUserName(eventTarget: EventTarget | null): void {
     if (eventTarget instanceof HTMLInputElement) {
       this.userName = eventTarget.value;
     }
-    this.myState.setUserData(this.userName, this.userIconId);
   }
 
   submitLogout() {
-    // this.myState.updateUserData();
     this.muAuth.logout();
     this.myRouter.navigate(['welcome']);
+  }
+
+  updateUserData() {
+    this.myState.setUserData(this.userName, this.userIconId);
   }
 }

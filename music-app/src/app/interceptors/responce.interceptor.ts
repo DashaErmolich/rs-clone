@@ -1,13 +1,13 @@
 import {
-  HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse,
+  HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { serverUrl } from '../constants/constants';
-import { statusCodes } from '../enums/statusCodes';
-import { refreshRequiredError } from '../errors/refreshRequired.error';
+import { StatusCodes } from '../enums/statusCodes';
+import { RefreshRequiredError } from '../errors/refreshRequired.error';
 import { AuthorizationApiService } from '../services/authorization-api.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
@@ -30,13 +30,13 @@ export class ResponseInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap({
         error: (error: HttpErrorResponse) => {
-          if (error.status === statusCodes.Unauthorized) {
+          if (error.status === StatusCodes.Unauthorized) {
             if (this.localStore.getToken()) {
               this.localStore.removeToken();
               this.authService.refresh().pipe(take(1)).subscribe((res) => {
                 if (res.accessToken) this.localStore.setToken(res.accessToken);
               });
-              throw new refreshRequiredError('Users data refresh required');
+              throw new RefreshRequiredError('Users data refresh required');
             } else this.router.navigate(['welcome']);
           }
         },

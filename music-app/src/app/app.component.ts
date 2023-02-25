@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { ThemeService } from './services/theme.service';
 import { StateService } from './services/state.service';
 
@@ -26,12 +26,4 @@ export class AppComponent {
     this.myTheme.setOverlayContainerTheme();
     return this.myTheme.activeThemeCssClass;
   }
-
-  // @HostListener('window:beforeunload')
-  // saveChanges() {
-  //   // eslint-disable-next-line no-debugger
-  //   debugger;
-  //   console.log('sjkdhskhvhsvkjvh');
-  //   this.myState.updateUserData();
-  // }
 }

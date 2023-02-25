@@ -96,10 +96,10 @@ export class LocalStorageService {
     localStorage.setItem('user-data', JSON.stringify(userData));
   }
 
-  // getUserData(): IUserData | null {
-  //   const userData = localStorage.getItem('user-data');
-  //   return userData === null ? null : JSON.parse(userData);
-  // }
+  getUserData(): IUserData | null {
+    const userData = localStorage.getItem('user-data');
+    return userData === null ? null : JSON.parse(userData);
+  }
 
   setLikedTrack(trackDeezerlId: number): void {
     const likedTracks = this.getLikedTracks();

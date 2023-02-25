@@ -1,10 +1,10 @@
-import { statusCodes } from '../enums/statusCodes';
+import { StatusCodes } from '../enums/statusCodes';
 
-export class refreshRequiredError extends Error {
+export class RefreshRequiredError extends Error {
   status;
 
   constructor(message: string) {
     super(message);
-    this.status = statusCodes.RefreshRequired;
+    this.status = StatusCodes.RefreshRequired;
   }
 }
