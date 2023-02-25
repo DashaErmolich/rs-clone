@@ -54,6 +54,8 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   isSearchInputShown!: boolean;
 
+  isUserDataShown = true;
+
   constructor(
     myTheme: ThemeService,
     private router: Router,
@@ -92,6 +94,12 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
           this.isSearchRoute = true;
         } else {
           this.isSearchRoute = false;
+        }
+
+        if (url.includes('/welcome') || url.includes('/sign-in') || url.includes('/sign-up')) {
+          this.isUserDataShown = false;
+        } else {
+          this.isUserDataShown = true;
         }
       }
     });

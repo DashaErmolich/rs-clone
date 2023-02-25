@@ -29,7 +29,7 @@
           </mat-form-field>
         </ng-container>
       </div>
-      <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || !isSearchRoute || (isSearchRoute && !isHandset)" class="header-user-data-container">
+      <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || (!isSearchRoute && isUserDataShown) || (isSearchRoute && !isHandset)" class="header-user-data-container">
         <a routerLink="/settings" ariaCurrentWhenActive="page">
           <button *ngIf="!isHandset" mat-fab extended color="basic">
             <mat-icon>
