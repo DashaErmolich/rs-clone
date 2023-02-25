@@ -5,10 +5,10 @@ import { AuthorizationApiService } from 'src/app/services/authorization-api.serv
 import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-import { StatusCodes } from 'src/app/enums/status-codes';
 import { Router } from '@angular/router';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../constants/constants';
+import { StatusCodes } from '../../enums/status-codes';
 
 @Component({
   selector: 'app-sign-up',

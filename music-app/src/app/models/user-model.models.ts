@@ -13,7 +13,7 @@ interface IFavoritesModel {
   albums: number[];
   artists: number[];
   playlists: number[];
-  podcasts:number[];
+  radio: number[];
 }
 
 interface ICustomPlaylistModel {

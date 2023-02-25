@@ -149,7 +149,7 @@ export class StateService {
       albums: this.likedSearchResults$.value.album,
       artists: this.likedSearchResults$.value.artist,
       playlists: this.likedSearchResults$.value.playlist,
-      podcasts: [],
+      radio: this.likedSearchResults$.value.radio,
     };
     updatedUser.customPlaylists = [];
     this.authService.setUser(updatedUser).subscribe((res) => {
@@ -164,6 +164,7 @@ export class StateService {
       album: userData.userFavorites.albums,
       artist: userData.userFavorites.artists,
       playlist: userData.userFavorites.playlists,
+      radio: userData.userFavorites.radio,
     });
   }
 
