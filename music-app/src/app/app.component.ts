@@ -9,6 +9,7 @@ import { ThemeService } from './services/theme.service';
 
 export class AppComponent {
   title = 'music-app';
+
   isAuthorized!: boolean;
 
   constructor(

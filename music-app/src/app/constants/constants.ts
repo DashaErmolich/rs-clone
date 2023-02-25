@@ -3,7 +3,7 @@ export const BASE_URL = `${CORS}https://api.deezer.com`;
 export const DEFAULT_SRC = 'https://e-cdns-images.dzcdn.net/images/misc//56x56-000000-80-0-0.jpg';
 export const delayTimeout = 0;
 export const serverUrl = 'http://localhost:6060/api';
-export const serverDeployUrl = 'https://music-app-user-server.herokuapp.com/api'
+export const serverDeployUrl = 'https://music-app-user-server.herokuapp.com/api';
 
 export const COLORS = ['#7ad891', '#e362b9', '#c4cd5b', '#f38476', '#75d78d', '#b762db', '#82d4c3',
   '#b9b4fe', '#7cc1d7', '#4563b3', '#728ae6', '#d143db', '#b1b28c', '#a972e8', '#f7655e', '#d7d982',

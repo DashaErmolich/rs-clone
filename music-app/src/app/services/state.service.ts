@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IUserModel } from 'src/app/models/userModel.models';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
@@ -20,6 +20,7 @@ export class StateService {
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
   user = {} as IUserModel;
+
   isAuthorized = false;
 
   userName$ = new BehaviorSubject<string>('Jake');
@@ -44,7 +45,8 @@ export class StateService {
 
   constructor(
     private storage: LocalStorageService,
-    private authService: AuthorizationApiService) {
+    private authService: AuthorizationApiService,
+  ) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
     const userData: IUserData | null = this.storage.getUserData();
 
@@ -75,9 +77,9 @@ export class StateService {
   }
 
   setUser(user: IUserModel) {
-    this.user = user; 
+    this.user = user;
   }
-  
+
   setEqualizerVisibility(isVisible: boolean): void {
     this.isEqualizerShown$.next(isVisible);
   }
@@ -135,4 +137,3 @@ export class StateService {
     this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 }
-

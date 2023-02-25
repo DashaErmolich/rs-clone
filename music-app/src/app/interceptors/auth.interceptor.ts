@@ -1,4 +1,6 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,15 +15,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     if (req.url.includes(serverUrl)) {
       const authReq = req.clone({
         withCredentials: true,
         headers: req.headers.set('Authorization', `Bearer ${this.localStore.getToken()}`),
-      })
-      return next.handle(authReq)
+      });
+      return next.handle(authReq);
     }
-    else return next.handle(req);
+    return next.handle(req);
   }
 }

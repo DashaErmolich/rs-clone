@@ -6,7 +6,7 @@ export interface IUserModel {
   userIconId: number;
   userFavorites: IFavoritesModel;
   customPlaylists: [ICustomPlaylistModel]
-};
+}
 
 interface IFavoritesModel {
   tracks: [number];
@@ -14,9 +14,9 @@ interface IFavoritesModel {
   artists: [number];
   playlists: [number];
   podcasts: [number];
-};
+}
 
 interface ICustomPlaylistModel {
   playlistName: string;
   playlistTracks: [number];
-};
+}

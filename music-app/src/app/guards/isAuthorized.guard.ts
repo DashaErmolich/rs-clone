@@ -1,22 +1,26 @@
-import { Inject, Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from "@angular/router";
-import { StateService } from "../services/state.service";
-import { AuthorizationService } from "../services/authorization.service";
+import { Inject, Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot,
+} from '@angular/router';
+import { StateService } from '../services/state.service';
+import { AuthorizationService } from '../services/authorization.service';
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate, CanActivateChild {
   constructor(
     @Inject(StateService) private state: StateService,
     private router: Router,
-    private authService: AuthorizationService
+    private authService: AuthorizationService,
   ) {}
 
   canActivate(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    state: RouterStateSnapshot,
   ): boolean {
     this.authService.checkAuth();
-    
+
     if (!this.state.isAuthorized) {
       this.router.navigate(['welcome']);
     }
@@ -26,8 +30,8 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild {
 
   canActivateChild(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ): boolean {
-    return this.canActivate(next, state)
+    return this.canActivate(next, state);
   }
 }

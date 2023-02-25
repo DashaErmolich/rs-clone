@@ -1,22 +1,23 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MusicModule } from './music/music.module';
 import { UserModule } from './user/user.module';
-import { AuthorizedGuard } from './guards/isAuthorized.guard'; 
+import { ProgressLoaderInterceptor } from './interceptors/progress-loader.interceptor';
+import { AuthorizedGuard } from './guards/isAuthorized.guard';
 
 function initializeApp(): Promise<void> {
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve) => {
     resolve();
   });
 }
@@ -38,12 +39,15 @@ function initializeApp(): Promise<void> {
     MatSidenavModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: ProgressLoaderInterceptor, multi: true,
+    },
     AuthorizedGuard,
     {
       provide: APP_INITIALIZER,
       useFactory: () => initializeApp,
-      multi: true
-     }
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
