@@ -201,15 +201,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  // renderRadios() {
-  //   this.searchType = SearchType.radios;
-  //   this.radios$ = this.deezerRestApiService
-  //   .getRadios()
-  //   .subscribe((res) => {
-  //     this.radios = res.data;
-  //   })
-  // }
-
   getMore(searchType: string) {
     if (searchType === SearchType.playlists) {
       this.limitPlaylists += Limits.playlists;
