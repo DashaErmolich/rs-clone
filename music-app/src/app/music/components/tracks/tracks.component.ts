@@ -104,16 +104,11 @@ export class TracksComponent implements OnInit, OnDestroy {
   }
 
   isLiked(trackIndex: number): boolean {
-    const index = this.likedTracks
-      .findIndex((trackId) => trackId === this.tracks[trackIndex].id);
-    const isLiked = index >= 0;
-    return isLiked;
+    return this.likedTracks.includes(Number(this.tracks[trackIndex].id));
   }
 
   likeTrack(trackIndex: number): void {
-    const index = this.likedTracks
-      .findIndex((trackId) => trackId === this.tracks[trackIndex].id);
-    const isLiked = index >= 0;
+    const isLiked = this.isLiked(trackIndex);
     if (!isLiked) {
       this.myState.setLikedTrack(this.tracks[trackIndex].id!);
     } else {
