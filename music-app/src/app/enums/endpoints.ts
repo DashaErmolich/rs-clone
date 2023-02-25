@@ -19,6 +19,7 @@ export enum SearchType {
   artist = 'artist',
   album = 'album',
   playlist = 'playlist',
+  radios = 'radios',
 }
 
 export enum Limits {
