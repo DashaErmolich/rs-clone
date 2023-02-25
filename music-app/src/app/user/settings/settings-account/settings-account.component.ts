@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { userIconsData } from '../../../../assets/user-icons/user-icons';
 import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
@@ -36,31 +36,13 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   userNameMaxLength = USER_NAME_MAX_LENGTH;
 
-  isSettingsChanged$ = new BehaviorSubject<boolean>(false);
+  isUserNameChanged$ = new BehaviorSubject<boolean>(false);
 
   isUserIconChanged$ = new BehaviorSubject<boolean>(false);
 
   isChangesSaved = false;
 
-  // userNameFormControl = new FormControl(
-  //   '',
-  //   [
-  //     Validators.required,
-  //     Validators.minLength(USER_NAME_MIN_LENGTH),
-  //     Validators.maxLength(USER_NAME_MAX_LENGTH),
-  //   ],
-  // );
-
-  const formGroup = new FormGroup({
-    name: new FormControl(
-      '',
-      [
-        Validators.required,
-        Validators.minLength(USER_NAME_MIN_LENGTH),
-        Validators.maxLength(USER_NAME_MAX_LENGTH),
-      ],
-    ),
-  });
+  userNameFormControl!: FormControl;
 
   constructor(
     private myState: StateService,
@@ -74,6 +56,14 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
   ngOnInit(): void {
     this.userName$ = this.myState.userName$.subscribe((data) => {
       this.userName = data;
+      this.userNameFormControl = new FormControl(
+        this.userName,
+        [
+          Validators.required,
+          Validators.minLength(USER_NAME_MIN_LENGTH),
+          Validators.maxLength(USER_NAME_MAX_LENGTH),
+        ],
+      );
     });
     this.userIcon$ = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
@@ -86,37 +76,33 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
   }
 
   setUserIcon(iconIndex: number): void {
-    // this.isUserIconChanged$.next(true);
-    this.isSettingsChanged$.next(true);
+    this.isUserIconChanged$.next(true);
     this.userIconId = iconIndex;
   }
 
   setUserName(event: Event | null): void {
-    event?.preventDefault();
-    this.isSettingsChanged$.next(true);
+    this.isUserNameChanged$.next(true);
     if (event?.target instanceof HTMLInputElement) {
       this.userName = event.target.value;
     }
   }
 
   submitLogout() {
-    this.isSettingsChanged$.next(false);
+    this.isUserNameChanged$.next(false);
+    this.isUserIconChanged$.next(false);
     this.muAuth.logout();
     this.myRouter.navigate(['welcome']);
   }
 
   updateUserData() {
-    this.isSettingsChanged$.next(false);
+    this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
     this.myState.setUserData(this.userName, this.userIconId);
   }
 
   onSubmit(form: FormControl) {
-    const formValue = this.userNameFormControl;
     if (form.valid) {
-      if (formValue) {
-        this.updateUserData();
-      }
+      this.updateUserData();
     }
   }
 }

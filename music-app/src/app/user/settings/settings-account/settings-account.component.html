@@ -11,22 +11,22 @@
   </div>
 </div>
 <div class="mb-large" >
-  <button *ngIf="isUserIconChanged$ | async" mat-raised-button color="primary" l10nTranslate (click)="updateUserData()">settings.account.saveButton</button>
+  <button *ngIf="(isUserIconChanged$ | async) && (isUserNameChanged$ | async) === false" mat-raised-button color="primary" l10nTranslate (click)="updateUserData()">settings.account.saveButton</button>
 </div>
 <div>
   <h2 l10nTranslate>settings.account.userName</h2>
-    <mat-form-field class="mb-large" appearance="outline">
-      <input matInput placeholder="Username" [value]="userName" (input)="setUserName($event)" [formControl]="userNameFormControl">
-      <mat-error *ngIf="userNameFormControl.hasError('required')" l10nTranslate>
-        settings.account.errors-messages.required
-      </mat-error>
-      <mat-error *ngIf="userNameFormControl.hasError('minlength') || userNameFormControl.hasError('maxlength')" l10nTranslate>
-        settings.account.errors-messages.length
-      </mat-error>
-    </mat-form-field>
-    <div class="mb-large" >
-      <button *ngIf="isSettingsChanged$ | async" mat-raised-button color="primary" l10nTranslate [disabled]="!userNameFormControl.valid" (click)="onSubmit(userNameFormControl)">settings.account.saveButton</button>
-    </div>
+  <mat-form-field class="mb-large" appearance="outline">
+    <input matInput placeholder="Username" [value]="userName" (input)="setUserName($event)" [formControl]="userNameFormControl">
+    <mat-error *ngIf="userNameFormControl.hasError('required')" l10nTranslate>
+      settings.account.errors-messages.required
+    </mat-error>
+    <mat-error *ngIf="userNameFormControl.hasError('minlength') || userNameFormControl.hasError('maxlength')" l10nTranslate>
+      settings.account.errors-messages.length
+    </mat-error>
+  </mat-form-field>
+  <div class="mb-large" >
+    <button *ngIf="isUserNameChanged$ | async" mat-raised-button color="primary" l10nTranslate [disabled]="!userNameFormControl.valid" (click)="onSubmit(userNameFormControl)">settings.account.saveButton</button>
+  </div>
 </div>
 
 
