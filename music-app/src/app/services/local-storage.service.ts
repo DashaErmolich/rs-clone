@@ -128,7 +128,9 @@ export class LocalStorageService {
 
   getLikedSearchResults(): ILikedSearchResults {
     const likedSearchResults = localStorage.getItem('likedSearchResults');
-    return likedSearchResults === null ? { album: [], artist: [], playlist: [] }
+    return likedSearchResults === null ? {
+      album: [], artist: [], playlist: [], radio: [],
+    }
       : JSON.parse(likedSearchResults);
   }
 

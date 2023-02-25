@@ -4,9 +4,16 @@ import { Subscription } from 'rxjs';
 import { DEFAULT_SRC } from 'src/app/constants/constants';
 import { SearchType } from 'src/app/enums/endpoints';
 import {
-  IAlbumResponse, IArtistResponse, IPlayListResponse, ITrackResponse,
+  IAlbumResponse,
+  IArtistResponse,
+  IPlayListResponse,
+  IRadioResponse,
+  ITrackResponse,
 } from 'src/app/models/api-response.models';
-import { ILikedSearchResults, LikedSearchResults } from 'src/app/models/search.models';
+import {
+  ILikedSearchResults,
+  LikedSearchResults,
+} from 'src/app/models/search.models';
 import { AudioService } from 'src/app/services/audio.service';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { StateService } from 'src/app/services/state.service';
@@ -20,7 +27,11 @@ import { ResponsiveService } from '../../../services/responsive.service';
 export class SearchResultComponent implements OnInit, OnDestroy {
   resultId!: number;
 
-  result!: Partial<IArtistResponse> | Partial<IAlbumResponse> | Partial<IPlayListResponse>;
+  result!:
+  | Partial<IArtistResponse>
+  | Partial<IAlbumResponse>
+  | Partial<IPlayListResponse>
+  | Partial<IRadioResponse>;
 
   result$!: Subscription;
 
@@ -112,6 +123,9 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         case SearchType.playlist:
           this.getPlaylist(this.resultId);
           break;
+        case SearchType.radio:
+          this.getRadio(this.resultId);
+          break;
         default:
           break;
       }
@@ -120,12 +134,14 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     this.trackList$ = this.myState.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
     });
-
-    this.isPause$ = this.myAudio.isPause$.subscribe((res) => { this.isPause = res; });
-
-    this.likedSearchResults$ = this.myState.likedSearchResults$.subscribe((res) => {
-      this.likedSearchResults = res;
+    this.isPause$ = this.myAudio.isPause$.subscribe((res) => {
+      this.isPause = res;
     });
+    this.likedSearchResults$ = this.myState.likedSearchResults$.subscribe(
+      (res) => {
+        this.likedSearchResults = res;
+      },
+    );
     this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
       this.isSmall = data;
     });
@@ -149,23 +165,21 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   getArtist(id: number) {
-    this.result$ = this.deezerRestApiService
-      .getArtist(id)
-      .subscribe((res) => {
-        this.result = res;
-        this.type = res.type as LikedSearchResults;
-        if (this.type === 'artist') {
-          this.typeToShow = 'search.results.artist';
-          this.descriptionTitle = 'search.results.description.artist.albums';
-          this.descriptionSubTitle = 'search.results.description.artist.fans';
-        }
-        this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
-        this.title = res.name;
-        this.descriptionTitleInfo = `: ${res.nb_album}`;
-        this.descriptionSubTitleInfo = `: ${res.nb_fan}`;
-        this.loading = false;
-        this.isSearchResultLiked();
-      });
+    this.result$ = this.deezerRestApiService.getArtist(id).subscribe((res) => {
+      this.result = res;
+      this.type = res.type as LikedSearchResults;
+      if (this.type === 'artist') {
+        this.typeToShow = 'search.results.artist';
+        this.descriptionTitle = 'search.results.description.artist.albums';
+        this.descriptionSubTitle = 'search.results.description.artist.fans';
+      }
+      this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
+      this.title = res.name;
+      this.descriptionTitleInfo = `: ${res.nb_album}`;
+      this.descriptionSubTitleInfo = `: ${res.nb_fan}`;
+      this.loading = false;
+      this.isSearchResultLiked();
+    });
 
     this.tracks$ = this.deezerRestApiService
       .getTracksByArtist(id)
@@ -176,24 +190,22 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   getAlbum(id: number) {
-    this.result$ = this.deezerRestApiService
-      .getAlbum(id)
-      .subscribe((res) => {
-        this.result = res;
-        this.type = res.type as LikedSearchResults;
-        if (this.type === 'album') {
-          this.typeToShow = 'search.results.album';
-        }
-        this.imgSrc = res.cover_medium ? res.cover_medium : DEFAULT_SRC;
-        this.title = res.title;
-        this.tracks = res.tracks.data;
-        this.loading = false;
-        this.artistImg = res.artist.picture_small!;
-        this.artistName = res.artist.name!;
-        this.albumRelease = res.release_date.slice(0, 4);
-        this.artistId = Number(res.artist.id);
-        this.isSearchResultLiked();
-      });
+    this.result$ = this.deezerRestApiService.getAlbum(id).subscribe((res) => {
+      this.result = res;
+      this.type = res.type as LikedSearchResults;
+      if (this.type === 'album') {
+        this.typeToShow = 'search.results.album';
+      }
+      this.imgSrc = res.cover_medium ? res.cover_medium : DEFAULT_SRC;
+      this.title = res.title;
+      this.tracks = res.tracks.data;
+      this.loading = false;
+      this.artistImg = res.artist.picture_small!;
+      this.artistName = res.artist.name!;
+      this.albumRelease = res.release_date.slice(0, 4);
+      this.artistId = Number(res.artist.id);
+      this.isSearchResultLiked();
+    });
   }
 
   getPlaylist(id: number) {
@@ -214,6 +226,27 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
         this.loading = false;
         this.isSearchResultLiked();
+      });
+  }
+
+  getRadio(id: number) {
+    this.result$ = this.deezerRestApiService.getRadio(id).subscribe((res) => {
+      this.result = res;
+      this.type = res.type as LikedSearchResults;
+      if (this.type === 'radio') {
+        this.typeToShow = 'search.results.radio';
+      }
+      this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
+      this.title = res.title;
+      this.loading = false;
+      this.isSearchResultLiked();
+    });
+
+    this.tracks$ = this.deezerRestApiService
+      .getTracksByRadio(id)
+      .subscribe((res) => {
+        this.tracks = res.data;
+        this.loading = false;
       });
   }
 
@@ -242,10 +275,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   isSearchResultLiked() {
-    const index = this.likedSearchResults[this.type]
-      .findIndex((searchResultId) => searchResultId === this.result.id);
-    const isLiked = index >= 0;
-    this.isLiked = isLiked;
-    return index >= 0;
+    this.isLiked = this.likedSearchResults[this.type].includes(Number(this.result.id));
+    return this.isLiked;
   }
 }

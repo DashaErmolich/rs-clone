@@ -33,3 +33,8 @@
     <h2 l10nTranslate>{{ chartRecommendations.podcasts.title }}</h2>
     <app-playlists [playlists]="chartRecommendations.podcasts.data" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-playlists>
 </div>
+
+<div class="mb-large">
+  <h2 l10nTranslate>{{ chartRecommendations.radios.title }}</h2>
+  <app-radios [radios]="chartRecommendations.radios.data" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-radios>
+</div>

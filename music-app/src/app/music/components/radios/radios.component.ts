@@ -11,5 +11,5 @@ import { IRadioResponse } from 'src/app/models/api-response.models';
 export class RadiosComponent extends RandomColorHelper {
   defaultImg: string = DEFAULT_SRC;
 
-  @Input() radios: IRadioResponse[] = [];
+  @Input() radios: Partial<IRadioResponse>[] = [];
 }

@@ -221,6 +221,10 @@ export interface IRadiosResponse {
   prev?: string;
 }
 
+export interface ITracksByRadio {
+  data: ITrackResponse[];
+}
+
 interface IContributor {
   id: number;
   name: string;
