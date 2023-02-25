@@ -39,6 +39,7 @@ import { PlaylistsComponent } from './components/playlists/playlists.component';
 import { GenresComponent } from './components/genres/genres.component';
 import { LikedTracksComponent } from './pages/liked-tracks/liked-tracks.component';
 import { SearchResultComponent } from './pages/search-result/search-result.component';
+import { RadiosComponent } from './components/radios/radios.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { SearchResultComponent } from './pages/search-result/search-result.compo
     GenresComponent,
     LikedTracksComponent,
     SearchResultComponent,
+    RadiosComponent,
   ],
   imports: [
     CommonModule,

@@ -3,8 +3,10 @@
   <div class="">
     <h2 *ngIf="!loading" l10nTranslate>search.titles.genres</h2>
     <app-genres [genres]="genres" class="search-container" [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-genres>
-    <h2 *ngIf="!loading"l10nTranslate>search.titles.playlists</h2>
+    <h2 *ngIf="!loading" l10nTranslate>search.titles.playlists</h2>
     <app-playlists [playlists]="playlistsFromChart" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-playlists>
+    <h2 *ngIf="!loading" l10nTranslate>search.titles.radios</h2>
+    <app-radios [radios]="radios" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-radios>
   </div>
 </div>
 <div *ngIf="searchParam" class="search-page">
