@@ -126,7 +126,8 @@
     "albums": "Your favorite albums",
     "playlists": "Your favorite playlists",
     "tracks": "Your favorite tracks",
-    "radios": "Your favorite radios"
+    "radios": "Your favorite radios",
+    "custom-playlists": "Your custom playlists"
   },
   "core": {
     "header": {

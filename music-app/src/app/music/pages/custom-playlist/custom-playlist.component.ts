@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { Guid } from 'guid-typescript';
+import { Router } from '@angular/router';
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { ITrackResponse } from '../../../models/api-response.models';
 import { ResponsiveService } from '../../../services/responsive.service';
@@ -63,6 +64,7 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
     private myDeezer: DeezerRestApiService,
     private responsive: ResponsiveService,
     private myState: StateService,
+    private myRouter: Router,
   ) { }
 
   ngOnInit(): void {
@@ -133,5 +135,6 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
     this.playListName = DEFAULT_PLAYLIST_NAME;
     this.searchControl.setValue('');
     this.customPlaylistTracks = [];
+    this.myRouter.navigate([`music/user-play-list/${playlist.id}`]);
   }
 }

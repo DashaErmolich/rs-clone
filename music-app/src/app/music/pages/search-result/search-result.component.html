@@ -8,11 +8,11 @@
       <span class="search-result-title text-wrap">{{ title }}</span>
       <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
         <span l10nTranslate>{{ descriptionTitle }}</span>
-        <span l10nTranslate>{{ descriptionTitleInfo }}</span>
+        <span l10nTranslate class="text-wrap">{{ descriptionTitleInfo }}</span>
       </div>
       <div *ngIf="descriptionSubTitle && descriptionSubTitle" class="search-result-description less-opacity">
         <span l10nTranslate>{{ descriptionSubTitle }}</span>
-        <span l10nTranslate>{{ descriptionSubTitleInfo }}</span>
+        <span l10nTranslate class="text-wrap">{{ descriptionSubTitleInfo }}</span>
       </div>
       <div *ngSwitchCase="'album'" class="search-result-description less-opacity">
         <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
