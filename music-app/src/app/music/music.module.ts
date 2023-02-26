@@ -42,6 +42,7 @@ import { SearchResultComponent } from './pages/search-result/search-result.compo
 import { RadiosComponent } from './components/radios/radios.component';
 import { CustomPlaylistComponent } from './pages/custom-playlist/custom-playlist.component';
 import { CustomPlaylistTracksComponent } from './components/custom-playlist-tracks/custom-playlist-tracks.component';
+import { CustomPlaylistsComponent } from './components/custom-playlists/custom-playlists.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { CustomPlaylistTracksComponent } from './components/custom-playlist-trac
     RadiosComponent,
     CustomPlaylistComponent,
     CustomPlaylistTracksComponent,
+    CustomPlaylistsComponent,
   ],
   imports: [
     CommonModule,

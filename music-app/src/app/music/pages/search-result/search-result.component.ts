@@ -18,6 +18,7 @@ import { AudioService } from 'src/app/services/audio.service';
 import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { StateService } from 'src/app/services/state.service';
 import { ResponsiveService } from '../../../services/responsive.service';
+import { ICustomPlaylistModel } from '../../../models/user-model.models';
 
 @Component({
   selector: 'app-search-result',
@@ -25,13 +26,14 @@ import { ResponsiveService } from '../../../services/responsive.service';
   styleUrls: ['./search-result.component.scss'],
 })
 export class SearchResultComponent implements OnInit, OnDestroy {
-  resultId!: number;
+  resultId!: string;
 
   result!:
   | Partial<IArtistResponse>
   | Partial<IAlbumResponse>
   | Partial<IPlayListResponse>
-  | Partial<IRadioResponse>;
+  | Partial<IRadioResponse>
+  | ICustomPlaylistModel;
 
   result$!: Subscription;
 
@@ -109,22 +111,21 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isFirstPlay = true;
-
     this.routeParams$ = this.route.params.subscribe((params) => {
       [this.resultType] = Object.keys(params);
-      this.resultId = Number(params[this.resultType]);
+      this.resultId = params[this.resultType];
       switch (this.resultType) {
         case SearchType.artist:
-          this.getArtist(this.resultId);
+          this.getArtist(Number(this.resultId));
           break;
         case SearchType.album:
-          this.getAlbum(this.resultId);
+          this.getAlbum(Number(this.resultId));
           break;
         case SearchType.playlist:
-          this.getPlaylist(this.resultId);
+          this.getPlaylist(Number(this.resultId));
           break;
         case SearchType.radio:
-          this.getRadio(this.resultId);
+          this.getRadio(Number(this.resultId));
           break;
         case SearchType.userPlaylist:
           this.getUserPlaylist(this.resultId);
@@ -246,7 +247,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     });
 
     this.tracks$ = this.deezerRestApiService
-      .getTracksByRadio(id)
+      .getTracksByRadio(Number(id))
       .subscribe((res) => {
         this.tracks = res.data;
         this.loading = false;
@@ -282,24 +283,26 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     return this.isLiked;
   }
 
-  getUserPlaylist(id: number) {
-    this.result$ = this.deezerRestApiService
-      .getPlayListTracks(id)
-      .subscribe((res) => {
-        this.result = res;
-        this.type = res.type as LikedSearchResults;
-        if (this.type === 'playlist') {
-          this.typeToShow = 'search.results.playlist';
-          this.descriptionTitle = 'search.results.description.playlist.creator';
-          this.descriptionSubTitle = 'search.results.description.playlist.songs';
-        }
-        this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
-        this.title = res.title;
-        this.tracks = res.tracks.data;
-        this.descriptionTitleInfo = `: ${res.creator.name}`;
-        this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
-        this.loading = false;
-        this.isSearchResultLiked();
+  getUserPlaylist(id: string) {
+    this.typeToShow = 'search.results.playlist';
+    this.descriptionTitle = 'search.results.description.playlist.creator';
+    this.descriptionSubTitle = 'search.results.description.playlist.songs';
+    const res: ICustomPlaylistModel | undefined = this.myState.getCustomPlaylist(id);
+    if (res !== undefined) {
+      this.result = res;
+
+      this.imgSrc = DEFAULT_SRC;
+      this.title = res.title;
+      // this.tracks = res.tracks.data;
+      res.tracks.data.forEach((track) => {
+        this.deezerRestApiService.getTrack(track).subscribe((data) => {
+          this.tracks.push(data);
+        });
       });
+      this.descriptionTitleInfo = `: ${res.creator.name}`;
+      this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
+      this.loading = false;
+      // this.isSearchResultLiked();
+    }
   }
 }

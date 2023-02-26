@@ -1,10 +1,14 @@
+/* eslint-disable no-debugger */
+/* eslint-disable import/no-extraneous-dependencies */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { ICustomPlayList } from 'src/app/models/custom-playlist.models';
+import { Guid } from 'guid-typescript';
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { ITrackResponse } from '../../../models/api-response.models';
 import { ResponsiveService } from '../../../services/responsive.service';
+import { ICustomPlaylistModel } from '../../../models/user-model.models';
+import { StateService } from '../../../services/state.service';
 
 @Component({
   selector: 'app-custom-playlist',
@@ -51,6 +55,7 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
   constructor(
     private myDeezer: DeezerRestApiService,
     private responsive: ResponsiveService,
+    private myState: StateService,
   ) { }
 
   ngOnInit(): void {
@@ -107,8 +112,8 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
   }
 
   saveCustomPlayList() {
-    const playlist: ICustomPlayList = {
-      id: 0,
+    const playlist: ICustomPlaylistModel = {
+      id: Guid.create().toString(),
       title: this.playListName,
       creator: {
         name: 'bla',
@@ -119,5 +124,7 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
       nb_tracks: this.customPlaylistTracks.length,
     };
     console.log(playlist);
+    this.myState.setCustomPlaylist(playlist);
+    // localStorage.setItem('custom-playlist', JSON.stringify(playlist));
   }
 }

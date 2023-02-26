@@ -8,6 +8,7 @@ import {
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { StateService } from '../../../services/state.service';
 import { ResponsiveService } from '../../../services/responsive.service';
+import { ICustomPlaylistModel } from '../../../models/user-model.models';
 
 @Component({
   selector: 'app-library',
@@ -52,6 +53,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   radios!: Partial<IRadioResponse>[];
 
+  customPlaylists!: ICustomPlaylistModel[];
+
   tracksSubscription: Subscription = new Subscription();
 
   artistsSubscription: Subscription = new Subscription();
@@ -61,6 +64,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
   albumsSubscription: Subscription = new Subscription();
 
   radiosSubscription: Subscription = new Subscription();
+
+  customPlaylistsSubscription: Subscription = new Subscription();
 
   LikedSearchResultsSubscription: Subscription = new Subscription();
 
@@ -113,6 +118,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.radios.push(res);
           });
       });
+    });
+    this.customPlaylistsSubscription = this.myState.customPlaylists$.subscribe((response) => {
+      this.customPlaylists = response;
     });
     this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
       this.isSmall = data;
