@@ -7,7 +7,7 @@ import { RandomColorHelper } from '../../../helpers/random-color-helper';
 @Component({
   selector: 'app-playlists',
   templateUrl: './playlists.component.html',
-  styleUrls: ['../../pages/search/search.component.scss'],
+  // styleUrls: ['../../pages/search/search.component.scss'],
 })
 
 export class PlaylistsComponent extends RandomColorHelper {

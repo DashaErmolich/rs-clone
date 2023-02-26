@@ -16,7 +16,9 @@
     </div>
     <div class="track-description">
       <p class="track-title">{{track.title | titlecase}}</p>
-      <p class="track-artist" [routerLink]="['/music/artist', track.artist?.id]">{{track.artist?.name | titlecase}}</p>
+      <div class="track-artist">
+        <p class="less-opacity router-link" [routerLink]="['/music/artist', track.artist?.id]">{{track.artist?.name | titlecase}}</p>
+      </div>
     </div>
     <div class="track-btn-wrapper">
       <div [attr.class]="isLiked(i) ? 'like-btn-liked' : 'like-btn'">
@@ -26,7 +28,7 @@
       </div>
     </div>
     <div class="track-album">
-      <p [routerLink]="['/music/album', track.album?.id]">{{track.album?.title | titlecase}}</p>
+      <p class="router-link less-opacity" [routerLink]="['/music/album', track.album?.id]">{{track.album?.title | titlecase}}</p>
     </div>
     <div>00:30</div>
   </mat-card-content>
