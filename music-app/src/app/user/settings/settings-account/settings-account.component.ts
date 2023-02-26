@@ -89,9 +89,16 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
     this.muAuth.logout();
-    this.myRouter.navigate(['welcome']);
+    
+    this.snackBar.open('You are logged out!', '🔑', {
+      duration: 3000,
+    });
+    this.authServe.logout();
+    setTimeout(() => {
+      this.router.navigate(['welcome']);
+    }, 1000);
   }
-
+  
   updateUserData() {
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
