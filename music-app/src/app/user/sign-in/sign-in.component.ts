@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { catchError, take } from 'rxjs';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
 import { StatusCodes } from 'src/app/enums/statusCodes';
@@ -17,6 +16,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class SignInComponent {
   saving = false;
+  _emailPlaceholder = '';
+  _passwordPlaceholder = '';
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/)]),
@@ -25,12 +26,11 @@ export class SignInComponent {
 
   constructor(
     private state: StateService,
-    private authServe: AuthorizationService,
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { }
+  ) { this.setPlaceholders() }
 
   onSubmit(form: FormGroup) {
     this.saving = true;
@@ -45,7 +45,6 @@ export class SignInComponent {
             this.saving = false;
             if (err instanceof HttpErrorResponse && err.status === StatusCodes.BadRequest) {
               const errReason = err.error.message.split(' ')[1];
-              // eslint-disable-next-line default-case
               switch (errReason) {
                 case 'email': {
                   const emailField = this.loginForm.get('email');
@@ -78,6 +77,19 @@ export class SignInComponent {
           }, 1000);
         });
       }
+    }
+  }
+
+  setPlaceholders() {
+    const cookie = document.cookie;
+    
+    if (cookie.includes('ru-RU')) {
+      this._emailPlaceholder = 'Почта'
+      this._passwordPlaceholder = 'Пароль'
+    }
+    else {
+      this._emailPlaceholder = 'E-mail'
+      this._passwordPlaceholder = 'Password'
     }
   }
 }

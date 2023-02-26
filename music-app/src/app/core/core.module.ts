@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { L10nTranslationModule, L10nIntlModule, } from 'angular-l10n';
+import { CookieModule } from 'ngx-cookie';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,9 @@ import { HeaderComponent } from './header/header.component';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    L10nTranslationModule,
+    L10nIntlModule,
+    CookieModule.withOptions(),
   ],
   exports: [
     HeaderComponent,

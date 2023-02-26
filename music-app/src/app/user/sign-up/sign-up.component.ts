@@ -16,9 +16,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SignUpComponent {
   saving = false;
+  _usernamePlaceholder = '';
+  _emailPlaceholder = '';
+  _passwordPlaceholder = '';
+  _confirmPlaceholder = '';
 
   registerForm = new FormGroup({
-    name: new FormControl('', [Validators.minLength(6), Validators.maxLength(16), Validators.required]),
+    name: new FormControl('', [Validators.required, Validators.pattern(/^.{6,16}$/)]),
     email: new FormControl('', [Validators.required, Validators.pattern(/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/)]),
     password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
     confirm: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
@@ -30,15 +34,16 @@ export class SignUpComponent {
     private localStore: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { }
+  ) { this.setPlaceholders() }
 
   onSubmit(form: FormGroup) {
     this.saving = true;
+      
     const formValue = this.registerForm.value;
 
     if (formValue.password !== formValue.confirm) {
       this.registerForm.get('confirm')?.setErrors({
-        confirmError: 'home.greeting.morning',
+        confirmError: 'Passwords does not match!',
       });
       return;
     }
@@ -86,5 +91,20 @@ export class SignUpComponent {
       }
     }
   }
-
+  setPlaceholders() {
+    const cookie = document.cookie;
+    
+    if (cookie.includes('ru-RU')) {
+      this._usernamePlaceholder = 'Имя пользователя'
+      this._emailPlaceholder = 'Почта'
+      this._passwordPlaceholder = 'Пароль'
+      this._confirmPlaceholder = 'Подтвердите пароль'
+    }
+    else {
+      this._usernamePlaceholder = 'Username'
+      this._emailPlaceholder = 'E-mail'
+      this._passwordPlaceholder = 'Password'
+      this._confirmPlaceholder = 'Conform password'
+    }
+  }
 }
