@@ -44,6 +44,8 @@ export class StateService {
 
   isSearchInputShown$ = new BehaviorSubject<boolean>(false);
 
+  isCurrentTrackListShown$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private storage: LocalStorageService,
     private authService: AuthorizationApiService,
@@ -176,5 +178,9 @@ export class StateService {
         this.setUserDataFromService(this.user);
       }
     });
+  }
+
+  setCurrentTrackListVisibility(isVisible: boolean) {
+    this.isCurrentTrackListShown$.next(isVisible);
   }
 }

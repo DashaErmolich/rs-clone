@@ -214,6 +214,9 @@
       <button *ngIf="!isSmall" mat-mini-fab [color]="isEqualizerShown ? 'primary' : 'basic'" (click)="toggleEqualizerVisibility()" [disabled]="!isTrackReady">
         <mat-icon>equalizer</mat-icon>
       </button>
+      <button *ngIf="!isSmall" mat-mini-fab color="basic" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
+        <mat-icon>{{ isCurrentTrackListShown ? 'arrow_drop_down' : 'arrow_drop_up' }}</mat-icon>
+      </button>
       <div class="volume-container" [ngClass]="{ 'volume-container_small': isSmall }">
         <button *ngIf="!isSmall" mat-mini-fab color="basic" (click)="toggleMute()">
           <mat-icon>{{ !isMute ? "volume_up" : "volume_off" }}</mat-icon>
@@ -237,3 +240,11 @@
   class="equalizer"
   [ngClass]="{'equalizer_small': isSmall, 'equalizer_handset': isHandset}"
 ></app-equalizer>
+<app-current-track-list
+  [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall" [isShown]="isCurrentTrackListShown"
+  *ngIf="isCurrentTrackListShown"
+  @showEqualizer
+  class="equalizer"
+  [ngClass]="{'equalizer_small': isSmall, 'equalizer_handset': isHandset}"
+  >
+</app-current-track-list>

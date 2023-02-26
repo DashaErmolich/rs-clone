@@ -89,6 +89,10 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  isCurrentTrackListShown!: boolean;
+
+  isCurrentTrackListShown$ = new Subscription();
+
   constructor(
     myTheme: ThemeService,
     private myState: StateService,
@@ -165,6 +169,11 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     this.unAudioEndedListener = this.renderer2.listen(this.myAudio.audio, 'ended', () => {
       this.playNext();
     });
+
+    this.isCurrentTrackListShown$ = this.myState.isCurrentTrackListShown$.subscribe((data) => {
+      this.isCurrentTrackListShown = data;
+    });
+    this.subscriptions.push(this.isCurrentTrackListShown$);
   }
 
   ngOnDestroy(): void {
@@ -378,5 +387,9 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     } else {
       this.myState.removeLikedTrack(this.trackList[this.currentTrackIndex!].id!);
     }
+  }
+
+  toggleCurrentTrackListVisibility() {
+    this.myState.setCurrentTrackListVisibility(!this.isCurrentTrackListShown);
   }
 }
