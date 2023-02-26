@@ -132,5 +132,16 @@
     "header": {
       "search-input-placeholder": "Search"
     }
+  },
+  "create-custom-playlist": {
+    "playlist-title": "Enter playlist name",
+    "search-title": "Search tracks",
+    "playlistTitleLabel": "Playlist name",
+    "searchInputLabel": "Search",
+    "errors-messages": {
+      "required": "Playlist name is required",
+      "length": "Playlist name must be up to 20 symbols"
+    },
+    "save-button": "Save playlist"
   }
 }

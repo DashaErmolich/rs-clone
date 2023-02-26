@@ -133,5 +133,16 @@
     "header": {
       "search-input-placeholder": "Поиск"
     }
+  },
+  "create-custom-playlist": {
+    "playlist-title": "Введите имя плейлиста",
+    "search-title": "Найдите треки",
+    "playlistTitleLabel": "Имя плейлиста",
+    "searchInputLabel": "Поиск",
+    "errors-messages": {
+      "required": "Поле не может быть пустым",
+      "length": "Имя плейлиста должно быть до 20 символов"
+    },
+    "save-button": "Сохранить плейлист"
   }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { ITrackResponse } from '../../../models/api-response.models';
@@ -9,13 +9,15 @@ import { ResponsiveService } from '../../../services/responsive.service';
 import { ICustomPlaylistModel } from '../../../models/user-model.models';
 import { StateService } from '../../../services/state.service';
 
+const DEFAULT_PLAYLIST_NAME = 'My playlist';
+
 @Component({
   selector: 'app-custom-playlist',
   templateUrl: './custom-playlist.component.html',
   styleUrls: ['./custom-playlist.component.scss'],
 })
 export class CustomPlaylistComponent implements OnInit, OnDestroy {
-  playListName = 'My playlist';
+  playListName = DEFAULT_PLAYLIST_NAME;
 
   tracks: Partial<ITrackResponse>[] = [];
 
@@ -39,7 +41,13 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
 
   searchControl: FormControl = new FormControl();
 
-  nameControl: FormControl = new FormControl();
+  nameControl: FormControl = new FormControl(
+    this.playListName,
+    [
+      Validators.required,
+      Validators.maxLength(20),
+    ],
+  );
 
   searchValue = '';
 
@@ -114,7 +122,7 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
       id: Guid.create().toString(),
       title: this.playListName,
       creator: {
-        name: 'bla',
+        name: this.myState.userName$.value,
       },
       tracks: {
         data: this.customPlaylistTracks,
@@ -122,5 +130,8 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
       nb_tracks: this.customPlaylistTracks.length,
     };
     this.myState.setCustomPlaylist(playlist);
+    this.playListName = DEFAULT_PLAYLIST_NAME;
+    this.searchControl.setValue('');
+    this.customPlaylistTracks = [];
   }
 }

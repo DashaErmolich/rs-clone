@@ -1,13 +1,24 @@
-<mat-form-field class="playlist namesuggestions">
-  <mat-label>Playlist name</mat-label>
-  <input matInput type="text" [(ngModel)]="playListName" [formControl]="nameControl">
-  <button *ngIf="playListName" matSuffix mat-icon-button aria-label="Clear" (click)="playListName=''">
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-form-field>
-<mat-form-field class="example-form-field">
-  <mat-label>Search tracks</mat-label>
-  <input matInput type="text" [formControl]="searchControl">
-</mat-form-field>
-<button mat-fab extended color="primary" (click)="saveCustomPlayList()">Save</button>
+<div>
+  <h2 l10nTranslate>create-custom-playlist.playlist-title</h2>
+  <mat-form-field appearance="outline">
+    <mat-label l10nTranslate>create-custom-playlist.playlistTitleLabel</mat-label>
+    <input matInput type="text" [(ngModel)]="playListName" [formControl]="nameControl">
+    <mat-error *ngIf="nameControl.hasError('required')" l10nTranslate>
+      create-custom-playlist.errors-messages.required
+    </mat-error>
+    <mat-error *ngIf="nameControl.hasError('maxlength')" l10nTranslate>
+      create-custom-playlist.errors-messages.length
+    </mat-error>
+  </mat-form-field>
+</div>
+<div>
+  <h2 l10nTranslate>create-custom-playlist.search-title</h2>
+  <mat-form-field appearance="outline">
+    <mat-label l10nTranslate>create-custom-playlist.searchInputLabel</mat-label>
+    <input matInput type="text" [formControl]="searchControl">
+  </mat-form-field>
+</div>
+<div class="mb-large" *ngIf="customPlaylistTracks.length">
+  <button [disabled]="!nameControl.valid" mat-fab extended color="primary" (click)="saveCustomPlayList()" l10nTranslate>create-custom-playlist.save-button</button>
+</div>
 <app-custom-playlist-tracks *ngIf="!isLoading" [tracks]="tracks" [customPlaylistTracks]="customPlaylistTracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall, 'tracks-container_handset': isHandset}"></app-custom-playlist-tracks>
