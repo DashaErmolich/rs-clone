@@ -1,7 +1,7 @@
 <div class="mb-large">
-  <h2 l10nTranslate>{{ favoritesCategories.artists.title }}</h2>
-  <app-artists [artists]="artists" class="search-container"
-    [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-artists>
+  <h2 l10nTranslate class="title-h2">{{ favoritesCategories.artists.title }}</h2>
+  <app-artists [artists]="artists" class="result-container"
+    [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-artists>
 </div>
 
 <div class="mb-large">
@@ -9,25 +9,25 @@
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate>{{ favoritesCategories.albums.title }}</h2>
-  <app-albums [albums]="albums" class="search-container"
-    [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-albums>
+  <h2 l10nTranslate class="title-h2">{{ favoritesCategories.albums.title }}</h2>
+  <app-albums [albums]="albums" class="result-container"
+    [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-albums>
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate>{{ favoritesCategories.playlists.title }}</h2>
-  <app-playlists [playlists]="playlists" class="search-container"
-    [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-playlists>
+  <h2 l10nTranslate class="title-h2">{{ favoritesCategories.playlists.title }}</h2>
+  <app-playlists [playlists]="playlists" class="result-container"
+    [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-playlists>
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate>{{ favoritesCategories.radios.title }}</h2>
-  <app-radios [radios]="radios" class="search-container"
-    [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-radios>
+  <h2 l10nTranslate class="title-h2">{{ favoritesCategories.radios.title }}</h2>
+  <app-radios [radios]="radios" class="result-container"
+    [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-radios>
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate>library.custom-playlists</h2>
-  <app-custom-playlists [customPlaylists]="customPlaylists" class="search-container"
-    [ngClass]="{'search-container_small': isSmall, 'search-container_handset': isHandset}"></app-custom-playlists>
+  <h2 l10nTranslate class="title-h2">library.custom-playlists</h2>
+  <app-custom-playlists [customPlaylists]="customPlaylists" class="result-container"
+    [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-custom-playlists>
 </div>

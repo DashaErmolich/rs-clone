@@ -13,7 +13,6 @@ import { ICustomPlaylistModel } from '../../../models/user-model.models';
 @Component({
   selector: 'app-library',
   templateUrl: './library.component.html',
-  styleUrls: ['./library.component.scss'],
 })
 export class LibraryComponent implements OnInit, OnDestroy {
   favoritesCategories: ICategoriesData = {

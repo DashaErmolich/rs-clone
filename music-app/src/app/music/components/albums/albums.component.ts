@@ -6,7 +6,6 @@ import { IAlbumResponse } from '../../../models/api-response.models';
 @Component({
   selector: 'app-albums',
   templateUrl: './albums.component.html',
-  styleUrls: ['../../pages/search/search.component.scss'],
 })
 
 export class AlbumsComponent {

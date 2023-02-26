@@ -14,8 +14,8 @@ import { StateService } from '../../../services/state.service';
 @Component({
   selector: 'app-liked-tracks',
   templateUrl: './liked-tracks.component.html',
-  styleUrls: ['./liked-tracks.component.scss'],
 })
+
 export class LikedTracksComponent implements OnInit, OnDestroy {
   @Input() isSmall!: boolean;
 

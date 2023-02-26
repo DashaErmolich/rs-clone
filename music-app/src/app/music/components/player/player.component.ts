@@ -292,6 +292,14 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     return artistTitle;
   }
 
+  getArtistId(): number {
+    let artistId = 0;
+    if (this.currentTrackIndex !== null && this.trackList.length) {
+      artistId = this.trackList[this.currentTrackIndex].artist?.id!;
+    }
+    return artistId;
+  }
+
   getTimeProgress(): string {
     return this.currentState.time;
   }

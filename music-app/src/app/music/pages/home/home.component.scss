@@ -8,6 +8,10 @@
   grid-template-rows: 1fr;
   grid-auto-rows: auto;
   margin-bottom: 1rem;
+
+  @media (max-width: 1160px) {
+    @include grid-horizontal-scroll(6, 3, $container-p-small);
+  }
 }
 
 .suggestions-tracks {
@@ -17,10 +21,16 @@
   grid-template-rows: repeat(5, minmax(0, 1fr));
   grid-auto-flow: column;
   margin-bottom: 1rem;
+
+  @media (max-width: 1160px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-rows: repeat(10, minmax(0, 1fr));
+  }
+
 }
 
 .suggestions-container_small {
-  @include grid-horizontal-scroll(6, 3, $container-p-small);
+  @include grid-horizontal-scroll(6, 2, $container-p-small);
 }
 
 .suggestions-container_handset {
