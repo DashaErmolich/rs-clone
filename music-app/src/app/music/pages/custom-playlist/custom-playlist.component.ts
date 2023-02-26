@@ -31,11 +31,11 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
 
   isExtraSmall = false;
 
-  isSmall$ = new Subscription();
+  isSmallSubscription = new Subscription();
 
-  isHandset$ = new Subscription();
+  isHandsetSubscription = new Subscription();
 
-  isExtraSmall$ = new Subscription();
+  isExtraSmallSubscription = new Subscription();
 
   customPlaylistTracks: number[] = [];
 
@@ -57,8 +57,6 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
 
   nameSubscription = new Subscription();
 
-  searchTracksSubscription = new Subscription();
-
   isLoading = true;
 
   limitTracks: number = Limits.tracks;
@@ -73,20 +71,23 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
+    this.isSmallSubscription = this.responsive.isSmall$.subscribe((data) => {
       this.isSmall = data;
     });
-    this.subscriptions.push(this.isSmall$);
-    this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
+
+    this.subscriptions.push(this.isSmallSubscription);
+
+    this.isHandsetSubscription = this.responsive.isHandset$.subscribe((data) => {
       this.isHandset = data;
     });
-    this.subscriptions.push(this.isHandset$);
-    this.isExtraSmall$ = this.responsive.isExtraSmall$.subscribe((data) => {
+
+    this.subscriptions.push(this.isHandsetSubscription);
+
+    this.isExtraSmallSubscription = this.responsive.isExtraSmall$.subscribe((data) => {
       this.isExtraSmall = data;
     });
-    this.subscriptions.push(this.isSmall$);
-    this.subscriptions.push(this.isHandset$);
-    this.subscriptions.push(this.isExtraSmall$);
+
+    this.subscriptions.push(this.isExtraSmallSubscription);
 
     this.searchControlSubscription = this.searchControl.valueChanges
       .subscribe((res) => {
@@ -96,17 +97,19 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       });
 
+    this.subscriptions.push(this.searchControlSubscription);
+
     this.nameSubscription = this.nameControl.valueChanges
       .subscribe((res) => {
         this.playListName = res;
       });
+
+    this.subscriptions.push(this.nameSubscription);
+    this.subscriptions.push(this.searchSubscription);
   }
 
   ngOnDestroy(): void {
-    this.searchControlSubscription.unsubscribe();
-    this.searchSubscription.unsubscribe();
-    this.searchTracksSubscription.unsubscribe();
-    this.nameSubscription.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getSearch() {
