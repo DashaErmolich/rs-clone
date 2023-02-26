@@ -1,5 +1,4 @@
-import { IChartResponse } from './api-response.models';
-import { IRadiosResponse } from './api-response.models';
+import { IChartResponse, IRadiosResponse } from './api-response.models';
 
 export interface ICategoriesData {
   tracks: {

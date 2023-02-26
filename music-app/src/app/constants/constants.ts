@@ -19,3 +19,7 @@ export const COLORS = ['#7ad891', '#e362b9', '#c4cd5b', '#f38476', '#75d78d', '#
   '#52fed7', '#4c5265', '#f97f7f'];
 
 export const THEME_DARKNESS_SUFFIX = '-dark';
+
+export const USER_NAME_MIN_LENGTH = 6;
+
+export const USER_NAME_MAX_LENGTH = 16;

@@ -1,4 +1,4 @@
-import { StatusCodes } from '../enums/statusCodes';
+import { StatusCodes } from '../enums/status-codes';
 
 export class RefreshRequiredError extends Error {
   status;

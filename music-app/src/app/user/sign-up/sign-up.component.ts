@@ -1,12 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-import { StatusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthorizationService } from 'src/app/services/authorization.service';
+import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../constants/constants';
+import { StatusCodes } from '../../enums/status-codes';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +19,7 @@ export class SignUpComponent {
   saving = false;
 
   registerForm = new FormGroup({
-    name: new FormControl('', [Validators.minLength(6), Validators.maxLength(16), Validators.required]),
+    name: new FormControl('', [Validators.minLength(USER_NAME_MIN_LENGTH), Validators.maxLength(USER_NAME_MAX_LENGTH), Validators.required]),
     email: new FormControl('', [Validators.required, Validators.pattern(/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/)]),
     password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
     confirm: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
@@ -28,6 +30,7 @@ export class SignUpComponent {
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
+    private authServe: AuthorizationService,
   ) { }
 
   onSubmit(form: FormGroup) {
@@ -72,7 +75,8 @@ export class SignUpComponent {
         ).subscribe((res) => {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
-          this.state.setUser(res.user);
+          this.state.setUserToState(res.user);
+          this.state.updateState();
           this.router.navigate(['music/home']);
         });
       }

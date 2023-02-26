@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { serverUrl } from '../constants/constants';
-import { StatusCodes } from '../enums/statusCodes';
+import { StatusCodes } from '../enums/status-codes';
 import { RefreshRequiredError } from '../errors/refreshRequired.error';
 import { AuthorizationApiService } from '../services/authorization-api.service';
 import { LocalStorageService } from '../services/local-storage.service';

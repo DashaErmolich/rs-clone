@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { serverUrl } from 'src/app/constants/constants';
 import { IAuthResponse } from 'src/app/models/auth-response.models';
-import { IUserModel } from 'src/app/models/userModel.models';
+import { IUserModel } from 'src/app/models/user-model.models';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +28,17 @@ export class AuthorizationApiService {
 
   fetchUsers() {
     return this.http.get<IUserModel[]>(`${serverUrl}/users`);
+  }
+
+  setAccountSettings(email: string, username: string, userIconId: number) {
+    return this.http.post<IUserModel>(`${serverUrl}/settings`, { email, username, userIconId });
+  }
+
+  setUser(changedUser: IUserModel) {
+    return this.http.post<IUserModel>(`${serverUrl}/setter`, { changedUser });
+  }
+
+  getUser() {
+    return this.http.get<IUserModel | {}>(`${serverUrl}/user`);
   }
 }
