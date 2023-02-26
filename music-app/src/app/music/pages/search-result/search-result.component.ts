@@ -19,13 +19,15 @@ import { DeezerRestApiService } from 'src/app/services/deezer-api.service';
 import { StateService } from 'src/app/services/state.service';
 import { ResponsiveService } from '../../../services/responsive.service';
 import { ICustomPlaylistModel } from '../../../models/user-model.models';
+import { RandomColorHelper } from '../../../helpers/random-color-helper';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-search-result',
   templateUrl: './search-result.component.html',
   styleUrls: ['./search-result.component.scss'],
 })
-export class SearchResultComponent implements OnInit, OnDestroy {
+export class SearchResultComponent extends RandomColorHelper implements OnInit, OnDestroy {
   resultId!: string;
 
   result!:
@@ -110,7 +112,10 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private responsive: ResponsiveService,
     private myRouter: Router,
-  ) {}
+    myUtils: UtilsService,
+  ) {
+    super(myUtils);
+  }
 
   ngOnInit(): void {
     this.isFirstPlay = true;
@@ -295,7 +300,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         this.typeToShow = 'search.results.custom-playlist';
         this.descriptionTitle = 'search.results.description.playlist.creator';
         this.descriptionSubTitle = 'search.results.description.playlist.songs';
-        this.imgSrc = DEFAULT_SRC;
+        this.imgSrc = '../../../../assets/icons/note.svg';
         this.title = playlist.title;
         playlist.tracks.data.forEach((track) => {
           this.deezerRestApiService.getTrack(track).subscribe((data) => {

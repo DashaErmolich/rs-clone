@@ -30,6 +30,7 @@
   transform: rotate(25deg) translate(18%, -2%);
   width: 60%;
   transition: 0.4s;
+  background-color: white;
 }
 
 .spinner {
@@ -85,13 +86,13 @@
   overflow-y: auto;
   padding-right: 0.5rem;
   &::-webkit-scrollbar {
-    width: 0.5rem; 
+    width: 0.5rem;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background-color: $hover-color-card;
     border-radius: 3px;
