@@ -30,7 +30,12 @@
       "title": "Account",
       "userIcon": "User icon",
       "userName": "User name",
-      "LogOut": "Log out"
+      "LogOutButton": "Log out",
+      "saveButton": "Save changes",
+      "errors-messages": {
+        "required": "Username is required",
+        "length": "Enter username from 6 to 16 symbols"
+      }
     }
   },
   "welcome": {

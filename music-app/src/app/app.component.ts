@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ThemeService } from './services/theme.service';
+import { StateService } from './services/state.service';
 
 @Component({
   selector: 'app-root',
@@ -13,15 +14,16 @@ export class AppComponent {
   isAuthorized!: boolean;
 
   constructor(
-    private themeService: ThemeService,
+    private myTheme: ThemeService,
+    private myState: StateService,
   ) {}
 
   getClass() {
-    return this.themeService.activeCssClass$;
+    return this.myTheme.activeCssClass$;
   }
 
   getStartClass() {
-    this.themeService.setOverlayContainerTheme();
-    return this.themeService.activeThemeCssClass;
+    this.myTheme.setOverlayContainerTheme();
+    return this.myTheme.activeThemeCssClass;
   }
 }

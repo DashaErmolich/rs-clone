@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IUserModel } from 'src/app/models/userModel.models';
-import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
+import { IUserModel } from 'src/app/models/user-model.models';
+import { AuthorizationApiService } from './authorization-api.service';
 import { ITrackResponse } from '../models/api-response.models';
 import { ILikedSearchResults, LikedSearchResults } from '../models/search.models';
 import { LocalStorageService } from './local-storage.service';
-import IUserData from '../models/user-data.models';
 import { ITrackListInfo } from '../models/audio-player.models';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +19,11 @@ export class StateService {
 
   isEqualizerShown$ = new BehaviorSubject<boolean>(false);
 
-  user = {} as IUserModel;
+  user!: IUserModel;
 
   isAuthorized = false;
 
-  userName$ = new BehaviorSubject<string>('Jake');
+  userName$ = new BehaviorSubject<string>('');
 
   userIconId$ = new BehaviorSubject<number>(0);
 
@@ -47,19 +47,14 @@ export class StateService {
   constructor(
     private storage: LocalStorageService,
     private authService: AuthorizationApiService,
+    private myUtils: UtilsService,
   ) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
-    const userData: IUserData | null = this.storage.getUserData();
+    this.updateState();
 
     if (trackListInfo !== null) {
       this.setTrackListInfo(trackListInfo.trackList, trackListInfo.currentTrackIndex);
     }
-
-    if (userData !== null) {
-      this.setUserData(userData.userName, userData.userIconId);
-    }
-    this.likedTracks$.next(this.storage.getLikedTracks());
-    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
   }
 
   setTrackListInfo(tracks: Partial<ITrackResponse>[], index: number) {
@@ -77,7 +72,7 @@ export class StateService {
     this.isAuthorized = authStatus;
   }
 
-  setUser(user: IUserModel) {
+  setUserToState(user: IUserModel) {
     this.user = user;
   }
 
@@ -85,10 +80,12 @@ export class StateService {
     this.isEqualizerShown$.next(isVisible);
   }
 
-  setUserData(userName: string, userIconId: number) {
+  setUserData(userName: string, userIconId: number, isUserUpdateNeeded: boolean = true) {
     this.userName$.next(userName);
     this.userIconId$.next(userIconId);
-    this.storage.setUserData(userName, userIconId);
+    if (isUserUpdateNeeded) {
+      this.updateUserData();
+    }
   }
 
   setSearchParam(searchValue: string) {
@@ -96,18 +93,20 @@ export class StateService {
   }
 
   setLikedTrack(trackDeezerId: number): void {
-    this.storage.setLikedTrack(trackDeezerId);
-    this.likedTracks$.next(this.storage.getLikedTracks());
+    const likedTracks = this.likedTracks$.value;
+    likedTracks.push(trackDeezerId);
+    this.likedTracks$.next(likedTracks);
+    this.updateUserData();
   }
 
   removeLikedTrack(trackDeezerId: number): void {
-    const likedTracks = this.storage.getLikedTracks();
+    const likedTracks = this.likedTracks$.value;
     const trackIndex = likedTracks.findIndex((trackId) => trackId === trackDeezerId);
     if (trackIndex >= 0) {
       likedTracks.splice(trackIndex, 1);
     }
-    this.storage.setLikedTracks(likedTracks);
     this.likedTracks$.next(likedTracks);
+    this.updateUserData();
   }
 
   setNavigationMenuVisibility(isVisible: boolean): void {
@@ -123,18 +122,59 @@ export class StateService {
   }
 
   setLikedSearchResult(type: LikedSearchResults, id: number): void {
-    this.storage.setLikedSearchResult(type, id);
-    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+    const likedSearchResults = this.likedSearchResults$.value;
+    likedSearchResults[type].push(id);
+    this.likedSearchResults$.next(likedSearchResults);
+    this.updateUserData();
   }
 
   removeLikedSearchResult(type: LikedSearchResults, id: number): void {
-    const likedSearchResults = this.storage.getLikedSearchResults();
+    const likedSearchResults = this.likedSearchResults$.value;
     const searchResultIndex = likedSearchResults[type]
       .findIndex((searchResultId) => searchResultId === id);
+
     if (searchResultIndex >= 0) {
       likedSearchResults[type].splice(searchResultIndex, 1);
     }
-    this.storage.setLikedSearchResults(likedSearchResults);
-    this.likedSearchResults$.next(this.storage.getLikedSearchResults());
+    this.likedSearchResults$.next(likedSearchResults);
+    this.updateUserData();
+  }
+
+  updateUserData(): void {
+    const updatedUser: IUserModel = { ...this.user };
+    updatedUser.username = this.userName$.value;
+    updatedUser.userIconId = this.userIconId$.value;
+    updatedUser.userFavorites = {
+      tracks: this.likedTracks$.value,
+      albums: this.likedSearchResults$.value.album,
+      artists: this.likedSearchResults$.value.artist,
+      playlists: this.likedSearchResults$.value.playlist,
+      radio: this.likedSearchResults$.value.radio,
+    };
+    updatedUser.customPlaylists = [];
+    this.authService.setUser(updatedUser).subscribe((res) => {
+      this.user = res;
+    });
+  }
+
+  setUserDataFromService(userData: IUserModel): void {
+    this.setUserData(userData.username, userData.userIconId, false);
+    this.likedTracks$.next(userData.userFavorites.tracks);
+    this.likedSearchResults$.next({
+      album: userData.userFavorites.albums,
+      artist: userData.userFavorites.artists,
+      playlist: userData.userFavorites.playlists,
+      radio: userData.userFavorites.radio,
+    });
+  }
+
+  updateState() {
+    this.authService.getUser().subscribe((data) => {
+      if (!this.myUtils.isEmptyObject(data)) {
+        this.user = data as IUserModel;
+        this.isAuthorized = true;
+        this.setUserDataFromService(this.user);
+      }
+    });
   }
 }
