@@ -49,14 +49,14 @@ export class SignInComponent {
                 case 'email': {
                   const emailField = this.loginForm.get('email');
                   emailField?.setErrors({
-                    emailError: 'Incorrect email',
+                    emailError: 'sign-in.errors.emailError',
                   });
                   break;
                 }
                 case 'password': {
                   const passwordField = this.loginForm.get('password');
                   passwordField?.setErrors({
-                    passwordError: 'Incorrect password',
+                    passwordError: 'sign-in.errors.passwordError',
                   });
                   break;
                 }

@@ -6,7 +6,7 @@
       <input matInput [placeholder]="_emailPlaceholder" formControlName="email" name="email">
       <mat-error *ngIf="loginForm.get('email')!.hasError('required')" l10nTranslate>sign-in.validators.required</mat-error>
       <mat-error *ngIf="loginForm.get('email')!.hasError('email')" l10nTranslate>sign-in.validators.email</mat-error>
-      <mat-error *ngIf="loginForm.get('email')!.errors?.['emailError']">
+      <mat-error *ngIf="loginForm.get('email')!.errors?.['emailError']" l10nTranslate>
         {{ loginForm.get('email')!.errors?.['emailError'] }}
       </mat-error>
     </mat-form-field>
@@ -15,7 +15,7 @@
       <input matInput [placeholder]="_passwordPlaceholder" formControlName="password" type="password">
       <mat-error *ngIf="loginForm.get('password')!.hasError('required')" l10nTranslate>sign-in.validators.required</mat-error>
       <mat-error *ngIf="loginForm.get('password')!.hasError('pattern')" l10nTranslate>sign-in.validators.passwordPattern</mat-error>
-      <mat-error *ngIf="loginForm.get('password')!.errors?.['passwordError']">
+      <mat-error *ngIf="loginForm.get('password')!.errors?.['passwordError']" l10nTranslate>
         {{ loginForm.get('password')!.errors?.['passwordError'] }}
       </mat-error>
     </mat-form-field>

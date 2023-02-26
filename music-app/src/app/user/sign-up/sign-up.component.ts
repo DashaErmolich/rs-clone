@@ -43,7 +43,7 @@ export class SignUpComponent {
 
     if (formValue.password !== formValue.confirm) {
       this.registerForm.get('confirm')?.setErrors({
-        confirmError: 'Passwords does not match!',
+        confirmError: 'sign-up.errors.confirmError',
       });
       return;
     }
@@ -62,13 +62,13 @@ export class SignUpComponent {
                 switch (errReason) {
                   case 'Email': {
                     emailField?.setErrors({
-                      serverError: 'E-mail has already taken',
+                      serverError: 'sign-up.errors.serverError',
                     });
                     break;
                   }
                   default: {
                     emailField?.setErrors({
-                      validationError: 'Incorrect e-mail',
+                      validationError: 'sign-up.errors.validationError',
                     });
                     break;
                   }
