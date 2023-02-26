@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -88,6 +88,7 @@ import { CustomPlaylistTracksComponent } from './components/custom-playlist-trac
     MatFormFieldModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    ReactiveFormsModule,
   ],
   exports: [
     MusicPageComponent,

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { ITrackResponse } from '../../../models/api-response.models';
 import { ResponsiveService } from '../../../services/responsive.service';
@@ -9,10 +10,10 @@ import { ResponsiveService } from '../../../services/responsive.service';
   templateUrl: './custom-playlist.component.html',
   styleUrls: ['./custom-playlist.component.scss'],
 })
-export class CustomPlaylistComponent implements OnInit {
-  value = 'My playlist';
+export class CustomPlaylistComponent implements OnInit, OnDestroy {
+  playListName = 'My playlist';
 
-  tracks: ITrackResponse[] = [];
+  tracks: Partial<ITrackResponse>[] = [];
 
   subscriptions: Subscription[] = [];
 
@@ -28,7 +29,23 @@ export class CustomPlaylistComponent implements OnInit {
 
   isExtraSmall$ = new Subscription();
 
-  customPlaylistTracks: ITrackResponse[] = [];
+  customPlaylistTracks: number[] = [];
+
+  searchControlSubscription = new Subscription();
+
+  searchControl: FormControl = new FormControl();
+
+  nameControl: FormControl = new FormControl();
+
+  searchValue = '';
+
+  searchSubscription = new Subscription();
+
+  nameSubscription = new Subscription();
+
+  searchTracksSubscription = new Subscription();
+
+  isLoading = true;
 
   constructor(
     private myDeezer: DeezerRestApiService,
@@ -50,21 +67,46 @@ export class CustomPlaylistComponent implements OnInit {
     this.subscriptions.push(this.isSmall$);
     this.subscriptions.push(this.isHandset$);
     this.subscriptions.push(this.isExtraSmall$);
+
+    this.searchControlSubscription = this.searchControl.valueChanges
+      .subscribe((res) => {
+        this.isLoading = true;
+        this.searchValue = res;
+        this.getSearch();
+        this.isLoading = false;
+      });
+
+    this.nameSubscription = this.nameControl.valueChanges
+      .subscribe((res) => {
+        this.playListName = res;
+        console.log(this.playListName);
+      });
   }
 
-  getSearch(eventTarget: EventTarget | null) {
-    // eslint-disable-next-line max-len
-    this.myDeezer.getSearch((eventTarget as HTMLInputElement).value, 0, 50).subscribe((response) => {
-      response.data.forEach((track) => {
-        this.myDeezer.getTrack(track.id!).subscribe((data) => {
-          this.tracks.push(data);
-        });
+  ngOnDestroy(): void {
+    this.searchControlSubscription.unsubscribe();
+    this.searchSubscription.unsubscribe();
+    this.searchTracksSubscription.unsubscribe();
+    this.nameSubscription.unsubscribe();
+  }
+
+  getSearch() {
+    this.searchSubscription = this.myDeezer
+      .getSearch(this.searchValue, 0, 5).subscribe((response) => {
+        this.tracks = [];
+        try {
+          const foundTracks = response.data.length
+            ? response.data.filter((item) => item.id !== undefined)
+            : [];
+          if (foundTracks.length) {
+            this.tracks = foundTracks;
+          }
+        } catch (error) { /* empty */ }
       });
-      console.log(response.data);
-    });
   }
 
   saveCustomPlayList() {
+    console.log(this.playListName);
     console.log(this.customPlaylistTracks);
   }
 }
