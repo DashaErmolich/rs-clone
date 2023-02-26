@@ -283,7 +283,6 @@ header {
   width: 100% !important;
 }
 
-// .search-container,
 .result-container {
   grid-gap: $container-p-small;
   display: grid;
@@ -297,7 +296,6 @@ header {
   }
 }
 
-// .search-container_small,
 .result-container_small {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 
@@ -306,7 +304,6 @@ header {
   }
 }
 
-// .search-container_handset,
 .result-container_handset {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -343,14 +340,12 @@ header {
   @include adaptive-font(24, 16);
   font-weight: 500 !important;
   line-height: 100% !important;
-  color: red !important;
 }
 
 .title-h1 {
   @include adaptive-font(26, 16);
   font-weight: 700 !important;
   line-height: 100% !important;
-  color: rgb(117, 17, 17) !important;
 }
 
 .card-title-h1 {
@@ -358,7 +353,6 @@ header {
   margin-bottom: 0.5rem;
   z-index: 5;
   line-height: 100%;
-  color: rgb(62, 33, 231) !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -368,7 +362,6 @@ header {
 .card-title-h2 {
   @include adaptive-font(16, 14);
   font-weight: 200;
-  color: rgb(113, 141, 11) !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -379,8 +372,6 @@ header {
   @include adaptive-font(18, 14);
   margin-bottom: 0.5rem;
   z-index: 5;
-  // max-width: 70%;
-  color: rgb(136, 10, 59) !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;

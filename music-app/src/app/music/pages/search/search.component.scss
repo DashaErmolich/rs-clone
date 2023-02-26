@@ -8,7 +8,6 @@
   height: 100%;
 }
 
-
 .spinner {
   margin: 0 auto;
   max-width: 2rem;
@@ -24,20 +23,3 @@
   margin: $container-p-large 0;
   float: right;
 }
-
-// .scrollable {
-//   overflow-y: auto;
-//   padding-right: 0.5rem;
-//   &::-webkit-scrollbar {
-//     width: 0.5rem; 
-//   }
-  
-//   &::-webkit-scrollbar-track {
-//     background: transparent;
-//   }
-  
-//   &::-webkit-scrollbar-thumb {
-//     background-color: $hover-color-card;
-//     border-radius: 3px;
-//   }
-// }
