@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 /* eslint-disable import/no-extraneous-dependencies */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -85,7 +84,6 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
     this.nameSubscription = this.nameControl.valueChanges
       .subscribe((res) => {
         this.playListName = res;
-        console.log(this.playListName);
       });
   }
 
@@ -123,8 +121,6 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
       },
       nb_tracks: this.customPlaylistTracks.length,
     };
-    console.log(playlist);
     this.myState.setCustomPlaylist(playlist);
-    // localStorage.setItem('custom-playlist', JSON.stringify(playlist));
   }
 }

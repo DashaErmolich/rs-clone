@@ -103,6 +103,7 @@
       "album": "Album",
       "playlist": "Playlist",
       "radio": "Radio",
+      "custom-playlist": "User Playlist",
       "description": {
         "playlist": {
           "creator": "Creator",
@@ -116,7 +117,8 @@
       "subscription": {
         "subscribe": "Subscribe",
         "subscribed": "Subscribed"
-      }
+      },
+      "delete-button": "Delete"
     }
   },
   "library": {

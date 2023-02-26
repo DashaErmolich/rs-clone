@@ -25,9 +25,13 @@
     <button mat-fab color="primary" (click)="playPause(0)">
       <mat-icon>{{ isPlay ? 'pause' : 'play_arrow'}}</mat-icon>
     </button>
-    <button mat-fab extended color="primary" (click)="likeSearchResult()">
+    <button *ngIf="isLikeButtonShown" mat-fab extended color="primary" (click)="likeSearchResult()">
       <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
       <span l10nTranslate>{{isLiked ? 'search.results.subscription.subscribed' : 'search.results.subscription.subscribe' }}</span>
+    </button>
+    <button *ngIf="!isLikeButtonShown" mat-fab extended color="warn" (click)="deleteCustomPlayList()">
+      <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
+      <span l10nTranslate>search.results.delete-button</span>
     </button>
   </div>
   <app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>

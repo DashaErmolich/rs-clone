@@ -101,6 +101,7 @@
       "album": "Альбом",
       "playlist": "Плейлист",
       "radio": "Радио",
+      "custom-playlist": "Ваш Плейлист",
       "description": {
         "playlist": {
           "creator": "Создатель",
@@ -114,7 +115,8 @@
       "subscription": {
         "subscribe": "Подписаться",
         "subscribed": "Вы подписаны"
-      }
+      },
+      "delete-button": "Удалить"
     }
   },
   "sign-in": {

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DEFAULT_SRC } from 'src/app/constants/constants';
 import { SearchType } from 'src/app/enums/endpoints';
@@ -101,12 +101,15 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
   typeToShow!: string;
 
+  isLikeButtonShown = true;
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
     private deezerRestApiService: DeezerRestApiService,
     private route: ActivatedRoute,
     private responsive: ResponsiveService,
+    private myRouter: Router,
   ) {}
 
   ngOnInit(): void {
@@ -284,25 +287,32 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   }
 
   getUserPlaylist(id: string) {
-    this.typeToShow = 'search.results.playlist';
-    this.descriptionTitle = 'search.results.description.playlist.creator';
-    this.descriptionSubTitle = 'search.results.description.playlist.songs';
-    const res: ICustomPlaylistModel | undefined = this.myState.getCustomPlaylist(id);
-    if (res !== undefined) {
-      this.result = res;
-
-      this.imgSrc = DEFAULT_SRC;
-      this.title = res.title;
-      // this.tracks = res.tracks.data;
-      res.tracks.data.forEach((track) => {
-        this.deezerRestApiService.getTrack(track).subscribe((data) => {
-          this.tracks.push(data);
+    this.isLikeButtonShown = false;
+    this.result$ = this.myState.customPlaylists$.subscribe((res) => {
+      const playlist = res.find((item) => item.id === id);
+      if (playlist) {
+        this.result = playlist;
+        this.typeToShow = 'search.results.custom-playlist';
+        this.descriptionTitle = 'search.results.description.playlist.creator';
+        this.descriptionSubTitle = 'search.results.description.playlist.songs';
+        this.imgSrc = DEFAULT_SRC;
+        this.title = playlist.title;
+        playlist.tracks.data.forEach((track) => {
+          this.deezerRestApiService.getTrack(track).subscribe((data) => {
+            this.tracks.push(data);
+          });
         });
-      });
-      this.descriptionTitleInfo = `: ${res.creator.name}`;
-      this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
-      this.loading = false;
-      // this.isSearchResultLiked();
+        this.descriptionTitleInfo = `: ${this.myState.userName$.value}`;
+        this.descriptionSubTitleInfo = `: ${playlist.nb_tracks}`;
+        this.loading = false;
+      }
+    });
+  }
+
+  deleteCustomPlayList() {
+    if (this.result.id && typeof (this.result.id) === 'string') {
+      this.myState.deleteCustomPlaylist(this.result.id);
+      this.myRouter.navigate(['music/home']);
     }
   }
 }

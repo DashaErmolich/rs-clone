@@ -189,7 +189,15 @@ export class StateService {
     this.updateUserData();
   }
 
-  getCustomPlaylist(playlistId: string): ICustomPlaylistModel | undefined {
-    return this.customPlaylists$.value.find((item) => item.id === playlistId);
+  deleteCustomPlaylist(playlistId: string) {
+    const customPlaylists: ICustomPlaylistModel[] = this.customPlaylists$.value;
+    const searchResultIndex = customPlaylists
+      .findIndex((searchResultId) => searchResultId.id === playlistId);
+
+    if (searchResultIndex >= 0) {
+      customPlaylists.splice(searchResultIndex, 1);
+    }
+    this.customPlaylists$.next(customPlaylists);
+    this.updateUserData();
   }
 }
