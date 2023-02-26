@@ -7,7 +7,6 @@ import { RandomColorHelper } from '../../../helpers/random-color-helper';
 @Component({
   selector: 'app-genres',
   templateUrl: './genres.component.html',
-  styleUrls: ['../../pages/search/search.component.scss'],
 })
 
 export class GenresComponent extends RandomColorHelper {

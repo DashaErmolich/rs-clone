@@ -1,4 +1,5 @@
 @import '../../../../sass/abstracts/constants';
+@import '../../../../sass/abstracts/mixins';
 
 .search-result-container {
   gap: $container-p-large;
@@ -18,18 +19,9 @@
 }
 
 .search-result__image {
-  width: 200px;
-  height: 200px;
-
-  img {
-    display: block;
-    width: 100%;
-  }
-}
-
-.search-result__image_small {
-  width: 100px;
-  height: 100px;
+  width: 25%;
+  height: fit-content;
+  min-width: 100px;
 
   img {
     display: block;
@@ -38,12 +30,13 @@
 }
 
 .search-result-type {
+  @include adaptive-font(14, 12);
   text-transform: uppercase;
 }
 
 .search-result-title {
+  @include adaptive-font(48, 20);
   flex-grow: 1;
-  font-size: 4vw;
   line-height: 100%;
   text-transform: capitalize;
 }
@@ -56,7 +49,7 @@
 }
 
 .search-result-description {
-  font-size: 1rem;
+  @include adaptive-font(14, 12);
   display: flex;
   align-items: center;
 }

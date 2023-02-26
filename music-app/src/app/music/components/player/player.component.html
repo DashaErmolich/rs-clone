@@ -15,7 +15,7 @@
       </div>
       <div *ngIf="!isSmall" class="track-data__titles">
         <span class="one-line-text">{{ getTrackTitle() | titlecase }}</span>
-        <span class="one-line-text less-opacity">{{
+        <span class="one-line-text less-opacity router-link" [routerLink]="['/music/artist', getArtistId()]">{{
           getArtistTitle() | titlecase
         }}</span>
       </div>

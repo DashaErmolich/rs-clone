@@ -1,4 +1,6 @@
 @import '../../../../sass/abstracts/constants';
+@import '../../../../sass/abstracts/mixins';
+
 
 .track {
   display: grid;
@@ -12,6 +14,7 @@
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  @include adaptive-font(14, 12);
   @media screen and (max-width: 1300px) {
     grid-template-columns: 32px 40px 6fr 48px 4fr 40px;
     padding: 0.1rem 0.3rem;
@@ -69,7 +72,6 @@
   justify-content: space-around;
   gap: 5px;
   overflow: hidden;
-  text-overflow: ellipsis;
   @media screen and (max-width: 1300px) {
     padding-left: 0.3rem;
   }
@@ -89,34 +91,18 @@
 
 .track-title {
   width: auto;
-  font-size: 1rem;
+  @include adaptive-font(18, 14);
   margin-bottom: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.track-album,
 .track-artist {
-  width: fit-content;
-  font-size: 0.9rem;
-  font-weight: 200;
-  margin-bottom: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  transition: 0.3s;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.track-album {
   display: flex;
   align-items: center;
   overflow: hidden;
-  text-overflow: ellipsis;
   @media screen and (max-width: 400px) {
     display: none;
   }
@@ -126,13 +112,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    cursor: pointer;
-    transition: 0.3s;
     margin: 0;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 }
 

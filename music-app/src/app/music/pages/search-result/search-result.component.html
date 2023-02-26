@@ -1,23 +1,27 @@
 <div *ngIf="result" class="search-result-wrapper">
-  <div [ngSwitch]="resultType" class="flex-row search-result-container" [ngClass]="{'search-result-container_small': isSmall}">
-    <div class="search-result__image" [ngClass]="{'search-result__image_small': isSmall}">
+  <div [ngSwitch]="resultType" class="flex-row search-result-container"
+    [ngClass]="{'search-result-container_small': isSmall}">
+    <div class="search-result__image">
       <img [src]="imgSrc" [alt]="title">
     </div>
     <div class="search-result-block">
       <span class="search-result-type one-line-text" l10nTranslate>{{ typeToShow }}</span>
-      <span class="search-result-title text-wrap">{{ title }}</span>
-      <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
-        <span l10nTranslate>{{ descriptionTitle }}</span>
-        <span l10nTranslate>{{ descriptionTitleInfo }}</span>
-      </div>
-      <div *ngIf="descriptionSubTitle && descriptionSubTitle" class="search-result-description less-opacity">
-        <span l10nTranslate>{{ descriptionSubTitle }}</span>
-        <span l10nTranslate>{{ descriptionSubTitleInfo }}</span>
-      </div>
-      <div *ngSwitchCase="'album'" class="search-result-description less-opacity">
-        <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
-        <div class="artist-name" [routerLink]="['/music/artist', artistId]">{{ artistName }}</div>
-        <div *ngIf="albumRelease" class="album-release">{{albumRelease}}</div>
+      <span class="search-result-title">{{ title }}</span>
+      <div>
+        <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
+          <span l10nTranslate>{{ descriptionTitle }}</span>
+          <span l10nTranslate class="one-line-text">{{ descriptionTitleInfo }}</span>
+        </div>
+
+        <div *ngIf="descriptionSubTitle && descriptionSubTitle" class="search-result-description less-opacity">
+          <span l10nTranslate>{{ descriptionSubTitle }}</span>
+          <span l10nTranslate class="one-line-text">{{ descriptionSubTitleInfo }}</span>
+        </div>
+        <div *ngSwitchCase="'album'" class="search-result-description less-opacity">
+          <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
+          <div class="artist-name" [routerLink]="['/music/artist', artistId]">{{ artistName }}</div>
+          <div *ngIf="albumRelease" class="album-release">{{albumRelease}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -27,8 +31,10 @@
     </button>
     <button mat-fab extended color="primary" (click)="likeSearchResult()">
       <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
-      <span l10nTranslate>{{isLiked ? 'search.results.subscription.subscribed' : 'search.results.subscription.subscribe' }}</span>
+      <span
+        l10nTranslate>{{isLiked ? 'search.results.subscription.subscribed' : 'search.results.subscription.subscribe' }}</span>
     </button>
   </div>
-  <app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>
+  <app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container"
+    [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>
 </div>

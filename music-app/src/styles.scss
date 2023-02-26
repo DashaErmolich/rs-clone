@@ -232,7 +232,7 @@ label {
 }
 
 header {
-    .mat-mdc-form-field-subscript-wrapper {
+  .mat-mdc-form-field-subscript-wrapper {
     height: 0px !important;
   }
 
@@ -283,7 +283,6 @@ header {
   width: 100% !important;
 }
 
-.search-container,
 .result-container {
   grid-gap: $container-p-small;
   display: grid;
@@ -291,20 +290,20 @@ header {
   grid-template-rows: 1fr;
   grid-auto-rows: auto;
   margin-bottom: $container-p-small;
+
   @media screen and (max-width: 1160px) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.search-container_small,
 .result-container_small {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
   @media screen and (max-width: 760px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.search-container_handset,
 .result-container_handset {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -335,4 +334,101 @@ header {
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-all;
+}
+
+.title-h2 {
+  @include adaptive-font(24, 16);
+  font-weight: 500 !important;
+  line-height: 100% !important;
+}
+
+.title-h1 {
+  @include adaptive-font(26, 16);
+  font-weight: 700 !important;
+  line-height: 100% !important;
+}
+
+.card-title-h1 {
+  @include adaptive-font(18, 14);
+  margin-bottom: 0.5rem;
+  z-index: 5;
+  line-height: 100%;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-title-h2 {
+  @include adaptive-font(16, 14);
+  font-weight: 200;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-square-title-h1 {
+  @include adaptive-font(18, 14);
+  margin-bottom: 0.5rem;
+  z-index: 5;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.router-link {
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.card-rectangular {
+  width: 100%;
+  overflow: hidden;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &:hover {
+    background: $hover-color-card;
+  }
+
+  &>.image-wrapper {
+    margin: $container-p-small;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: $card-border-radius-small;
+    }
+  }
+}
+
+.card-square {
+  width: 100%;
+  font-size: 1rem;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border-radius: $card-border-radius-small;
+  cursor: pointer;
+
+  &>.card-img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: rotate(25deg) translate(18%, -2%);
+    width: 60%;
+    transition: 0.4s;
+  }
+
+  &:hover {
+    .card-img {
+      transform: scale(1.1) rotate(25deg) translate(18%, -2%);
+    }
+  }
 }
