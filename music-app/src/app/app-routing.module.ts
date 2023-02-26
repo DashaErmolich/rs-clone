@@ -16,6 +16,7 @@ import { GenreComponent } from './music/pages/genre/genre.component';
 import { LikedTracksComponent } from './music/pages/liked-tracks/liked-tracks.component';
 import { SearchResultComponent } from './music/pages/search-result/search-result.component';
 import { AuthorizedGuard } from './guards/isAuthorized.guard';
+import { CustomPlaylistComponent } from './music/pages/custom-playlist/custom-playlist.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -35,6 +36,8 @@ const routes: Routes = [
       { path: 'artist/:artist', component: SearchResultComponent },
       { path: 'album/:album', component: SearchResultComponent },
       { path: 'radio/:radio', component: SearchResultComponent },
+      { path: 'custom-playlist', component: CustomPlaylistComponent },
+      { path: 'user-play-list/:user-playlist', component: SearchResultComponent },
     ],
   },
   {

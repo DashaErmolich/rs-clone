@@ -7,6 +7,7 @@ import { ILikedSearchResults, LikedSearchResults } from '../models/search.models
 import { LocalStorageService } from './local-storage.service';
 import { ITrackListInfo } from '../models/audio-player.models';
 import { UtilsService } from './utils.service';
+import { ICustomPlaylistModel } from '../models/user-model.models';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +46,8 @@ export class StateService {
   isSearchInputShown$ = new BehaviorSubject<boolean>(false);
 
   isCurrentTrackListShown$ = new BehaviorSubject<boolean>(false);
+
+  customPlaylists$ = new BehaviorSubject<ICustomPlaylistModel[]>([]);
 
   constructor(
     private storage: LocalStorageService,
@@ -153,7 +156,7 @@ export class StateService {
       playlists: this.likedSearchResults$.value.playlist,
       radio: this.likedSearchResults$.value.radio,
     };
-    updatedUser.customPlaylists = [];
+    updatedUser.customPlaylists = this.customPlaylists$.value;
     this.authService.setUser(updatedUser).subscribe((res) => {
       this.user = res;
     });
@@ -168,6 +171,7 @@ export class StateService {
       playlist: userData.userFavorites.playlists,
       radio: userData.userFavorites.radio,
     });
+    this.customPlaylists$.next(userData.customPlaylists);
   }
 
   updateState() {
@@ -182,5 +186,24 @@ export class StateService {
 
   setCurrentTrackListVisibility(isVisible: boolean) {
     this.isCurrentTrackListShown$.next(isVisible);
+  }
+
+  setCustomPlaylist(playlist: ICustomPlaylistModel) {
+    const customPlaylists: ICustomPlaylistModel[] = this.customPlaylists$.value;
+    customPlaylists.push(playlist);
+    this.customPlaylists$.next(customPlaylists);
+    this.updateUserData();
+  }
+
+  deleteCustomPlaylist(playlistId: string) {
+    const customPlaylists: ICustomPlaylistModel[] = this.customPlaylists$.value;
+    const searchResultIndex = customPlaylists
+      .findIndex((searchResultId) => searchResultId.id === playlistId);
+
+    if (searchResultIndex >= 0) {
+      customPlaylists.splice(searchResultIndex, 1);
+    }
+    this.customPlaylists$.next(customPlaylists);
+    this.updateUserData();
   }
 }
