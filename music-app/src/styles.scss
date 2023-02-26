@@ -336,6 +336,10 @@ header {
   word-break: break-all;
 }
 
+.mt-large {
+  margin-top: $container-p-large;
+}
+
 .title-h2 {
   @include adaptive-font(24, 16);
   font-weight: 500 !important;
@@ -424,6 +428,7 @@ header {
     transform: rotate(25deg) translate(18%, -2%);
     width: 60%;
     transition: 0.4s;
+    background-color: white;
   }
 
   &:hover {

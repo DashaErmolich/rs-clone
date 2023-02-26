@@ -16,7 +16,14 @@ interface IFavoritesModel {
   radio: number[];
 }
 
-interface ICustomPlaylistModel {
-  playlistName: string;
-  playlistTracks: number[];
+export interface ICustomPlaylistModel {
+  id: string
+  title: string,
+  creator: {
+    name: string,
+  },
+  tracks: {
+    data: number[],
+  },
+  nb_tracks: number,
 }

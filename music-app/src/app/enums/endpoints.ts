@@ -22,7 +22,7 @@ export enum SearchType {
   playlist = 'playlist',
   radios = 'radios',
   radio = 'radio',
-
+  userPlaylist = 'user-playlist',
 }
 
 export enum Limits {

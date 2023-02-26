@@ -32,7 +32,9 @@
     <div *ngSwitchCase="'playlists'">
       <app-playlists [playlists]="playlists" class="result-container" [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-playlists>
     </div>
-    <div><button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn">more</button></div>
+    <div *ngIf="tracks.length">
+      <button mat-stroked-button color="primary" (click)="getMore(searchType)" class="more-btn"l10nTranslate>search.more-button</button>
+    </div>
   </div>
 
 </div>
