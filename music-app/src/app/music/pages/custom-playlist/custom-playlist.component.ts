@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { ICustomPlayList } from 'src/app/models/custom-playlist.models';
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { ITrackResponse } from '../../../models/api-response.models';
 import { ResponsiveService } from '../../../services/responsive.service';
@@ -106,7 +107,17 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
   }
 
   saveCustomPlayList() {
-    console.log(this.playListName);
-    console.log(this.customPlaylistTracks);
+    const playlist: ICustomPlayList = {
+      id: 0,
+      title: this.playListName,
+      creator: {
+        name: 'bla',
+      },
+      tracks: {
+        data: this.customPlaylistTracks,
+      },
+      nb_tracks: this.customPlaylistTracks.length,
+    };
+    console.log(playlist);
   }
 }
