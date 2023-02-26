@@ -8,6 +8,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
 import { StatusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-in',
@@ -28,18 +29,20 @@ export class SignInComponent {
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) { }
 
   onSubmit(form: FormGroup) {
+    this.saving = true;
     const formValue = this.loginForm.value;
 
     if (form.valid) {
-      this.saving = true;
 
       if (formValue.email && formValue.password) {
         this.authApiServe.login(formValue.email, formValue.password).pipe(
           take(1),
           catchError((err) => {
+            this.saving = false;
             if (err instanceof HttpErrorResponse && err.status === StatusCodes.BadRequest) {
               const errReason = err.error.message.split(' ')[1];
               // eslint-disable-next-line default-case
@@ -66,14 +69,15 @@ export class SignInComponent {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
           this.state.setUser(res.user);
-
-          this.router.navigate(['music/home']);
+          this.snackBar.open('Successful login! Welcome', '✅', {
+            duration: 3000,
+          });
+          
+          setTimeout(() => {
+            this.router.navigate(['music/home']);
+          }, 1000);
         });
       }
     }
-  }
-
-  submitLogout() {
-    this.authServe.logout();
   }
 }

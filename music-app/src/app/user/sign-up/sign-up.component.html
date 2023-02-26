@@ -1,4 +1,4 @@
-<div class="container content-wrapper">
+<div class="container content-wrapper container-center">
   <p l10nTranslate>sign-in.submit-btn</p>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)" class="example-form">
 
@@ -31,12 +31,12 @@
       <input matInput placeholder="Confirm" formControlName="confirm" type="password" name="confirm">
       <mat-error *ngIf="registerForm.get('confirm')!.hasError('required')">This field is required</mat-error>
       <mat-error *ngIf="registerForm.get('confirm')!.hasError('pattern')">Password must be between 6 to 16 characters and a combination of letters and numbers </mat-error>
-      <mat-error *ngIf="registerForm.get('confirm')!.errors?.['confirmError']">
+      <mat-error *ngIf="registerForm.get('confirm')!.errors?.['confirmError']" l10nTranslate>
         {{ registerForm.get('confirm')!.errors?.['confirmError'] }}
       </mat-error>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" [disabled]="!registerForm.valid">Submit</button>
+    <button mat-flat-button color="primary" [disabled]="!registerForm.valid || saving">Submit</button>
 
   </form>
   <h3 class="mt-30">Already have an account?</h3>

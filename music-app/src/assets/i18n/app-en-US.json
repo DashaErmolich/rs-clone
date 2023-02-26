@@ -36,9 +36,6 @@
   "welcome": {
     "greeting": "Welcome to RS Music App"
   },
-  "sign-in": {
-    "submit-btn": "Submit"
-  },
   "not-found": {
     "title": "Page not found",
     "message": "The page you are looking for may have been moved, deleted, or possibly never existed",
@@ -117,5 +114,10 @@
     "header": {
       "search-input-placeholder": "Search"
     }
+  },
+  "sign-in": {
+    "greetings": "To continue, log in to RS Music App",
+    "login-btn": "Log in",
+    "also": ""
   }
 }

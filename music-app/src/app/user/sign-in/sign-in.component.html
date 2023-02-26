@@ -20,12 +20,11 @@
       </mat-error>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" [disabled]="!loginForm.valid">Sign in</button>
+    <button mat-flat-button color="primary" [disabled]="!loginForm.valid || saving">Sign in</button>
   </form>
 
   <div>    
     <h3 class="mt-30">Don't have an account?</h3>
-    <button mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active">Sign up</button>
-    <button mat-stroked-button color="warn" (click)="submitLogout()">Log out</button>
+    <button mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active" [disabled]="saving">Sign up</button>
   </div>
 </div>

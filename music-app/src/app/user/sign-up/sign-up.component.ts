@@ -7,6 +7,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StatusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,25 +29,27 @@ export class SignUpComponent {
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) { }
 
   onSubmit(form: FormGroup) {
+    this.saving = true;
     const formValue = this.registerForm.value;
 
     if (formValue.password !== formValue.confirm) {
       this.registerForm.get('confirm')?.setErrors({
-        confirmError: 'Passwords does not match!',
+        confirmError: 'home.greeting.morning',
       });
       return;
     }
 
     if (form.valid) {
-      this.saving = true;
 
       if (formValue.name && formValue.email && formValue.password && formValue.confirm) {
         this.authApiServe.registration(formValue.name, formValue.email, formValue.password).pipe(
           take(1),
           catchError((err) => {
+            this.saving = false;
             if (err instanceof HttpErrorResponse) {
               if (err.status === StatusCodes.BadRequest) {
                 const errReason = err.error.message.split(' ')[0];
@@ -73,9 +76,15 @@ export class SignUpComponent {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
           this.state.setUser(res.user);
-          this.router.navigate(['music/home']);
+          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', { 
+            duration: 3000,
+          });
+          setTimeout(() => {
+            this.router.navigate(['music/home']);
+          }, 1000);
         });
       }
     }
   }
+
 }

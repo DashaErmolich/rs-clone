@@ -6,6 +6,9 @@ import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
 import { StateService } from '../../../services/state.service';
 import { ThemeService } from '../../../services/theme.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthorizationService } from 'src/app/services/authorization.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings-account',
@@ -30,6 +33,9 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   constructor(
     private myState: StateService,
+    private snackBar: MatSnackBar,
+    private authServe: AuthorizationService,
+    private router: Router,
     myTheme: ThemeService,
   ) {
     super(myTheme);
@@ -59,5 +65,15 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
       this.userName = eventTarget.value;
     }
     this.myState.setUserData(this.userName, this.userIconId);
+  }
+
+  submitLogout() {
+    this.snackBar.open('You are logged out!', '🔑', {
+      duration: 3000,
+    });
+    this.authServe.logout();
+    setTimeout(() => {
+      this.router.navigate(['sign-in']);
+    }, 1000);
   }
 }
