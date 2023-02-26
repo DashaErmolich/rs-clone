@@ -202,8 +202,8 @@ export interface IGenresResponse {
 export interface IRadioResponse {
   id: number;
   title: string;
-  description: string;
-  share: string;
+  description?: string;
+  share?: string;
   picture: string;
   picture_small: string;
   picture_medium: string;
@@ -212,6 +212,17 @@ export interface IRadioResponse {
   tracklist: string;
   md5_image: string;
   type: string;
+}
+
+export interface IRadiosResponse {
+  data: IRadioResponse[];
+  total: number;
+  next?: string;
+  prev?: string;
+}
+
+export interface ITracksByRadio {
+  data: ITrackResponse[];
 }
 
 interface IContributor {

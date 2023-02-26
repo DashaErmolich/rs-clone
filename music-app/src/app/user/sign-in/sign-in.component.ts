@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { catchError, take } from 'rxjs';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
-import { StatusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { StatusCodes } from '../../enums/status-codes';
 
 @Component({
   selector: 'app-sign-in',
@@ -67,7 +67,8 @@ export class SignInComponent {
         ).subscribe((res) => {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
-          this.state.setUser(res.user);
+          this.state.setUserToState(res.user);
+          this.state.updateState();
           this.snackBar.open('Successful login! Welcome', '✅', {
             duration: 3000,
           });

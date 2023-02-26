@@ -1,5 +1,6 @@
 export enum Endpoints {
   track = '/track',
+  tracks = '/tracks',
   artist = '/artist',
   album = '/album',
   editorial = '/editorial',
@@ -19,6 +20,9 @@ export enum SearchType {
   artist = 'artist',
   album = 'album',
   playlist = 'playlist',
+  radios = 'radios',
+  radio = 'radio',
+
 }
 
 export enum Limits {

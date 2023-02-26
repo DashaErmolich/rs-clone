@@ -1,12 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-import { StatusCodes } from 'src/app/enums/statusCodes';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthorizationService } from 'src/app/services/authorization.service';
+import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../constants/constants';
+import { StatusCodes } from '../../enums/status-codes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -80,7 +82,8 @@ export class SignUpComponent {
         ).subscribe((res) => {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
-          this.state.setUser(res.user);
+          this.state.setUserToState(res.user);
+          this.state.updateState();
           this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', { 
             duration: 3000,
           });

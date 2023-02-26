@@ -30,7 +30,12 @@
       "title": "Account",
       "userIcon": "User icon",
       "userName": "User name",
-      "LogOut": "Log out"
+      "LogOutButton": "Log out",
+      "saveButton": "Save changes",
+      "errors-messages": {
+        "required": "Username is required",
+        "length": "Enter username from 6 to 16 symbols"
+      }
     }
   },
   "welcome": {
@@ -74,14 +79,16 @@
       "albums": "Popular albums",
       "artists": "Popular artists",
       "playlists": "Trending now playlists",
-      "podcasts": "You may like this podcasts"
+      "podcasts": "You may like this podcasts",
+      "radios": "Recommended radios"
     },
     "genres": "Popular genres"
   },
   "search": {
     "titles": {
       "genres": "Genres",
-      "playlists": "Playlists"
+      "playlists": "Playlists",
+      "radios": "Radios"
     },
     "chips": {
       "tracks": "Tracks",
@@ -94,6 +101,7 @@
       "artist": "Artist",
       "album": "Album",
       "playlist": "Playlist",
+      "radio": "Radio",
       "description": {
         "playlist": {
           "creator": "Creator",
@@ -103,6 +111,10 @@
           "albums": "Albums",
           "fans": "Fans"
         }
+      },
+      "subscription": {
+        "subscribe": "Subscribe",
+        "subscribed": "Subscribed"
       }
     }
   },
@@ -110,7 +122,8 @@
     "artists": "Your favorite artists",
     "albums": "Your favorite albums",
     "playlists": "Your favorite playlists",
-    "tracks": "Your favorite tracks"
+    "tracks": "Your favorite tracks",
+    "radios": "Your favorite radios"
   },
   "core": {
     "header": {

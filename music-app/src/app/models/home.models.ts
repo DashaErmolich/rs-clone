@@ -1,4 +1,4 @@
-import { IChartResponse } from './api-response.models';
+import { IChartResponse, IRadiosResponse } from './api-response.models';
 
 export interface ICategoriesData {
   tracks: {
@@ -20,5 +20,9 @@ export interface ICategoriesData {
   podcasts: {
     title: string,
     data: IChartResponse['podcasts']['data'],
+  },
+  radios: {
+    title: string,
+    data: IRadiosResponse['data'],
   },
 }

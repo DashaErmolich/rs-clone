@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IUserModel } from 'src/app/models/userModel.models';
+import { IUserModel } from 'src/app/models/user-model.models';
 import { StateService } from 'src/app/services/state.service';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from './local-storage.service';
-import { StatusCodes } from '../enums/statusCodes';
+import { StatusCodes } from '../enums/status-codes';
 
 @Injectable({
   providedIn: 'root',
@@ -24,17 +24,17 @@ export class AuthorizationService {
       ).subscribe((res) => {
         this.localStore.setToken(res.accessToken);
         this.state.setAuthorized(true);
-        this.state.setUser(res.user);
+        this.state.setUserToState(res.user);
       });
     // eslint-disable-next-line no-empty
-    } catch (e) { }
+    } catch (e) {}
   }
 
   registration(username: string, email: string, password: string) {
     this.authService.registration(username, email, password).pipe(take(1)).subscribe((res) => {
       this.localStore.setToken(res.accessToken);
       this.state.setAuthorized(true);
-      this.state.setUser(res.user);
+      this.state.setUserToState(res.user);
     });
   }
 
@@ -43,10 +43,10 @@ export class AuthorizationService {
       this.authService.logout().pipe(take(1)).subscribe(() => {
         this.localStore.removeToken();
         this.state.setAuthorized(false);
-        this.state.setUser({} as IUserModel);
+        this.state.setUserToState({} as IUserModel);
       });
     // eslint-disable-next-line no-empty
-    } catch (e) { }
+    } catch (e) {}
   }
 
   checkAuth() {
@@ -60,11 +60,11 @@ export class AuthorizationService {
         if (res.accessToken) {
           this.localStore.setToken(res.accessToken);
           this.state.setAuthorized(true);
-          this.state.setUser(res.user);
+          this.state.setUserToState(res.user);
         }
       });
     // eslint-disable-next-line no-empty
-    } catch (e) { }
+    } catch (e) {}
   }
 
   fetch() {
@@ -78,9 +78,21 @@ export class AuthorizationService {
         }
         return [];
       }),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ).subscribe((res) => {
+    ).subscribe(() => {
       // this logic will be used to save and load favorite songs.
     });
+  }
+
+  changeAccountSettings(email: string, username: string, userIconId: number) {
+    this.authService.setAccountSettings(email, username, userIconId).pipe(
+      take(1),
+      catchError(() => []),
+    ).subscribe((response) => {
+      this.state.user = response;
+    });
+  }
+
+  getUser() {
+    return this.authService.refresh();
   }
 }

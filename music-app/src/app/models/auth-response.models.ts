@@ -1,4 +1,4 @@
-import { IUserModel } from 'src/app/models/userModel.models';
+import { IUserModel } from 'src/app/models/user-model.models';
 
 export interface IAuthResponse {
   accessToken: string;

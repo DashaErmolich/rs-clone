@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ICategoriesData } from '../../../models/home.models';
 import {
-  ITrackResponse, IArtistResponse, IPlayListResponse, IAlbumResponse,
+  ITrackResponse, IArtistResponse, IPlayListResponse, IAlbumResponse, IRadioResponse,
 } from '../../../models/api-response.models';
 import { DeezerRestApiService } from '../../../services/deezer-api.service';
 import { StateService } from '../../../services/state.service';
@@ -36,6 +36,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
       title: 'library.podcasts',
       data: [],
     },
+    radios: {
+      title: 'library.radios',
+      data: [],
+    },
   };
 
   tracks!: Partial<ITrackResponse>[];
@@ -46,6 +50,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   albums!: Partial<IAlbumResponse>[];
 
+  radios!: Partial<IRadioResponse>[];
+
   tracksSubscription: Subscription = new Subscription();
 
   artistsSubscription: Subscription = new Subscription();
@@ -53,6 +59,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
   playlistsSubscription: Subscription = new Subscription();
 
   albumsSubscription: Subscription = new Subscription();
+
+  radiosSubscription: Subscription = new Subscription();
 
   LikedSearchResultsSubscription: Subscription = new Subscription();
 
@@ -82,6 +90,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       this.artists = [];
       this.playlists = [];
       this.albums = [];
+      this.radios = [];
       response.album.forEach((albumId) => {
         this.albumsSubscription = this.myDeezer.getAlbum(albumId).subscribe((res) => {
           this.albums.push(res);
@@ -96,6 +105,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.playlistsSubscription = this.myDeezer.getPlayListTracks(playlistId)
           .subscribe((res) => {
             this.playlists.push(res);
+          });
+      });
+      response.radio.forEach((radioID) => {
+        this.radiosSubscription = this.myDeezer.getRadio(radioID)
+          .subscribe((res) => {
+            this.radios.push(res);
           });
       });
     });
@@ -117,6 +132,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.albumsSubscription);
     this.subscriptions.push(this.playlistsSubscription);
     this.subscriptions.push(this.artistsSubscription);
+    this.subscriptions.push(this.radiosSubscription);
   }
 
   ngOnDestroy(): void {
