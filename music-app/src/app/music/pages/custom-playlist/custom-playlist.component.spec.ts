@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RadiosComponent } from './radios.component';
+import { CustomPlaylistComponent } from './custom-playlist.component';
 
-describe('RadiosComponent', () => {
-  let component: RadiosComponent;
-  let fixture: ComponentFixture<RadiosComponent>;
+describe('CustomPlaylistComponent', () => {
+  let component: CustomPlaylistComponent;
+  let fixture: ComponentFixture<CustomPlaylistComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RadiosComponent],
+      declarations: [CustomPlaylistComponent],
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(RadiosComponent);
+    fixture = TestBed.createComponent(CustomPlaylistComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
