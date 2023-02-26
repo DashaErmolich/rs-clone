@@ -126,6 +126,9 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         case SearchType.radio:
           this.getRadio(this.resultId);
           break;
+        case SearchType.userPlaylist:
+          this.getUserPlaylist(this.resultId);
+          break;
         default:
           break;
       }
@@ -277,5 +280,26 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   isSearchResultLiked() {
     this.isLiked = this.likedSearchResults[this.type].includes(Number(this.result.id));
     return this.isLiked;
+  }
+
+  getUserPlaylist(id: number) {
+    this.result$ = this.deezerRestApiService
+      .getPlayListTracks(id)
+      .subscribe((res) => {
+        this.result = res;
+        this.type = res.type as LikedSearchResults;
+        if (this.type === 'playlist') {
+          this.typeToShow = 'search.results.playlist';
+          this.descriptionTitle = 'search.results.description.playlist.creator';
+          this.descriptionSubTitle = 'search.results.description.playlist.songs';
+        }
+        this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
+        this.title = res.title;
+        this.tracks = res.tracks.data;
+        this.descriptionTitleInfo = `: ${res.creator.name}`;
+        this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
+        this.loading = false;
+        this.isSearchResultLiked();
+      });
   }
 }

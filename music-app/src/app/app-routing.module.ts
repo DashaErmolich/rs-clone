@@ -37,6 +37,7 @@ const routes: Routes = [
       { path: 'album/:album', component: SearchResultComponent },
       { path: 'radio/:radio', component: SearchResultComponent },
       { path: 'custom-playlist', component: CustomPlaylistComponent },
+      { path: 'user-play-list/:user-playlist', component: SearchResultComponent },
     ],
   },
   {
