@@ -9,6 +9,7 @@ import { ITrackResponse } from '../../../models/api-response.models';
 import { ResponsiveService } from '../../../services/responsive.service';
 import { ICustomPlaylistModel } from '../../../models/user-model.models';
 import { StateService } from '../../../services/state.service';
+import { Limits } from '../../../enums/endpoints';
 
 const DEFAULT_PLAYLIST_NAME = 'My playlist';
 
@@ -60,6 +61,10 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
 
   isLoading = true;
 
+  limitTracks: number = Limits.tracks;
+
+  index = 0;
+
   constructor(
     private myDeezer: DeezerRestApiService,
     private responsive: ResponsiveService,
@@ -106,7 +111,7 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
 
   getSearch() {
     this.searchSubscription = this.myDeezer
-      .getSearch(this.searchValue, 0, 5).subscribe((response) => {
+      .getSearch(this.searchValue, this.index, this.limitTracks).subscribe((response) => {
         this.tracks = [];
         try {
           const foundTracks = response.data.length
@@ -136,5 +141,10 @@ export class CustomPlaylistComponent implements OnInit, OnDestroy {
     this.searchControl.setValue('');
     this.customPlaylistTracks = [];
     this.myRouter.navigate([`music/user-play-list/${playlist.id}`]);
+  }
+
+  getMore() {
+    this.limitTracks += Limits.tracks;
+    this.getSearch();
   }
 }

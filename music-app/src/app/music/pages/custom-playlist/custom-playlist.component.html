@@ -22,3 +22,6 @@
   <button [disabled]="!nameControl.valid" mat-fab extended color="primary" (click)="saveCustomPlayList()" l10nTranslate>create-custom-playlist.save-button</button>
 </div>
 <app-custom-playlist-tracks *ngIf="!isLoading" [tracks]="tracks" [customPlaylistTracks]="customPlaylistTracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall, 'tracks-container_handset': isHandset}"></app-custom-playlist-tracks>
+<div *ngIf="tracks.length" class="mt-large more-button-container">
+  <button mat-stroked-button color="primary" (click)="getMore()" class="more-btn" l10nTranslate>create-custom-playlist.more-button</button>
+</div>
