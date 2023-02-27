@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription, BehaviorSubject } from 'rxjs';
@@ -51,7 +52,12 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     private myRouter: Router,
   ) {
     super(myTheme);
+    this.setPlaceholders();
   }
+  // eslint-disable-next-line @typescript-eslint/lines-between-class-members
+  _snackbarPlaceholder = '';
+  // eslint-disable-next-line @typescript-eslint/lines-between-class-members
+  _visibility = false;
 
   ngOnInit(): void {
     this.userName$ = this.myState.userName$.subscribe((data) => {
@@ -97,7 +103,8 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     localStorage.removeItem('volume');
     this.myState.resetPlayingTrackList();
 
-    this.snackBar.open('You are logged out!', '🔑', {
+    // eslint-disable-next-line no-underscore-dangle
+    this.snackBar.open(this._snackbarPlaceholder, '🔑', {
       duration: 3000,
     });
     this.authServe.logout();
@@ -124,8 +131,20 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
     if (cookie.includes('ru-RU')) {
       this.userNamePlaceholder = 'Имя пользователя';
+      this._snackbarPlaceholder = 'Вы вышли из аккаунта!';
     } else {
       this.userNamePlaceholder = 'Username';
+      this._snackbarPlaceholder = 'You are logged out!';
     }
+
+    this.checkEmailVerification();
+  }
+
+  checkEmailVerification() {
+    setTimeout(() => {
+      if (!this.myState.user.isActivated) {
+        this._visibility = true;
+      }
+    }, 800);
   }
 }
