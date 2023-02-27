@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -6,10 +7,8 @@ import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Router } from '@angular/router';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../constants/constants';
-import { StatusCodes } from '../../enums/status-codes';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { StatusCodes } from '../../enums/status-codes';
 
 @Component({
   selector: 'app-sign-up',
@@ -18,9 +17,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SignUpComponent {
   saving = false;
+
   _usernamePlaceholder = '';
+
   _emailPlaceholder = '';
+
   _passwordPlaceholder = '';
+
   _confirmPlaceholder = '';
 
   registerForm = new FormGroup({
@@ -36,11 +39,11 @@ export class SignUpComponent {
     private localStore: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { this.setPlaceholders() }
+  ) { this.setPlaceholders(); }
 
   onSubmit(form: FormGroup) {
     this.saving = true;
-      
+
     const formValue = this.registerForm.value;
 
     if (formValue.password !== formValue.confirm) {
@@ -51,7 +54,6 @@ export class SignUpComponent {
     }
 
     if (form.valid) {
-
       if (formValue.name && formValue.email && formValue.password && formValue.confirm) {
         this.authApiServe.registration(formValue.name, formValue.email, formValue.password).pipe(
           take(1),
@@ -84,7 +86,7 @@ export class SignUpComponent {
           this.state.setAuthorized(true);
           this.state.setUserToState(res.user);
           this.state.updateState();
-          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', { 
+          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', {
             duration: 3000,
           });
           setTimeout(() => {
@@ -94,20 +96,20 @@ export class SignUpComponent {
       }
     }
   }
+
   setPlaceholders() {
-    const cookie = document.cookie;
-    
+    const { cookie } = document;
+
     if (cookie.includes('ru-RU')) {
-      this._usernamePlaceholder = 'Имя пользователя'
-      this._emailPlaceholder = 'Почта'
-      this._passwordPlaceholder = 'Пароль'
-      this._confirmPlaceholder = 'Подтвердите пароль'
-    }
-    else {
-      this._usernamePlaceholder = 'Username'
-      this._emailPlaceholder = 'E-mail'
-      this._passwordPlaceholder = 'Password'
-      this._confirmPlaceholder = 'Conform password'
+      this._usernamePlaceholder = 'Имя пользователя';
+      this._emailPlaceholder = 'Почта';
+      this._passwordPlaceholder = 'Пароль';
+      this._confirmPlaceholder = 'Подтвердите пароль';
+    } else {
+      this._usernamePlaceholder = 'Username';
+      this._emailPlaceholder = 'E-mail';
+      this._passwordPlaceholder = 'Password';
+      this._confirmPlaceholder = 'Conform password';
     }
   }
 }

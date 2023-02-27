@@ -89,6 +89,12 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  isCurrentTrackListShown!: boolean;
+
+  isCurrentTrackListShown$ = new Subscription();
+
+  isOneTrackTrackList = false;
+
   constructor(
     myTheme: ThemeService,
     private myState: StateService,
@@ -165,6 +171,11 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     this.unAudioEndedListener = this.renderer2.listen(this.myAudio.audio, 'ended', () => {
       this.playNext();
     });
+
+    this.isCurrentTrackListShown$ = this.myState.isCurrentTrackListShown$.subscribe((data) => {
+      this.isCurrentTrackListShown = data;
+    });
+    this.subscriptions.push(this.isCurrentTrackListShown$);
   }
 
   ngOnDestroy(): void {
@@ -265,11 +276,14 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     );
   }
 
-  getTrackAlbumImageSrc(): string {
+  getTrackAlbumImageSrc(isBigImageNeeded: boolean = false): string {
     const imageSrcPlaceholder = '';
     let imageSrc = imageSrcPlaceholder;
     if (this.currentTrackIndex !== null && this.trackList.length) {
       imageSrc = this.trackList[this.currentTrackIndex].album?.cover!;
+      if (isBigImageNeeded) {
+        imageSrc = this.trackList[this.currentTrackIndex].album?.cover_big!;
+      }
     }
     return imageSrc;
   }
@@ -339,6 +353,14 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     const currentIndex = this.currentTrackIndex;
     const isCurrentFirstTrack = currentIndex === 0;
     const isCurrentLastTrack = currentIndex === this.trackList.length - 1;
+    this.isOneTrackTrackList = false;
+
+    if (isCurrentFirstTrack && isCurrentLastTrack) {
+      this.controlsState.isFirstTrack = true;
+      this.controlsState.isLastTrack = true;
+      this.isOneTrackTrackList = true;
+      return;
+    }
 
     if (this.controlsState.isRepeatAllOn) {
       this.controlsState.isFirstTrack = false;
@@ -361,14 +383,21 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   toggleEqualizerVisibility() {
     this.myState.setEqualizerVisibility(!this.isEqualizerShown);
+    if (this.isCurrentTrackListShown && this.isEqualizerShown) {
+      this.toggleCurrentTrackListVisibility();
+    }
   }
 
   isTrackLiked(): boolean {
-    const index = this.likedTracks
-      .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
-    const isLiked = index >= 0;
-    this.controlsState.isLiked = isLiked;
-    return index >= 0;
+    let result = false;
+    if (this.trackList.length && this.currentTrackIndex !== null) {
+      const index = this.likedTracks
+        .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
+      const isLiked = index >= 0;
+      this.controlsState.isLiked = isLiked;
+      result = index >= 0;
+    }
+    return result;
   }
 
   likeTrack(): void {
@@ -377,6 +406,13 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
       this.myState.setLikedTrack(this.trackList[this.currentTrackIndex!].id!);
     } else {
       this.myState.removeLikedTrack(this.trackList[this.currentTrackIndex!].id!);
+    }
+  }
+
+  toggleCurrentTrackListVisibility() {
+    this.myState.setCurrentTrackListVisibility(!this.isCurrentTrackListShown);
+    if (this.isCurrentTrackListShown && this.isEqualizerShown) {
+      this.toggleEqualizerVisibility();
     }
   }
 }

@@ -32,7 +32,7 @@
 }
 
 .radio-title {
-  z-index: 10; 
+  z-index: $z-index-radio-title;
   @include adaptive-font(22, 16);
   line-height: 120%;
   hyphens: auto;

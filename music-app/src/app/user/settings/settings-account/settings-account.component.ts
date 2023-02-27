@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { userIconsData } from '../../../../assets/user-icons/user-icons';
 import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
@@ -10,7 +11,6 @@ import { StateService } from '../../../services/state.service';
 import { ThemeService } from '../../../services/theme.service';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../../constants/constants';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-settings-account',
@@ -89,7 +89,10 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
     this.muAuth.logout();
-    
+    localStorage.removeItem('trackList');
+    localStorage.removeItem('volume');
+    this.myState.resetPlayingTrackList();
+
     this.snackBar.open('You are logged out!', '🔑', {
       duration: 3000,
     });
@@ -98,7 +101,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
       this.router.navigate(['welcome']);
     }, 1000);
   }
-  
+
   updateUserData() {
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);

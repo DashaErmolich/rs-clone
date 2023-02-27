@@ -27,7 +27,5 @@
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate class="title-h2">library.custom-playlists</h2>
-  <app-custom-playlists [customPlaylists]="customPlaylists" class="result-container"
-    [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-custom-playlists>
+  <app-created-playlists [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"></app-created-playlists>
 </div>

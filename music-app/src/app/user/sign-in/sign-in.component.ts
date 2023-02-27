@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -6,7 +7,7 @@ import { AuthorizationApiService } from 'src/app/services/authorization-api.serv
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { StatusCodes } from '../../enums/status-codes';
 
 @Component({
@@ -16,7 +17,9 @@ import { StatusCodes } from '../../enums/status-codes';
 })
 export class SignInComponent {
   saving = false;
+
   _emailPlaceholder = '';
+
   _passwordPlaceholder = '';
 
   loginForm = new FormGroup({
@@ -30,14 +33,13 @@ export class SignInComponent {
     private localStore: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { this.setPlaceholders() }
+  ) { this.setPlaceholders(); }
 
   onSubmit(form: FormGroup) {
     this.saving = true;
     const formValue = this.loginForm.value;
 
     if (form.valid) {
-
       if (formValue.email && formValue.password) {
         this.authApiServe.login(formValue.email, formValue.password).pipe(
           take(1),
@@ -45,6 +47,7 @@ export class SignInComponent {
             this.saving = false;
             if (err instanceof HttpErrorResponse && err.status === StatusCodes.BadRequest) {
               const errReason = err.error.message.split(' ')[1];
+              // eslint-disable-next-line default-case
               switch (errReason) {
                 case 'email': {
                   const emailField = this.loginForm.get('email');
@@ -72,7 +75,7 @@ export class SignInComponent {
           this.snackBar.open('Successful login! Welcome', '✅', {
             duration: 3000,
           });
-          
+
           setTimeout(() => {
             this.router.navigate(['music/home']);
           }, 1000);
@@ -82,15 +85,14 @@ export class SignInComponent {
   }
 
   setPlaceholders() {
-    const cookie = document.cookie;
-    
+    const { cookie } = document;
+
     if (cookie.includes('ru-RU')) {
-      this._emailPlaceholder = 'Почта'
-      this._passwordPlaceholder = 'Пароль'
-    }
-    else {
-      this._emailPlaceholder = 'E-mail'
-      this._passwordPlaceholder = 'Password'
+      this._emailPlaceholder = 'Почта';
+      this._passwordPlaceholder = 'Пароль';
+    } else {
+      this._emailPlaceholder = 'E-mail';
+      this._passwordPlaceholder = 'Password';
     }
   }
 }

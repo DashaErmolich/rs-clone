@@ -231,4 +231,15 @@ export class AudioService {
   setGainAudioFilter(audioFilterIndex: number, gainValue: number): void {
     this.audioFilters[audioFilterIndex].gain.value = gainValue;
   }
+
+  resetState() {
+    this.state$.next(this.defaultState);
+    this.isTrackReady$.next(false);
+    this.isPlay$.next(false);
+    this.isPause$.next(false);
+    this.audio.pause();
+    this.isMute$.next(this.defaultState.volume === 0);
+    this.state$.next(this.defaultState);
+    this.preset = null;
+  }
 }
