@@ -12,8 +12,6 @@ import { CookieModule } from 'ngx-cookie';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import { L10nTranslationModule, L10nIntlModule, } from 'angular-l10n';
-import { CookieModule } from 'ngx-cookie';
 
 @NgModule({
   declarations: [
