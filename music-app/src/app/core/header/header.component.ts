@@ -62,7 +62,7 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   isLoadingSubscription = new Subscription();
 
-  searchInputPlaceholder = 'core.header.search-input-placeholder';
+  searchPlaceholder = '';
 
   constructor(
     myTheme: ThemeService,
@@ -153,6 +153,8 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
     });
 
     this.subscriptions.push(this.isLoadingSubscription);
+
+    this.setPlaceholders();
   }
 
   ngOnDestroy(): void {
@@ -161,5 +163,15 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   toggleSearchInputVisibility() {
     this.myState.setSearchInputVisibility(!this.isSearchInputShown);
+  }
+
+  setPlaceholders() {
+    const { cookie } = document;
+
+    if (cookie.includes('ru-RU')) {
+      this.searchPlaceholder = 'Поиск';
+    } else {
+      this.searchPlaceholder = 'Search';
+    }
   }
 }

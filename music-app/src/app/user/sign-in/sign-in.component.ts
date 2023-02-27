@@ -39,17 +39,18 @@ export class SignInComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private responsive: ResponsiveService,
-  ) { this.setPlaceholders(); }
+  ) { }
 
   ngOnInit(): void {
     this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
       this.isHandset = data;
     });
+    this.setPlaceholders();
   }
 
   ngOnDestroy(): void {
     this.isHandset$.unsubscribe();
- }
+  }
 
   onSubmit(form: FormGroup) {
     this.saving = true;

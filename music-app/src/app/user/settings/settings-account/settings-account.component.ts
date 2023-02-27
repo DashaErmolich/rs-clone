@@ -39,6 +39,8 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   userNameFormControl!: FormControl;
 
+  userNamePlaceholder = '';
+
   constructor(
     private myState: StateService,
     private snackBar: MatSnackBar,
@@ -66,6 +68,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.userIcon$ = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
+    this.setPlaceholders();
   }
 
   ngOnDestroy(): void {
@@ -114,5 +117,15 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
       this.updateUserData();
     }
     this.myState.setUserData(this.userName, this.userIconId);
+  }
+
+  setPlaceholders() {
+    const { cookie } = document;
+
+    if (cookie.includes('ru-RU')) {
+      this.userNamePlaceholder = 'Имя пользователя';
+    } else {
+      this.userNamePlaceholder = 'Username';
+    }
   }
 }
