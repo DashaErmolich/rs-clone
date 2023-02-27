@@ -130,12 +130,9 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
   }
   checkEmailVerification() {
       setTimeout(() => {
-        console.log(this.myState.user);
-        console.log(this.myState.user.isActivated);
-        
         if (!this.myState.user.isActivated) {
           this._visibility = true;
         }
-      },500)
+      },800)
   }
 }

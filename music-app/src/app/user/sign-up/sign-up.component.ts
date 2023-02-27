@@ -44,7 +44,6 @@ export class SignUpComponent {
   ) { this.setPlaceholders(); }
 
   onSubmit(form: FormGroup) {
-    this.saving = true;
 
     const formValue = this.registerForm.value;
 
@@ -56,6 +55,7 @@ export class SignUpComponent {
     }
 
     if (form.valid) {
+      this.saving = true;
       if (formValue.name && formValue.email && formValue.password && formValue.confirm) {
         this.authApiServe.registration(formValue.name, formValue.email, formValue.password).pipe(
           take(1),
@@ -63,6 +63,8 @@ export class SignUpComponent {
             this.saving = false;
             if (err instanceof HttpErrorResponse) {
               if (err.status === StatusCodes.BadRequest) {
+                
+                
                 const errReason = err.error.message.split(' ')[0];
                 const emailField = this.registerForm.get('email');
                 switch (errReason) {
