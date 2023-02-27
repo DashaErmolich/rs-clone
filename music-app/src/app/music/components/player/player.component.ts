@@ -93,6 +93,8 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   isCurrentTrackListShown$ = new Subscription();
 
+  isOneTrackTrackList = false;
+
   constructor(
     myTheme: ThemeService,
     private myState: StateService,
@@ -348,15 +350,15 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
   }
 
   checkTrackPosition() {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const currentIndex = this.currentTrackIndex;
     const isCurrentFirstTrack = currentIndex === 0;
     const isCurrentLastTrack = currentIndex === this.trackList.length - 1;
+    this.isOneTrackTrackList = false;
 
     if (isCurrentFirstTrack && isCurrentLastTrack) {
       this.controlsState.isFirstTrack = true;
       this.controlsState.isLastTrack = true;
+      this.isOneTrackTrackList = true;
       return;
     }
 
@@ -381,6 +383,9 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   toggleEqualizerVisibility() {
     this.myState.setEqualizerVisibility(!this.isEqualizerShown);
+    if (this.isCurrentTrackListShown && this.isEqualizerShown) {
+      this.toggleCurrentTrackListVisibility();
+    }
   }
 
   isTrackLiked(): boolean {
@@ -406,5 +411,8 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
 
   toggleCurrentTrackListVisibility() {
     this.myState.setCurrentTrackListVisibility(!this.isCurrentTrackListShown);
+    if (this.isCurrentTrackListShown && this.isEqualizerShown) {
+      this.toggleEqualizerVisibility();
+    }
   }
 }

@@ -33,6 +33,7 @@
           *ngIf="!isSmall"
           mat-mini-fab
           color="basic"
+          [disabled]="isOneTrackTrackList"
           (click)="shuffleTracks()"
         >
           <mat-icon>shuffle</mat-icon>
@@ -126,6 +127,7 @@
           *ngIf="!isSmall"
           mat-mini-fab
           [color]="controlsState.isRepeatAllOn ? 'primary' : 'basic'"
+          [disabled]="isOneTrackTrackList"
           (click)="toggleRepeatAll()"
         >
           <mat-icon>repeat</mat-icon>
@@ -141,16 +143,16 @@
         <button *ngIf="isSmall" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
         </button>
-        <button *ngIf="isHandset" mat-mini-fab color="basic" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
+        <button *ngIf="isHandset" mat-mini-fab [color]="isCurrentTrackListShown ? 'primary' : 'basic'" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
           <mat-icon>{{ isCurrentTrackListShown ? 'arrow_drop_down' : 'arrow_drop_up' }}</mat-icon>
         </button>
         <!-- MENU START -->
         <mat-menu #menu="matMenu">
-          <button mat-menu-item color="basic" (click)="shuffleTracks()">
+          <button mat-menu-item color="basic" (click)="shuffleTracks()" [disabled]="isOneTrackTrackList">
             <mat-icon>shuffle</mat-icon>
             <span l10nTranslate>music.player.menu.shuffle</span>
           </button>
-          <button mat-menu-item (click)="toggleRepeatAll()">
+          <button mat-menu-item (click)="toggleRepeatAll()" [disabled]="isOneTrackTrackList">
             <mat-icon
               [ngClass]="
                 controlsState.isRepeatAllOn ? getColorClassName() : ''
@@ -227,7 +229,7 @@
           />
         </mat-slider>
       </div>
-      <button mat-mini-fab color="basic" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
+      <button mat-mini-fab [color]="isCurrentTrackListShown ? 'primary' : 'basic'" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
         <mat-icon>{{ isCurrentTrackListShown ? 'arrow_drop_down' : 'arrow_drop_up' }}</mat-icon>
       </button>
     </div>
