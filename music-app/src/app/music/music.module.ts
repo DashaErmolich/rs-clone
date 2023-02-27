@@ -44,6 +44,7 @@ import { CurrentTrackListComponent } from './components/current-track-list/curre
 import { CustomPlaylistComponent } from './pages/custom-playlist/custom-playlist.component';
 import { CustomPlaylistTracksComponent } from './components/custom-playlist-tracks/custom-playlist-tracks.component';
 import { CustomPlaylistsComponent } from './components/custom-playlists/custom-playlists.component';
+import { CreatedPlaylistsComponent } from './pages/created-playlists/created-playlists.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { CustomPlaylistsComponent } from './components/custom-playlists/custom-p
     CustomPlaylistComponent,
     CustomPlaylistTracksComponent,
     CustomPlaylistsComponent,
+    CreatedPlaylistsComponent,
   ],
   imports: [
     CommonModule,
