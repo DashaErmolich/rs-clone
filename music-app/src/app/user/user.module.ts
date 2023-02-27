@@ -15,6 +15,8 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor';
 import { ResponseInterceptor } from '../interceptors/responce.interceptor';
 
 import { SettingsModule } from './settings/settings.module';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { SettingsModule } from './settings/settings.module';
     L10nIntlModule,
     MatIconModule,
     MatButtonModule,
+    MatDividerModule,
   ],
   exports: [
     SignInComponent,

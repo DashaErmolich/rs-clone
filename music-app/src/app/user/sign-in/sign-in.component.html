@@ -1,31 +1,33 @@
-<div class="container content-wrapper container-center">
-  <h1 class="sign-in__h1" l10nTranslate>sign-in.greetings</h1>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" class="example-form">
-
-    <mat-form-field class="example-full-width">
-      <input matInput [placeholder]="_emailPlaceholder" formControlName="email" name="email">
-      <mat-error *ngIf="loginForm.get('email')!.hasError('required')" l10nTranslate>sign-in.validators.required</mat-error>
-      <mat-error *ngIf="loginForm.get('email')!.hasError('email')" l10nTranslate>sign-in.validators.email</mat-error>
-      <mat-error *ngIf="loginForm.get('email')!.errors?.['emailError']" l10nTranslate>
-        {{ loginForm.get('email')!.errors?.['emailError'] }}
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width">
-      <input matInput [placeholder]="_passwordPlaceholder" formControlName="password" type="password">
-      <mat-error *ngIf="loginForm.get('password')!.hasError('required')" l10nTranslate>sign-in.validators.required</mat-error>
-      <mat-error *ngIf="loginForm.get('password')!.hasError('pattern')" l10nTranslate>sign-in.validators.passwordPattern</mat-error>
-      <mat-error *ngIf="loginForm.get('password')!.errors?.['passwordError']" l10nTranslate>
-        {{ loginForm.get('password')!.errors?.['passwordError'] }}
-      </mat-error>
-    </mat-form-field>
-
-    <button mat-flat-button color="primary" class="sign-in__form-btn" [disabled]="!loginForm.valid || saving" l10nTranslate>sign-in.login-btn</button>
-    <hr class="sign-in__hr">
-  </form>
-
-  <div class="sign-in__also">    
-    <h3 class="sign-in__h3" l10nTranslate>sign-in.also</h3>
-    <button class="sign-in__also-btn" mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active" [disabled]="saving" l10nTranslate>sign-in.register-btn</button>
+<div class="content-wrapper height-100" [ngClass]="{'content-wrapper_handset': isHandset}">
+  <div class="scrollable-container height-100 container">
+    <div class="form-container flex-column">
+      <h1 class="text-center" l10nTranslate>sign-in.greetings</h1>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
+        <div class="form-fields-wrapper">
+          <mat-form-field>
+            <input matInput [placeholder]="_emailPlaceholder" formControlName="email" name="email">
+            <mat-error *ngIf="loginForm.get('email')!.hasError('required')" l10nTranslate>sign-in.validators.required</mat-error>
+            <mat-error *ngIf="loginForm.get('email')!.hasError('email')" l10nTranslate>sign-in.validators.email</mat-error>
+            <mat-error *ngIf="loginForm.get('email')!.errors?.['emailError']" l10nTranslate>
+              {{ loginForm.get('email')!.errors?.['emailError'] }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]="_passwordPlaceholder" formControlName="password" type="password">
+            <mat-error *ngIf="loginForm.get('password')!.hasError('required')" l10nTranslate>sign-in.validators.required</mat-error>
+            <mat-error *ngIf="loginForm.get('password')!.hasError('pattern')" l10nTranslate>sign-in.validators.passwordPattern</mat-error>
+            <mat-error *ngIf="loginForm.get('password')!.errors?.['passwordError']" l10nTranslate>
+              {{ loginForm.get('password')!.errors?.['passwordError'] }}
+            </mat-error>
+          </mat-form-field>
+          <button mat-flat-button color="primary" class="form-submit-button" [disabled]="!loginForm.valid || saving" l10nTranslate>sign-in.login-btn</button>
+        </div>
+      </form>
+      <div class="width-100">
+        <mat-divider></mat-divider>
+      </div>
+      <h3 class="text-center" l10nTranslate>sign-in.also</h3>
+      <button class="" mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active" [disabled]="saving" l10nTranslate>sign-in.register-btn</button>
+  </div>
   </div>
 </div>
