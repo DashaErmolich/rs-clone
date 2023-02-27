@@ -103,6 +103,7 @@
       "album": "Альбом",
       "playlist": "Плейлист",
       "radio": "Радио",
+      "custom-playlist": "Ваш Плейлист",
       "description": {
         "playlist": {
           "creator": "Создатель",
@@ -124,12 +125,25 @@
     "albums": "Ваши любимые альбомы",
     "playlists": "Ваши любимые плейлисты",
     "tracks": "Ваши любимые песни",
-    "radios": "Ваши любимые радиостанции"
+    "radios": "Ваши любимые радиостанции",
+    "custom-playlists": "Ваши созданные плейлисты"
   },
   "core": {
     "header": {
       "search-input-placeholder": "Поиск"
     }
+  },
+  "create-custom-playlist": {
+    "playlist-title": "Введите имя плейлиста",
+    "search-title": "Найдите треки",
+    "playlistTitleLabel": "Имя плейлиста",
+    "searchInputLabel": "Поиск",
+    "errors-messages": {
+      "required": "Поле не может быть пустым",
+      "length": "Имя плейлиста должно быть до 20 символов"
+    },
+    "save-button": "Сохранить плейлист",
+    "more-button": "Больше треков"
   },
   "sign-in": {
     "greetings": "Войдите в приложение чтобы продолжить",

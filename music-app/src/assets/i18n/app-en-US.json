@@ -102,6 +102,7 @@
       "album": "Album",
       "playlist": "Playlist",
       "radio": "Radio",
+      "custom-playlist": "User Playlist",
       "description": {
         "playlist": {
           "creator": "Creator",
@@ -115,20 +116,35 @@
       "subscription": {
         "subscribe": "Subscribe",
         "subscribed": "Subscribed"
-      }
-    }
+      },
+      "delete-button": "Delete"
+    },
+    "more-button": "Get more"
   },
   "library": {
     "artists": "Your favorite artists",
     "albums": "Your favorite albums",
     "playlists": "Your favorite playlists",
     "tracks": "Your favorite tracks",
-    "radios": "Your favorite radios"
+    "radios": "Your favorite radios",
+    "custom-playlists": "Your custom playlists"
   },
   "core": {
     "header": {
       "search-input-placeholder": "Search"
     }
+  },
+  "create-custom-playlist": {
+    "playlist-title": "Enter playlist name",
+    "search-title": "Search tracks",
+    "playlistTitleLabel": "Playlist name",
+    "searchInputLabel": "Search",
+    "errors-messages": {
+      "required": "Playlist name is required",
+      "length": "Playlist name must be up to 20 symbols"
+    },
+    "save-button": "Save playlist",
+    "more-button": "Get more tracks"
   },
   "sign-in": {
     "greetings": "To continue, log in to RS Music App",

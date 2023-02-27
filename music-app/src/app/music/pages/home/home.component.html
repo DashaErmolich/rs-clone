@@ -1,35 +1,41 @@
-<h1 *ngFor="let greeting of greetings" l10nTranslate>
+<h1 *ngFor="let greeting of greetings" l10nTranslate class="title-h2">
   <span *ngIf="isThisTimeOfDay(greeting.hoursStart, greeting.hoursEnd)">
     {{ greeting.message }}
   </span>
 </h1>
 
 <div class="mb-large">
-  <h2 l10nTranslate>home.genres</h2>
-  <app-genres [genres]="genres" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-genres>
+  <h2 l10nTranslate class="title-h2">home.genres</h2>
+  <app-genres [genres]="genres" class="suggestions-container"
+    [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-genres>
 </div>
 
 <div class="mb-large">
-    <h2 l10nTranslate>{{ chartRecommendations.tracks.title }}</h2>
-    <app-tracks [tracks]="chartRecommendations.tracks.data" class="suggestions-tracks" [ngClass]="{'suggestions-tracks_small': isSmall}"></app-tracks>
+  <h2 l10nTranslate class="title-h2">{{ chartRecommendations.tracks.title }}</h2>
+  <app-tracks [tracks]="chartRecommendations.tracks.data" class="suggestions-tracks"
+    [ngClass]="{'suggestions-tracks_small': isSmall}"></app-tracks>
 </div>
 
 <div class="mb-large">
-    <h2 l10nTranslate>{{ chartRecommendations.albums.title }}</h2>
-    <app-albums [albums]="chartRecommendations.albums.data" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-albums>
+  <h2 l10nTranslate class="title-h2">{{ chartRecommendations.albums.title }}</h2>
+  <app-albums [albums]="chartRecommendations.albums.data" class="suggestions-container"
+    [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-albums>
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate>{{ chartRecommendations.playlists.title }}</h2>
-  <app-playlists [playlists]="chartRecommendations.playlists.data" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-playlists>
+  <h2 l10nTranslate class="title-h2">{{ chartRecommendations.playlists.title }}</h2>
+  <app-playlists [playlists]="chartRecommendations.playlists.data" class="suggestions-container"
+    [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-playlists>
 </div>
 
 <div class="mb-large">
-    <h2 l10nTranslate>{{ chartRecommendations.artists.title }}</h2>
-    <app-artists [artists]="chartRecommendations.artists.data" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-artists>
+  <h2 l10nTranslate class="title-h2">{{ chartRecommendations.artists.title }}</h2>
+  <app-artists [artists]="chartRecommendations.artists.data" class="suggestions-container"
+    [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-artists>
 </div>
 
 <div class="mb-large">
-  <h2 l10nTranslate>{{ chartRecommendations.radios.title }}</h2>
-  <app-radios [radios]="chartRecommendations.radios.data" class="suggestions-container" [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-radios>
+  <h2 l10nTranslate class="title-h2">{{ chartRecommendations.radios.title }}</h2>
+  <app-radios [radios]="chartRecommendations.radios.data" class="suggestions-container"
+    [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-radios>
 </div>

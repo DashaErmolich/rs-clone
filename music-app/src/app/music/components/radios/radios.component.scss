@@ -33,4 +33,11 @@
 
 .radio-title {
   z-index: 10; 
+  @include adaptive-font(22, 16);
+  line-height: 120%;
+  hyphens: auto;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -40,6 +40,9 @@ import { GenresComponent } from './components/genres/genres.component';
 import { LikedTracksComponent } from './pages/liked-tracks/liked-tracks.component';
 import { SearchResultComponent } from './pages/search-result/search-result.component';
 import { RadiosComponent } from './components/radios/radios.component';
+import { CustomPlaylistComponent } from './pages/custom-playlist/custom-playlist.component';
+import { CustomPlaylistTracksComponent } from './components/custom-playlist-tracks/custom-playlist-tracks.component';
+import { CustomPlaylistsComponent } from './components/custom-playlists/custom-playlists.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,9 @@ import { RadiosComponent } from './components/radios/radios.component';
     LikedTracksComponent,
     SearchResultComponent,
     RadiosComponent,
+    CustomPlaylistComponent,
+    CustomPlaylistTracksComponent,
+    CustomPlaylistsComponent,
   ],
   imports: [
     CommonModule,
@@ -84,6 +90,7 @@ import { RadiosComponent } from './components/radios/radios.component';
     MatFormFieldModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    ReactiveFormsModule,
   ],
   exports: [
     MusicPageComponent,

@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { serverUrl } from '../constants/constants';
+import { SERVER_PROD_URL } from '../constants/constants';
 import { StatusCodes } from '../enums/status-codes';
 import { RefreshRequiredError } from '../errors/refreshRequired.error';
 import { AuthorizationApiService } from '../services/authorization-api.service';
@@ -25,7 +25,7 @@ export class ResponseInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    if (!req.url.includes(serverUrl)) {
+    if (!req.url.includes(SERVER_PROD_URL)) {
       return next.handle(req);
     }
 
