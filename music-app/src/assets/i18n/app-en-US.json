@@ -39,10 +39,9 @@
     }
   },
   "welcome": {
-    "greeting": "Welcome to RS Music App"
-  },
-  "sign-in": {
-    "submit-btn": "Submit"
+    "greeting": "Welcome to RS Music App",
+    "sign-in": "Log In",
+    "sign-up": "Sign Up"
   },
   "not-found": {
     "title": "Page not found",
@@ -146,5 +145,47 @@
     },
     "save-button": "Save playlist",
     "more-button": "Get more tracks"
+  },
+  "sign-in": {
+    "greetings": "To continue, log in to RS Music App",
+    "login-btn": "Log In",
+    "also": "Don't have an account?",
+    "register-btn": "Sign Up",
+    "form-fields": {
+      "email": "E-mail",
+      "password": "Password"
+    },
+    "validators": {
+      "required": "This field is required",
+      "email": "Must be your e-mail address",
+      "passwordPattern": "Must be between 6 to 16 characters and a combination of letters and numbers"
+    },
+    "errors": {
+      "emailError": "Incorrect email",
+      "passwordError": "Incorrect password"
+    }
+  },
+  "sign-up": {
+    "greetings": "Sign up for free to start listening",
+    "register-btn": "Sign Up",
+    "also": "Have an account?",
+    "login-btn": "Log In",
+    "form-fields": {
+      "username": "Username",
+      "email": "E-mail",
+      "password": "Password",
+      "conform": "Conform password"
+    },
+    "validators": {
+      "required": "This field is required",
+      "email": "Must be your e-mail address",
+      "usernamePattern": "Must be between 6 to 16 characters",
+      "passwordPattern": "Must be between 6 to 16 characters and a combination of letters and numbers"
+    },
+    "errors": {
+      "confirmError": "Passwords does not match",
+      "serverError": "Email has already taken",
+      "validationError": "Incorrect e-mail"
+    }
   }
 }

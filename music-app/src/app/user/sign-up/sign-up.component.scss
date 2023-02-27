@@ -30,3 +30,9 @@ input.example-right-align {
 .mt-30 {
   margin-top: 30px;
 }
+.container-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
