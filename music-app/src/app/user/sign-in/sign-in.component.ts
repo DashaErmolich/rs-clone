@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -6,7 +7,7 @@ import { AuthorizationApiService } from 'src/app/services/authorization-api.serv
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { StatusCodes } from '../../enums/status-codes';
 import { ResponsiveService } from '../../services/responsive.service';
 
@@ -17,7 +18,9 @@ import { ResponsiveService } from '../../services/responsive.service';
 })
 export class SignInComponent implements OnInit, OnDestroy {
   saving = false;
+
   _emailPlaceholder = '';
+
   _passwordPlaceholder = '';
 
   loginForm = new FormGroup({
@@ -36,7 +39,7 @@ export class SignInComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private responsive: ResponsiveService,
-  ) { this.setPlaceholders() }
+  ) { this.setPlaceholders(); }
 
   ngOnInit(): void {
     this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
@@ -53,7 +56,6 @@ export class SignInComponent implements OnInit, OnDestroy {
     const formValue = this.loginForm.value;
 
     if (form.valid) {
-
       if (formValue.email && formValue.password) {
         this.authApiServe.login(formValue.email, formValue.password).pipe(
           take(1),
@@ -61,6 +63,7 @@ export class SignInComponent implements OnInit, OnDestroy {
             this.saving = false;
             if (err instanceof HttpErrorResponse && err.status === StatusCodes.BadRequest) {
               const errReason = err.error.message.split(' ')[1];
+              // eslint-disable-next-line default-case
               switch (errReason) {
                 case 'email': {
                   const emailField = this.loginForm.get('email');
@@ -98,15 +101,14 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   setPlaceholders() {
-    const cookie = document.cookie;
+    const { cookie } = document;
 
     if (cookie.includes('ru-RU')) {
-      this._emailPlaceholder = 'Почта'
-      this._passwordPlaceholder = 'Пароль'
-    }
-    else {
-      this._emailPlaceholder = 'E-mail'
-      this._passwordPlaceholder = 'Password'
+      this._emailPlaceholder = 'Почта';
+      this._passwordPlaceholder = 'Пароль';
+    } else {
+      this._emailPlaceholder = 'E-mail';
+      this._passwordPlaceholder = 'Password';
     }
   }
 }

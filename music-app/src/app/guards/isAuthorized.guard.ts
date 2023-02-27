@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot,
 } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { StateService } from '../services/state.service';
 import { AuthorizationService } from '../services/authorization.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate, CanActivateChild {

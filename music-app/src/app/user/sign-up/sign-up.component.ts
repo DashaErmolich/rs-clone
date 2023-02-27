@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -6,12 +7,10 @@ import { StateService } from 'src/app/services/state.service';
 import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Router } from '@angular/router';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../constants/constants';
-import { StatusCodes } from '../../enums/status-codes';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ResponsiveService } from '../../services/responsive.service';
 import { Subscription } from 'rxjs';
+import { StatusCodes } from '../../enums/status-codes';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -20,9 +19,13 @@ import { Subscription } from 'rxjs';
 })
 export class SignUpComponent implements OnInit, OnDestroy {
   saving = false;
+
   _usernamePlaceholder = '';
+
   _emailPlaceholder = '';
+
   _passwordPlaceholder = '';
+
   _confirmPlaceholder = '';
 
   registerForm = new FormGroup({
@@ -43,7 +46,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private responsive: ResponsiveService,
-  ) { this.setPlaceholders() }
+  ) { this.setPlaceholders(); }
 
   ngOnInit(): void {
     this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
@@ -68,7 +71,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }
 
     if (form.valid) {
-
       if (formValue.name && formValue.email && formValue.password && formValue.confirm) {
         this.authApiServe.registration(formValue.name, formValue.email, formValue.password).pipe(
           take(1),
@@ -111,20 +113,20 @@ export class SignUpComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   setPlaceholders() {
-    const cookie = document.cookie;
+    const { cookie } = document;
 
     if (cookie.includes('ru-RU')) {
-      this._usernamePlaceholder = 'Имя пользователя'
-      this._emailPlaceholder = 'Почта'
-      this._passwordPlaceholder = 'Пароль'
-      this._confirmPlaceholder = 'Подтвердите пароль'
-    }
-    else {
-      this._usernamePlaceholder = 'Username'
-      this._emailPlaceholder = 'E-mail'
-      this._passwordPlaceholder = 'Password'
-      this._confirmPlaceholder = 'Conform password'
+      this._usernamePlaceholder = 'Имя пользователя';
+      this._emailPlaceholder = 'Почта';
+      this._passwordPlaceholder = 'Пароль';
+      this._confirmPlaceholder = 'Подтвердите пароль';
+    } else {
+      this._usernamePlaceholder = 'Username';
+      this._emailPlaceholder = 'E-mail';
+      this._passwordPlaceholder = 'Password';
+      this._confirmPlaceholder = 'Conform password';
     }
   }
 }
