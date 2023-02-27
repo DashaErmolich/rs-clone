@@ -2,6 +2,7 @@ import {
   HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -17,6 +18,7 @@ export class ResponseInterceptor implements HttpInterceptor {
     private authService: AuthorizationApiService,
     private router: Router,
     private localStore: LocalStorageService,
+    private snackBar: MatSnackBar,
   ) {}
 
   intercept(
@@ -36,8 +38,13 @@ export class ResponseInterceptor implements HttpInterceptor {
               this.authService.refresh().pipe(take(1)).subscribe((res) => {
                 if (res.accessToken) this.localStore.setToken(res.accessToken);
               });
-              throw new RefreshRequiredError('Users data refresh required');
-            } else this.router.navigate(['welcome']);
+              throw new RefreshRequiredError('User data refresh required');
+            } else {
+              this.snackBar.open('Access denied! Please register or login', '❌', {
+                duration: 3000,
+              });
+              this.router.navigate(['welcome']);
+            }
           }
         },
       }),

@@ -31,9 +31,9 @@ const equalizerPresetsData: Promise<IEqualizerPresetsData> = import('../../../..
 const manualEqualizerSettingsTitle = 'manual';
 
 const canvasSmallStartMatch = window.matchMedia('(max-width: 1380px');
-const canvasSmallEndMatch = window.matchMedia('(min-width: 601px');
+const canvasSmallEndMatch = window.matchMedia('(min-width: 786px');
 
-const canvasHandsetBreakpointMatch = window.matchMedia('(max-width: 600px');
+const canvasHandsetBreakpointMatch = window.matchMedia('(max-width: 785px');
 
 @Component({
   selector: 'app-equalizer',

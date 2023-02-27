@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import {
-  ActivatedRoute, NavigationStart, Router,
+  ActivatedRoute, NavigationSkipped, NavigationStart, Router,
 } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -98,7 +98,15 @@ export class HeaderComponent extends ThemeHelper implements OnInit, OnDestroy {
     this.subscriptions.push(this.searchControlSubscription);
 
     this.routerEventsSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
+      if (event instanceof NavigationSkipped && !this.myState.isAuthorized) {
+        const { url } = event;
+
+        if (url.includes('/welcome')) {
+          this.isUserDataShown = false;
+        } else {
+          this.isUserDataShown = true;
+        }
+      } else if (event instanceof NavigationStart) {
         const { url } = event;
 
         if (url.includes('/music/search')) {

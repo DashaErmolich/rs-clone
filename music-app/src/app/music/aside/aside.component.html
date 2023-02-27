@@ -19,11 +19,11 @@
     <span l10nTranslate>aside.buttons.create-play-list</span>
   </a>
   <a mat-button color="basic" routerLink="/music/liked-tracks" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
-    <mat-icon color="primary">favorite</mat-icon>
+    <mat-icon color="warn">favorite</mat-icon>
     <span l10nTranslate>aside.buttons.liked-songs</span>
   </a>
-  <a mat-button color="basic" routerLink="/music/library" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
-    <mat-icon color="warn">favorite</mat-icon>
-    <span l10nTranslate>aside.buttons.liked-radio</span>
+  <a mat-button color="basic" routerLink="/music/created-playlists" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon color="accent">queue_music</mat-icon>
+    <span l10nTranslate>aside.buttons.custom-playlists</span>
   </a>
 </div>

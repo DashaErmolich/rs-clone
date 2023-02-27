@@ -40,9 +40,11 @@ import { GenresComponent } from './components/genres/genres.component';
 import { LikedTracksComponent } from './pages/liked-tracks/liked-tracks.component';
 import { SearchResultComponent } from './pages/search-result/search-result.component';
 import { RadiosComponent } from './components/radios/radios.component';
+import { CurrentTrackListComponent } from './components/current-track-list/current-track-list.component';
 import { CustomPlaylistComponent } from './pages/custom-playlist/custom-playlist.component';
 import { CustomPlaylistTracksComponent } from './components/custom-playlist-tracks/custom-playlist-tracks.component';
 import { CustomPlaylistsComponent } from './components/custom-playlists/custom-playlists.component';
+import { CreatedPlaylistsComponent } from './pages/created-playlists/created-playlists.component';
 
 @NgModule({
   declarations: [
@@ -63,9 +65,11 @@ import { CustomPlaylistsComponent } from './components/custom-playlists/custom-p
     LikedTracksComponent,
     SearchResultComponent,
     RadiosComponent,
+    CurrentTrackListComponent,
     CustomPlaylistComponent,
     CustomPlaylistTracksComponent,
     CustomPlaylistsComponent,
+    CreatedPlaylistsComponent,
   ],
   imports: [
     CommonModule,

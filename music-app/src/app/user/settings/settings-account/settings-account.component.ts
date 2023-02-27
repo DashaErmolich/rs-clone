@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { userIconsData } from '../../../../assets/user-icons/user-icons';
 import { IUserIcons } from '../../../models/user-icons.models';
 import { ThemeHelper } from '../../../helpers/theme-helper';
@@ -40,6 +41,9 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   constructor(
     private myState: StateService,
+    private snackBar: MatSnackBar,
+    private authServe: AuthorizationService,
+    private router: Router,
     myTheme: ThemeService,
     private muAuth: AuthorizationService,
     private myRouter: Router,
@@ -85,7 +89,17 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
     this.muAuth.logout();
-    this.myRouter.navigate(['welcome']);
+    localStorage.removeItem('trackList');
+    localStorage.removeItem('volume');
+    this.myState.resetPlayingTrackList();
+
+    this.snackBar.open('You are logged out!', '🔑', {
+      duration: 3000,
+    });
+    this.authServe.logout();
+    setTimeout(() => {
+      this.router.navigate(['welcome']);
+    }, 1000);
   }
 
   updateUserData() {
@@ -98,5 +112,6 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     if (form.valid) {
       this.updateUserData();
     }
+    this.myState.setUserData(this.userName, this.userIconId);
   }
 }

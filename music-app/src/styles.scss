@@ -355,7 +355,7 @@ header {
 .card-title-h1 {
   @include adaptive-font(18, 14);
   margin-bottom: 0.5rem;
-  z-index: 5;
+  z-index: $z-index-card-title;
   line-height: 100%;
   display: -webkit-box !important;
   -webkit-line-clamp: 2;
@@ -375,7 +375,7 @@ header {
 .card-square-title-h1 {
   @include adaptive-font(18, 14);
   margin-bottom: 0.5rem;
-  z-index: 5;
+  z-index: $z-index-card-title;
   display: -webkit-box !important;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -436,4 +436,9 @@ header {
       transform: scale(1.1) rotate(25deg) translate(18%, -2%);
     }
   }
+}
+
+mat-snack-bar-container {
+  margin-bottom: 80px !important;
+  font-weight: bold !important;
 }

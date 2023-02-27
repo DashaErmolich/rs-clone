@@ -1,5 +1,5 @@
-<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
-<mat-progress-bar *ngIf="!isLoading" mode="determinate" value="100"></mat-progress-bar>
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="header-loader-bar"></mat-progress-bar>
+<mat-progress-bar *ngIf="!isLoading" mode="determinate" value="100" class="header-loader-bar"></mat-progress-bar>
 <header class="header flex-row" [ngClass]="{'header_handset': isHandset}">
   <div *ngIf="(isSearchRoute && !isSearchInputShown && isHandset) || !isSearchRoute || (isSearchRoute && !isHandset)" class="logo-container container" [ngClass]="{'flex-column-2': !isHandset}">
     <a routerLink="/music/home" ariaCurrentWhenActive="page">

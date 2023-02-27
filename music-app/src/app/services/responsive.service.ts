@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BehaviorSubject } from 'rxjs';
 
 const extraSmallBreakpoint = '(max-width: 380px)';
+const asideCollapseBreakpoint = '(max-width: 785px)';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,8 @@ export class ResponsiveService {
 
   extraSmallBreakpoint: string = extraSmallBreakpoint;
 
+  asideCollapseBreakpoint: string = asideCollapseBreakpoint;
+
   constructor(
     private responsive: BreakpointObserver,
   ) {
@@ -25,6 +28,7 @@ export class ResponsiveService {
       Breakpoints.HandsetPortrait,
       Breakpoints.HandsetLandscape,
       this.extraSmallBreakpoint,
+      this.asideCollapseBreakpoint,
     ])
       .subscribe((result) => {
         if (result.breakpoints[Breakpoints.Small]
@@ -35,13 +39,15 @@ export class ResponsiveService {
           this.isSmall$.next(false);
         }
 
-        if (result.breakpoints[Breakpoints.HandsetPortrait]) {
+        if (result.breakpoints[Breakpoints.HandsetPortrait]
+          || this.responsive.isMatched(asideCollapseBreakpoint)) {
           this.isHandset$.next(true);
         } else {
           this.isHandset$.next(false);
         }
 
-        if (result.breakpoints[Breakpoints.HandsetLandscape]
+        if ((result.breakpoints[Breakpoints.HandsetPortrait]
+          || this.responsive.isMatched(asideCollapseBreakpoint))
           && !result.breakpoints[Breakpoints.Small]) {
           this.isSmall$.next(true);
           this.isHandset$.next(true);
