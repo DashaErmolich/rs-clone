@@ -1,5 +1,5 @@
-<div class="container content-wrapper">
-  <h1 l10nTranslate>sign-in.greetings</h1>
+<div class="container content-wrapper container-center">
+  <h1 class="sign-in__h1" l10nTranslate>sign-in.greetings</h1>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" class="example-form">
 
     <mat-form-field class="example-full-width">
@@ -20,11 +20,12 @@
       </mat-error>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" [disabled]="!loginForm.valid || saving" l10nTranslate>sign-in.login-btn</button>
+    <button mat-flat-button color="primary" class="sign-in__form-btn" [disabled]="!loginForm.valid || saving" l10nTranslate>sign-in.login-btn</button>
+    <hr class="sign-in__hr">
   </form>
 
-  <div>    
-    <h3 class="mt-30" l10nTranslate>sign-in.also</h3>
-    <button mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active" [disabled]="saving" l10nTranslate>sign-in.register-btn</button>
+  <div class="sign-in__also">    
+    <h3 class="sign-in__h3" l10nTranslate>sign-in.also</h3>
+    <button class="sign-in__also-btn" mat-flat-button color="primary" routerLink="/sign-up" routerLinkActive="active" [disabled]="saving" l10nTranslate>sign-in.register-btn</button>
   </div>
 </div>

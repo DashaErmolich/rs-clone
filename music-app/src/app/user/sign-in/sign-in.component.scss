@@ -1,3 +1,5 @@
+@import '../../../sass/abstracts/mixins';
+
 .example-container mat-form-field + mat-form-field {
   margin-left: 8px;
 }
@@ -17,7 +19,7 @@ input.example-right-align {
 
 .example-form {
   min-width: 150px;
-  max-width: 500px;
+  max-width: 700px;
   width: 100%;
 }
 .example-form mat-form-field {
@@ -28,6 +30,47 @@ input.example-right-align {
   width: 100%;
 }
 
-.mt-30 {
-  margin-top: 30px;
+.sign-in__h1 {
+  width: 850px;
+  @include adaptive-font(28, 22);
+  text-align: center;
+  margin-bottom: 40px;
+  @media screen and (max-width: 800px){
+    width: 400px;
+  }
+  @media screen and (max-width: 399px){
+    width: auto;
+  }
+}
+.container-center {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  @media screen and (max-width: 800px){
+    margin-top: 20px;
+  }
+}
+.sign-in__form-btn {
+  width: 100px;
+  height: 40px !important;
+  border-radius: 100px;
+}
+.sign-in__hr {
+  margin-top: 50px;
+}
+.sign-in__also {
+  min-width: 150px;
+  max-width: 700px;
+  width: 100%;
+}
+.sign-in__h3 {
+  margin-top: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+.sign-in__also-btn {
+  width: 100%;
+  border-radius: 100px;
 }
