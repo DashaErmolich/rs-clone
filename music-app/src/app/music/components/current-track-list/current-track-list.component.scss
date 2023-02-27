@@ -1,0 +1,34 @@
+@import '../../../../sass/abstracts/constants';
+@import '../../../../sass/abstracts/mixins';
+
+.playing-now-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $container-p-small;
+
+  img {
+    width: 50%;
+    max-width: 400px;
+  }
+}
+
+.playing-now-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.track-title {
+  @include adaptive-font(32, 16);
+  flex-grow: 1;
+  line-height: 100%;
+  text-transform: capitalize;
+}
+
+.artist-title {
+  @include adaptive-font(18, 14);
+  flex-grow: 1;
+  line-height: 100%;
+  text-transform: capitalize;
+}

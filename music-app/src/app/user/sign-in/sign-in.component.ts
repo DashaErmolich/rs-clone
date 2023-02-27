@@ -49,7 +49,7 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isHandset$.unsubscribe();
-  }
+ }
 
   onSubmit(form: FormGroup) {
     this.saving = true;

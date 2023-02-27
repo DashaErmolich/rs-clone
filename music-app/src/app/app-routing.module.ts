@@ -17,6 +17,7 @@ import { LikedTracksComponent } from './music/pages/liked-tracks/liked-tracks.co
 import { SearchResultComponent } from './music/pages/search-result/search-result.component';
 import { AuthorizedGuard } from './guards/isAuthorized.guard';
 import { CustomPlaylistComponent } from './music/pages/custom-playlist/custom-playlist.component';
+import { CreatedPlaylistsComponent } from './music/pages/created-playlists/created-playlists.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: 'radio/:radio', component: SearchResultComponent },
       { path: 'custom-playlist', component: CustomPlaylistComponent },
       { path: 'user-play-list/:user-playlist', component: SearchResultComponent },
+      { path: 'created-playlists', component: CreatedPlaylistsComponent },
     ],
   },
   {

@@ -90,6 +90,10 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.isUserIconChanged$.next(false);
     this.muAuth.logout();
 
+    localStorage.removeItem('trackList');
+    localStorage.removeItem('volume');
+    this.myState.resetPlayingTrackList();
+
     this.snackBar.open('You are logged out!', '🔑', {
       duration: 3000,
     });
