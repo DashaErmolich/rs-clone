@@ -1,6 +1,6 @@
 <mat-card *ngFor="let playlist of playlists; let i=index" class="card-square" [style.background]="randomColor(i)"
   [routerLink]="['/music/play-list', playlist.id]">
-  <mat-card-content class="card-square-title-h1">{{playlist.title | titlecase}}</mat-card-content>
+  <mat-card-content > <p class="card-square-title-h1">{{playlist.title | titlecase}}</p> </mat-card-content>
   <img class="card-img" src="{{playlist.picture_medium ? playlist.picture_medium : defaultImg}}"
     alt={{playlist.title}}>
 </mat-card>

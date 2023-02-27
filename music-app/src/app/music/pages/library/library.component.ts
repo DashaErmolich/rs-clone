@@ -82,6 +82,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   isExtraSmall$ = new Subscription();
 
+  loading!: boolean;
+
   constructor(
     private myDeezer: DeezerRestApiService,
     private myState: StateService,
@@ -90,6 +92,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.LikedSearchResultsSubscription = this.myState.likedSearchResults$.subscribe((response) => {
+      this.loading = true;
       this.tracks = [];
       this.artists = [];
       this.playlists = [];
@@ -117,10 +120,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.radios.push(res);
           });
       });
+      this.loading = false;
     });
     this.customPlaylistsSubscription = this.myState.customPlaylists$.subscribe((response) => {
       this.customPlaylists = response;
     });
+
     this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
       this.isSmall = data;
     });
