@@ -446,6 +446,10 @@ mat-snack-bar-container {
   font-weight: bold !important;
 }
 
+mat-error {
+  line-height: 100% !important;
+}
+
 .message-not-found {
   @include adaptive-font (24, 14);
   height: 100%;
@@ -459,3 +463,4 @@ mat-snack-bar-container {
   @include adaptive-font (18, 12);
   margin: 0 auto;
 }
+
