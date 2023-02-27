@@ -24,9 +24,6 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild {
     this.authService.checkAuth();
 
     if (!this.state.isAuthorized) {
-      this.snackBar.open('Access denied! Please register or login', '❌', {
-        duration: 3000,
-      });
       this.router.navigate(['welcome']);
     }
 

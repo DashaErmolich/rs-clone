@@ -19,7 +19,7 @@ export class SignInComponent {
   saving = false;
 
   _emailPlaceholder = '';
-
+  _snackbarPlaceholder = '';
   _passwordPlaceholder = '';
 
   loginForm = new FormGroup({
@@ -72,7 +72,7 @@ export class SignInComponent {
           this.state.setAuthorized(true);
           this.state.setUserToState(res.user);
           this.state.updateState();
-          this.snackBar.open('Successful login! Welcome', '✅', {
+          this.snackBar.open(this._snackbarPlaceholder, '✅', {
             duration: 3000,
           });
 
@@ -90,9 +90,11 @@ export class SignInComponent {
     if (cookie.includes('ru-RU')) {
       this._emailPlaceholder = 'Почта';
       this._passwordPlaceholder = 'Пароль';
+      this._snackbarPlaceholder = 'Авторизация прошла успешно!'
     } else {
       this._emailPlaceholder = 'E-mail';
       this._passwordPlaceholder = 'Password';
+      this._snackbarPlaceholder = 'Successful login! Welcome'
     }
   }
 }

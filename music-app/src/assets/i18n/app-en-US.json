@@ -35,7 +35,8 @@
       "errors-messages": {
         "required": "Username is required",
         "length": "Enter username from 6 to 16 symbols"
-      }
+      },
+      "confirm-email-message": "🔑 Please confirm your email address by clicking on the link in the email"
     }
   },
   "welcome": {

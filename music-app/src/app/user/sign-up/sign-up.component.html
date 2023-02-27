@@ -39,5 +39,5 @@
 
   </form>
   <h3 class="mt-30" l10nTranslate>sign-up.also</h3>
-  <button mat-flat-button color="primary" routerLink="/sign-in" routerLinkActive="active" l10nTranslate>sign-up.login-btn</button>
+  <button mat-flat-button color="primary" routerLink="/sign-in" routerLinkActive="active" [disabled]="saving" l10nTranslate>sign-up.login-btn</button>
 </div>

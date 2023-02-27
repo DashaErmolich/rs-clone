@@ -26,6 +26,8 @@ export class SignUpComponent {
 
   _confirmPlaceholder = '';
 
+  _snackbarPlaceholder = '';
+
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.pattern(/^.{6,16}$/)]),
     email: new FormControl('', [Validators.required, Validators.pattern(/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/)]),
@@ -86,7 +88,7 @@ export class SignUpComponent {
           this.state.setAuthorized(true);
           this.state.setUserToState(res.user);
           this.state.updateState();
-          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', {
+          this.snackBar.open(this._snackbarPlaceholder, '✅', {
             duration: 3000,
           });
           setTimeout(() => {
@@ -105,11 +107,13 @@ export class SignUpComponent {
       this._emailPlaceholder = 'Почта';
       this._passwordPlaceholder = 'Пароль';
       this._confirmPlaceholder = 'Подтвердите пароль';
+      this._snackbarPlaceholder = 'Успех! Письмо для подтверждения почты было отправлено на ваш электронный адрес';
     } else {
       this._usernamePlaceholder = 'Username';
       this._emailPlaceholder = 'E-mail';
       this._passwordPlaceholder = 'Password';
       this._confirmPlaceholder = 'Conform password';
+      this._snackbarPlaceholder = 'Success! Please check the message that has been sent to your e-mail address';
     }
   }
 }
