@@ -92,6 +92,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   radios$!: Subscription;
 
+  isTracksNotFound!: boolean;
+
+  isAlbumsNotFound!: boolean;
+
+  isArtistsNotFound!: boolean;
+
+  isPlaylistsNotFound!: boolean;
+
   constructor(
     private deezerRestApiService: DeezerRestApiService,
     private state: StateService,
@@ -159,44 +167,52 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   renderTracks() {
+    this.isTracksNotFound = false;
     this.searchType = SearchType.tracks;
     this.tracks$ = this.deezerRestApiService
       .getSearch(this.searchParam, this.index, this.limitTracks)
       .subscribe((res) => {
         this.tracks = res.data;
+        if (this.tracks.length === 0) this.isTracksNotFound = true;
         this.loading = false;
       });
   }
 
   renderArtists() {
+    this.isArtistsNotFound = false;
     this.searchType = SearchType.artists;
     if (!this.artists || this.artists.length === 0) this.loading = true;
     this.artists$ = this.deezerRestApiService
       .getSearchArtists(this.searchParam, this.index, this.limitArtists)
       .subscribe((res) => {
         this.artists = res.data;
+        if (this.artists.length === 0) this.isArtistsNotFound = true;
         this.loading = false;
       });
   }
 
   renderAlbums() {
+    this.isAlbumsNotFound = false;
     this.searchType = SearchType.albums;
     if (!this.albums || this.albums.length === 0) this.loading = true;
     this.deezerRestApiService
       .getSearchAlbums(this.searchParam, this.index, this.limitAlbums)
       .subscribe((res) => {
         this.albums = res.data;
+        if (this.albums.length === 0) this.isAlbumsNotFound = true;
         this.loading = false;
       });
   }
 
   renderPlaylists() {
+    this.isPlaylistsNotFound = false;
     this.searchType = SearchType.playlists;
     if (!this.playlists || this.playlists.length === 0) this.loading = true;
     this.playlists$ = this.deezerRestApiService
       .getSearchPlayLists(this.searchParam, this.index, this.limitPlaylists)
       .subscribe((res) => {
         this.playlists = res.data;
+        if (this.playlists.length === 0) this.isPlaylistsNotFound = true;
         this.loading = false;
       });
   }
