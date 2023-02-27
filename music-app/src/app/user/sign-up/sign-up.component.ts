@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { StateService } from 'src/app/services/state.service';
@@ -8,14 +8,16 @@ import { take, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 import { StatusCodes } from '../../enums/status-codes';
+import { ResponsiveService } from '../../services/responsive.service';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit, OnDestroy {
   saving = false;
 
   _usernamePlaceholder = '';
@@ -35,13 +37,28 @@ export class SignUpComponent {
     confirm: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
   });
 
+  isHandset$ = new Subscription();
+
+  isHandset = false;
+
   constructor(
     private state: StateService,
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
+    private responsive: ResponsiveService,
   ) { this.setPlaceholders(); }
+
+  ngOnInit(): void {
+    this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isHandset = data;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.isHandset$.unsubscribe();
+  }
 
   onSubmit(form: FormGroup) {
 

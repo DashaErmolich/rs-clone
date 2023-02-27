@@ -4,37 +4,37 @@
   </span>
 </h1>
 
-<div class="mb-large">
+<div *ngIf="genres && genres.length !==0" class="mb-large">
   <h2 l10nTranslate class="title-h2">home.genres</h2>
   <app-genres [genres]="genres" class="suggestions-container"
     [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-genres>
 </div>
 
-<div class="mb-large">
+<div *ngIf="chartRecommendations.tracks.data && chartRecommendations.tracks.data.length !== 0" class="mb-large">
   <h2 l10nTranslate class="title-h2">{{ chartRecommendations.tracks.title }}</h2>
   <app-tracks [tracks]="chartRecommendations.tracks.data" class="suggestions-tracks"
     [ngClass]="{'suggestions-tracks_small': isSmall}"></app-tracks>
 </div>
 
-<div class="mb-large">
+<div *ngIf="chartRecommendations.albums.data && chartRecommendations.albums.data.length !== 0" class="mb-large">
   <h2 l10nTranslate class="title-h2">{{ chartRecommendations.albums.title }}</h2>
   <app-albums [albums]="chartRecommendations.albums.data" class="suggestions-container"
     [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-albums>
 </div>
 
-<div class="mb-large">
+<div *ngIf="chartRecommendations.playlists.data && chartRecommendations.playlists.data.length !== 0" class="mb-large">
   <h2 l10nTranslate class="title-h2">{{ chartRecommendations.playlists.title }}</h2>
   <app-playlists [playlists]="chartRecommendations.playlists.data" class="suggestions-container"
     [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-playlists>
 </div>
 
-<div class="mb-large">
+<div *ngIf="chartRecommendations.artists.data && chartRecommendations.artists.data.length !== 0" class="mb-large">
   <h2 l10nTranslate class="title-h2">{{ chartRecommendations.artists.title }}</h2>
   <app-artists [artists]="chartRecommendations.artists.data" class="suggestions-container"
     [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-artists>
 </div>
 
-<div class="mb-large">
+<div *ngIf="chartRecommendations.radios.data && chartRecommendations.radios.data.length !== 0" class="mb-large">
   <h2 l10nTranslate class="title-h2">{{ chartRecommendations.radios.title }}</h2>
   <app-radios [radios]="chartRecommendations.radios.data" class="suggestions-container"
     [ngClass]="{'suggestions-container_small': isSmall, 'suggestions-container_handset': isHandset}"></app-radios>

@@ -92,6 +92,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
     this.muAuth.logout();
+
     localStorage.removeItem('trackList');
     localStorage.removeItem('volume');
     this.myState.resetPlayingTrackList();

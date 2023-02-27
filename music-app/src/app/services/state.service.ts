@@ -50,6 +50,8 @@ export class StateService {
 
   customPlaylists$ = new BehaviorSubject<ICustomPlaylistModel[]>([]);
 
+  isSame$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private storage: LocalStorageService,
     private authService: AuthorizationApiService,
