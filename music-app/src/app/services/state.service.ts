@@ -8,6 +8,7 @@ import { LocalStorageService } from './local-storage.service';
 import { ITrackListInfo } from '../models/audio-player.models';
 import { UtilsService } from './utils.service';
 import { ICustomPlaylistModel } from '../models/user-model.models';
+import { AudioService } from './audio.service';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +54,7 @@ export class StateService {
     private storage: LocalStorageService,
     private authService: AuthorizationApiService,
     private myUtils: UtilsService,
+    private myAudio: AudioService,
   ) {
     const trackListInfo: ITrackListInfo | null = this.storage.getTrackListInfo();
     this.updateState();
@@ -205,5 +207,11 @@ export class StateService {
     }
     this.customPlaylists$.next(customPlaylists);
     this.updateUserData();
+  }
+
+  resetPlayingTrackList() {
+    this.trackList$.next([]);
+    this.playingTrackIndex$.next(null);
+    this.myAudio.resetState();
   }
 }
