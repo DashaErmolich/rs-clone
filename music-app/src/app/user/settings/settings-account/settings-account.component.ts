@@ -10,6 +10,7 @@ import { StateService } from '../../../services/state.service';
 import { ThemeService } from '../../../services/theme.service';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../../constants/constants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-settings-account',
@@ -40,6 +41,9 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   constructor(
     private myState: StateService,
+    private snackBar: MatSnackBar,
+    private authServe: AuthorizationService,
+    private router: Router,
     myTheme: ThemeService,
     private muAuth: AuthorizationService,
     private myRouter: Router,
@@ -85,9 +89,16 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
     this.muAuth.logout();
-    this.myRouter.navigate(['welcome']);
+    
+    this.snackBar.open('You are logged out!', '🔑', {
+      duration: 3000,
+    });
+    this.authServe.logout();
+    setTimeout(() => {
+      this.router.navigate(['welcome']);
+    }, 1000);
   }
-
+  
   updateUserData() {
     this.isUserNameChanged$.next(false);
     this.isUserIconChanged$.next(false);
@@ -98,5 +109,6 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     if (form.valid) {
       this.updateUserData();
     }
+    this.myState.setUserData(this.userName, this.userIconId);
   }
 }

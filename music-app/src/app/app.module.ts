@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -37,8 +38,10 @@ function initializeApp(): Promise<void> {
     UserModule,
     HttpClientModule,
     MatSidenavModule,
+    MatSnackBarModule,
   ],
   providers: [
+    MatSnackBarModule,
     {
       provide: HTTP_INTERCEPTORS, useClass: ProgressLoaderInterceptor, multi: true,
     },
