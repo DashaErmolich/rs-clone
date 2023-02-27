@@ -1,76 +1,22 @@
 @import '../../../sass/abstracts/mixins';
 
-.example-container mat-form-field + mat-form-field {
-  margin-left: 8px;
+.form-container {
+  gap: $container-p-small;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.example-right-align {
-  text-align: right;
+.text-center {
+  text-align: center;
+  inline-size: 80%;
+  @include adaptive-font(24, 18);
 }
 
-input.example-right-align::-webkit-outer-spin-button,
-input.example-right-align::-webkit-inner-spin-button {
-  display: none;
-}
 
-input.example-right-align {
-  -moz-appearance: textfield;
-}
-
-.example-form {
-  min-width: 150px;
-  max-width: 700px;
-  width: 100%;
-}
-.example-form mat-form-field {
-  padding-bottom: 15px;
-}
-
-.example-full-width {
-  width: 100%;
-}
-.sign-up__h3 {
-  margin-top: 10px;
-  font-size: 20px;
-}
-.container-center {
-  margin-top: 70px;
+.form-fields-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  @media screen and (max-width: 800px){
-    margin-top: 20px;
-    padding-top: 40px;
-  }
-}
-.sign-up__h1 {
-  width: 850px;
-  @include adaptive-font(28, 18);
-  text-align: center;
-  margin-bottom: 40px;
-  @media screen and (max-width: 800px){
-    width: 400px;
-  }
-  @media screen and (max-width: 399px){
-    width: auto;
-    margin-bottom: 10px;
-  }
-}
-.sign-up__hr {
-  margin-top: 50px;
-}
-.sign-up__form-btn {
-  width: 100px;
-  height: 40px !important;
-  border-radius: 100px;
-}
-.sign-up__also-btn {
-  display: inline-block;
-  border-radius: 100px;
-}
-.sign-up__also {
-  display: flex;
-  gap: 15px;
-  align-items: center;
+  justify-content: center;
+  gap: 30px;
 }

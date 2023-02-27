@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthorizationApiService } from 'src/app/services/authorization-api.service';
 import { StateService } from 'src/app/services/state.service';
@@ -10,13 +10,15 @@ import { AuthorizationService } from 'src/app/services/authorization.service';
 import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../constants/constants';
 import { StatusCodes } from '../../enums/status-codes';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponsiveService } from '../../services/responsive.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit, OnDestroy {
   saving = false;
   _usernamePlaceholder = '';
   _emailPlaceholder = '';
@@ -30,17 +32,32 @@ export class SignUpComponent {
     confirm: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z]).{6,16}$/)]),
   });
 
+  isHandset$ = new Subscription();
+
+  isHandset = false;
+
   constructor(
     private state: StateService,
     private authApiServe: AuthorizationApiService,
     private localStore: LocalStorageService,
     private router: Router,
     private snackBar: MatSnackBar,
+    private responsive: ResponsiveService,
   ) { this.setPlaceholders() }
+
+  ngOnInit(): void {
+    this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
+      this.isHandset = data;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.isHandset$.unsubscribe();
+  }
 
   onSubmit(form: FormGroup) {
     this.saving = true;
-      
+
     const formValue = this.registerForm.value;
 
     if (formValue.password !== formValue.confirm) {
@@ -84,7 +101,7 @@ export class SignUpComponent {
           this.state.setAuthorized(true);
           this.state.setUserToState(res.user);
           this.state.updateState();
-          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', { 
+          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', {
             duration: 3000,
           });
           setTimeout(() => {
@@ -96,7 +113,7 @@ export class SignUpComponent {
   }
   setPlaceholders() {
     const cookie = document.cookie;
-    
+
     if (cookie.includes('ru-RU')) {
       this._usernamePlaceholder = 'Имя пользователя'
       this._emailPlaceholder = 'Почта'
