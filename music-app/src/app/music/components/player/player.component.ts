@@ -348,9 +348,17 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
   }
 
   checkTrackPosition() {
+    // eslint-disable-next-line no-debugger
+    debugger;
     const currentIndex = this.currentTrackIndex;
     const isCurrentFirstTrack = currentIndex === 0;
     const isCurrentLastTrack = currentIndex === this.trackList.length - 1;
+
+    if (isCurrentFirstTrack && isCurrentLastTrack) {
+      this.controlsState.isFirstTrack = true;
+      this.controlsState.isLastTrack = true;
+      return;
+    }
 
     if (this.controlsState.isRepeatAllOn) {
       this.controlsState.isFirstTrack = false;
