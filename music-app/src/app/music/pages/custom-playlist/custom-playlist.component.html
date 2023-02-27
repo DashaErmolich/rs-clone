@@ -1,7 +1,6 @@
-<div>
-  <h2 l10nTranslate text-wrap>create-custom-playlist.playlist-title</h2>
+  <h2 l10nTranslate class="title-h2">create-custom-playlist.playlist-title</h2>
   <mat-form-field appearance="outline">
-    <mat-label l10nTranslate text-wrap>create-custom-playlist.playlistTitleLabel</mat-label>
+    <mat-label l10nTranslate>create-custom-playlist.playlistTitleLabel</mat-label>
     <input matInput type="text" [value]="playListName" [formControl]="nameControl">
     <mat-error *ngIf="nameControl.hasError('required')" l10nTranslate>
       create-custom-playlist.errors-messages.required
@@ -10,18 +9,21 @@
       create-custom-playlist.errors-messages.length
     </mat-error>
   </mat-form-field>
-</div>
-<div>
-  <h2 l10nTranslate>create-custom-playlist.search-title</h2>
-  <mat-form-field appearance="outline">
-    <mat-label l10nTranslate>create-custom-playlist.searchInputLabel</mat-label>
-    <input matInput type="text" [formControl]="searchControl">
-  </mat-form-field>
-</div>
-<div class="mb-large" *ngIf="customPlaylistTracks.length">
-  <button [disabled]="!nameControl.valid" mat-fab extended color="primary" (click)="saveCustomPlayList()" l10nTranslate>create-custom-playlist.save-button</button>
-</div>
-<app-custom-playlist-tracks *ngIf="!isLoading" [tracks]="tracks" [customPlaylistTracks]="customPlaylistTracks" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall, 'tracks-container_handset': isHandset}"></app-custom-playlist-tracks>
-<div *ngIf="tracks.length" class="mt-large more-button-container">
-  <button mat-stroked-button color="primary" (click)="getMore()" class="more-btn" l10nTranslate>create-custom-playlist.more-button</button>
-</div>
+  <div>
+    <h2 l10nTranslate class="title-h2">create-custom-playlist.search-title</h2>
+    <mat-form-field appearance="outline">
+      <mat-label l10nTranslate>create-custom-playlist.searchInputLabel</mat-label>
+      <input matInput type="text" [formControl]="searchControl">
+    </mat-form-field>
+  </div>
+  <div class="mb-large" *ngIf="customPlaylistTracks.length">
+    <button [disabled]="!nameControl.valid" mat-fab extended color="primary" (click)="saveCustomPlayList()"
+      l10nTranslate>create-custom-playlist.save-button</button>
+  </div>
+  <app-custom-playlist-tracks *ngIf="!isLoading" [tracks]="tracks" [customPlaylistTracks]="customPlaylistTracks"
+    class="tracks-container" [ngClass]="{'tracks-container_small': isSmall, 'tracks-container_handset': isHandset}">
+  </app-custom-playlist-tracks>
+  <div *ngIf="tracks.length" class="mt-large more-button-container">
+    <button mat-stroked-button color="primary" (click)="getMore()" class="more-btn"
+      l10nTranslate>create-custom-playlist.more-button</button>
+  </div>

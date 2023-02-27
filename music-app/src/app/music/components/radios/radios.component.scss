@@ -36,7 +36,8 @@
   line-height: 120%;
   hyphens: auto;
   display: -webkit-box !important;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
   overflow: hidden;
+  text-overflow: ellipsis;
 }

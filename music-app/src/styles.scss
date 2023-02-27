@@ -378,8 +378,9 @@ header {
   margin-bottom: 0.5rem;
   z-index: $z-index-card-title;
   display: -webkit-box !important;
-  -webkit-line-clamp: 3;
+  // -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -421,6 +422,7 @@ header {
   overflow: hidden;
   aspect-ratio: 1 / 1;
   cursor: pointer;
+  
 
   &>.card-img {
     position: absolute;
@@ -451,4 +453,9 @@ mat-snack-bar-container {
   flex-direction: column;
   gap: $container-p-small;
   align-items: center;
+}
+
+.message{
+  @include adaptive-font (18, 12);
+  margin: 0 auto;
 }

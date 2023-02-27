@@ -135,9 +135,10 @@
     "tracks": "Your favorite tracks",
     "radios": "Your favorite radios",
     "custom-playlists": "Your custom playlists",
-    "empty": "Your library empty.",
+    "empty": "Here is empty.",
     "create-playlist": "You can create your first playlist.",
-    "create-btn": "Create playlist"
+    "create-btn": "Create playlist",
+    "message": "You have not added tracks to favorites"
   },
   "core": {
     "header": {

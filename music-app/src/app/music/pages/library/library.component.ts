@@ -150,26 +150,4 @@ export class LibraryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
-
-  isLibraryEmpty() {
-    let isEmpty = false;
-    // console.log(
-    //   this.tracks.length,
-    //   this.artists.length,
-    //   this.albums.length,
-    //   this.playlists.length,
-    //   this.radios.length,
-    //   this.customPlaylists.length,
-    // );
-    if (this.loading) {
-      isEmpty = !this.tracks.length && !this.artists.length && !this.albums.length
-      && !this.playlists.length && !this.radios.length && !this.customPlaylists.length;
-    }
-    if (!this.loading) {
-      isEmpty = !(this.tracks.length || this.artists.length || this.albums.length
-      || this.playlists.length || this.radios.length || this.customPlaylists.length);
-    }
-    console.log(isEmpty);
-    return isEmpty;
-  }
 }

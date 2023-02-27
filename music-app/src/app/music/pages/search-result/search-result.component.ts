@@ -192,6 +192,7 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
         this.descriptionTitleInfo = `: ${res.nb_album}`;
         this.descriptionSubTitleInfo = `: ${res.nb_fan}`;
         this.loading = false;
+        this.isSearchResultLiked();
       } catch (error) {
         this.isResultNotFound = true;
       }

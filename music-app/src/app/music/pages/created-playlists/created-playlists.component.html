@@ -1,3 +1,10 @@
 <h2 l10nTranslate class="title-h2">library.custom-playlists</h2>
+
+<div *ngIf="customPlaylists && customPlaylists.length ===0" l10nTranslate class="message-not-found">
+  <div l10nTranslate class="message less-opacity">library.empty</div>
+  <div l10nTranslate class="message less-opacity">library.create-playlist</div>
+  <button mat-raised-button color="primary" [routerLink]="['/music/custom-playlist']">library.create-btn</button>
+</div> 
+
 <app-custom-playlists [customPlaylists]="customPlaylists" class="result-container"
 [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-custom-playlists>
