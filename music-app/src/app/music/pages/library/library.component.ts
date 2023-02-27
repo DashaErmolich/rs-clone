@@ -82,6 +82,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   isExtraSmall$ = new Subscription();
 
+  loading!: boolean;
+
   constructor(
     private myDeezer: DeezerRestApiService,
     private myState: StateService,
@@ -90,6 +92,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.LikedSearchResultsSubscription = this.myState.likedSearchResults$.subscribe((response) => {
+      this.loading = true;
       this.tracks = [];
       this.artists = [];
       this.playlists = [];
@@ -117,10 +120,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.radios.push(res);
           });
       });
+      this.loading = false;
     });
     this.customPlaylistsSubscription = this.myState.customPlaylists$.subscribe((response) => {
       this.customPlaylists = response;
     });
+
     this.isSmall$ = this.responsive.isSmall$.subscribe((data) => {
       this.isSmall = data;
     });
@@ -144,5 +149,27 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  isLibraryEmpty() {
+    let isEmpty = false;
+    // console.log(
+    //   this.tracks.length,
+    //   this.artists.length,
+    //   this.albums.length,
+    //   this.playlists.length,
+    //   this.radios.length,
+    //   this.customPlaylists.length,
+    // );
+    if (this.loading) {
+      isEmpty = !this.tracks.length && !this.artists.length && !this.albums.length
+      && !this.playlists.length && !this.radios.length && !this.customPlaylists.length;
+    }
+    if (!this.loading) {
+      isEmpty = !(this.tracks.length || this.artists.length || this.albums.length
+      || this.playlists.length || this.radios.length || this.customPlaylists.length);
+    }
+    console.log(isEmpty);
+    return isEmpty;
   }
 }

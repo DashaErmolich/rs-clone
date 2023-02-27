@@ -117,9 +117,16 @@
         "subscribe": "Subscribe",
         "subscribed": "Subscribed"
       },
-      "delete-button": "Delete"
+      "delete-button": "Delete",
+      "message": "Not found."
     },
-    "more-button": "Get more"
+    "more-button": "Get more",
+    "message": {
+       "tracks": "Not found tracks for your request.",
+       "albums": "Not found tracks for your request.",
+       "artists": "Not found artists for your request.",
+       "playlists": "Not found playlists for your request."
+    }
   },
   "library": {
     "artists": "Your favorite artists",
@@ -127,7 +134,10 @@
     "playlists": "Your favorite playlists",
     "tracks": "Your favorite tracks",
     "radios": "Your favorite radios",
-    "custom-playlists": "Your custom playlists"
+    "custom-playlists": "Your custom playlists",
+    "empty": "Your library empty.",
+    "create-playlist": "You can create your first playlist.",
+    "create-btn": "Create playlist"
   },
   "core": {
     "header": {

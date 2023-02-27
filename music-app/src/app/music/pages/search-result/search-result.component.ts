@@ -105,6 +105,8 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
 
   isLikeButtonShown = true;
 
+  isResultNotFound!: boolean;
+
   constructor(
     private myState: StateService,
     private myAudio: AudioService,
@@ -158,11 +160,9 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
       this.isSmall = data;
     });
     this.subscriptions.push(this.isSmall$);
-
     this.isHandset$ = this.responsive.isHandset$.subscribe((data) => {
       this.isHandset = data;
     });
-
     this.subscriptions.push(this.isHandset$);
   }
 
@@ -178,19 +178,23 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
 
   getArtist(id: number) {
     this.result$ = this.deezerRestApiService.getArtist(id).subscribe((res) => {
-      this.result = res;
-      this.type = res.type as LikedSearchResults;
-      if (this.type === 'artist') {
-        this.typeToShow = 'search.results.artist';
-        this.descriptionTitle = 'search.results.description.artist.albums';
-        this.descriptionSubTitle = 'search.results.description.artist.fans';
+      this.isResultNotFound = false;
+      try {
+        this.result = res;
+        this.type = res.type as LikedSearchResults;
+        if (this.type === 'artist') {
+          this.typeToShow = 'search.results.artist';
+          this.descriptionTitle = 'search.results.description.artist.albums';
+          this.descriptionSubTitle = 'search.results.description.artist.fans';
+        }
+        this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
+        this.title = res.name;
+        this.descriptionTitleInfo = `: ${res.nb_album}`;
+        this.descriptionSubTitleInfo = `: ${res.nb_fan}`;
+        this.loading = false;
+      } catch (error) {
+        this.isResultNotFound = true;
       }
-      this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
-      this.title = res.name;
-      this.descriptionTitleInfo = `: ${res.nb_album}`;
-      this.descriptionSubTitleInfo = `: ${res.nb_fan}`;
-      this.loading = false;
-      this.isSearchResultLiked();
     });
 
     this.tracks$ = this.deezerRestApiService
@@ -203,20 +207,25 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
 
   getAlbum(id: number) {
     this.result$ = this.deezerRestApiService.getAlbum(id).subscribe((res) => {
-      this.result = res;
-      this.type = res.type as LikedSearchResults;
-      if (this.type === 'album') {
-        this.typeToShow = 'search.results.album';
+      this.isResultNotFound = false;
+      try {
+        this.result = res;
+        this.type = res.type as LikedSearchResults;
+        if (this.type === 'album') {
+          this.typeToShow = 'search.results.album';
+        }
+        this.imgSrc = res.cover_medium ? res.cover_medium : DEFAULT_SRC;
+        this.title = res.title;
+        this.tracks = res.tracks.data;
+        this.loading = false;
+        this.artistImg = res.artist.picture_small!;
+        this.artistName = res.artist.name!;
+        this.albumRelease = res.release_date.slice(0, 4);
+        this.artistId = Number(res.artist.id);
+        this.isSearchResultLiked();
+      } catch (error) {
+        this.isResultNotFound = true;
       }
-      this.imgSrc = res.cover_medium ? res.cover_medium : DEFAULT_SRC;
-      this.title = res.title;
-      this.tracks = res.tracks.data;
-      this.loading = false;
-      this.artistImg = res.artist.picture_small!;
-      this.artistName = res.artist.name!;
-      this.albumRelease = res.release_date.slice(0, 4);
-      this.artistId = Number(res.artist.id);
-      this.isSearchResultLiked();
     });
   }
 
@@ -224,34 +233,44 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
     this.result$ = this.deezerRestApiService
       .getPlayListTracks(id)
       .subscribe((res) => {
-        this.result = res;
-        this.type = res.type as LikedSearchResults;
-        if (this.type === 'playlist') {
-          this.typeToShow = 'search.results.playlist';
-          this.descriptionTitle = 'search.results.description.playlist.creator';
-          this.descriptionSubTitle = 'search.results.description.playlist.songs';
+        this.isResultNotFound = false;
+        try {
+          this.result = res;
+          this.type = res.type as LikedSearchResults;
+          if (this.type === 'playlist') {
+            this.typeToShow = 'search.results.playlist';
+            this.descriptionTitle = 'search.results.description.playlist.creator';
+            this.descriptionSubTitle = 'search.results.description.playlist.songs';
+          }
+          this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
+          this.title = res.title;
+          this.tracks = res.tracks.data;
+          this.descriptionTitleInfo = `: ${res.creator.name}`;
+          this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
+          this.loading = false;
+          this.isSearchResultLiked();
+        } catch (error) {
+          this.isResultNotFound = true;
         }
-        this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
-        this.title = res.title;
-        this.tracks = res.tracks.data;
-        this.descriptionTitleInfo = `: ${res.creator.name}`;
-        this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
-        this.loading = false;
-        this.isSearchResultLiked();
       });
   }
 
   getRadio(id: number) {
     this.result$ = this.deezerRestApiService.getRadio(id).subscribe((res) => {
-      this.result = res;
-      this.type = res.type as LikedSearchResults;
-      if (this.type === 'radio') {
-        this.typeToShow = 'search.results.radio';
+      this.isResultNotFound = false;
+      try {
+        this.result = res;
+        this.type = res.type as LikedSearchResults;
+        if (this.type === 'radio') {
+          this.typeToShow = 'search.results.radio';
+        }
+        this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
+        this.title = res.title;
+        this.loading = false;
+        this.isSearchResultLiked();
+      } catch (error) {
+        this.isResultNotFound = true;
       }
-      this.imgSrc = res.picture_medium ? res.picture_medium : DEFAULT_SRC;
-      this.title = res.title;
-      this.loading = false;
-      this.isSearchResultLiked();
     });
 
     this.tracks$ = this.deezerRestApiService
@@ -294,22 +313,27 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
   getUserPlaylist(id: string) {
     this.isLikeButtonShown = false;
     this.result$ = this.myState.customPlaylists$.subscribe((res) => {
-      const playlist = res.find((item) => item.id === id);
-      if (playlist) {
-        this.result = playlist;
-        this.typeToShow = 'search.results.custom-playlist';
-        this.descriptionTitle = 'search.results.description.playlist.creator';
-        this.descriptionSubTitle = 'search.results.description.playlist.songs';
-        this.imgSrc = '../../../../assets/icons/note.svg';
-        this.title = playlist.title;
-        playlist.tracks.data.forEach((track) => {
-          this.deezerRestApiService.getTrack(track).subscribe((data) => {
-            this.tracks.push(data);
+      this.isResultNotFound = false;
+      try {
+        const playlist = res.find((item) => item.id === id);
+        if (playlist) {
+          this.result = playlist;
+          this.typeToShow = 'search.results.custom-playlist';
+          this.descriptionTitle = 'search.results.description.playlist.creator';
+          this.descriptionSubTitle = 'search.results.description.playlist.songs';
+          this.imgSrc = '../../../../assets/icons/note.svg';
+          this.title = playlist.title;
+          playlist.tracks.data.forEach((track) => {
+            this.deezerRestApiService.getTrack(track).subscribe((data) => {
+              this.tracks.push(data);
+            });
           });
-        });
-        this.descriptionTitleInfo = `: ${this.myState.userName$.value}`;
-        this.descriptionSubTitleInfo = `: ${playlist.nb_tracks}`;
-        this.loading = false;
+          this.descriptionTitleInfo = `: ${this.myState.userName$.value}`;
+          this.descriptionSubTitleInfo = `: ${playlist.nb_tracks}`;
+          this.loading = false;
+        }
+      } catch (error) {
+        this.isResultNotFound = true;
       }
     });
   }

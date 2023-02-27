@@ -1,12 +1,13 @@
-<div *ngIf="result" class="search-result-wrapper">
+<div *ngIf="isResultNotFound" class="message-not-found" l10nTranslate>search.results.message</div>
+<div *ngIf="!isResultNotFound && !loading" class="search-result-wrapper">
   <div [ngSwitch]="resultType" class="flex-row search-result-container"
     [ngClass]="{'search-result-container_small': isSmall}">
     <div class="search-result__image" [style.background]="randomColor(1)">
       <img [src]="imgSrc" [alt]="title">
     </div>
     <div class="search-result-block">
-      <span class="search-result-type one-line-text" l10nTranslate>{{ typeToShow }}</span>
-      <span class="search-result-title">{{ title }}</span>
+      <div class="search-result-type one-line-text" l10nTranslate>{{ typeToShow }}</div>
+      <div><p class="search-result-title text-wrap">{{ title }}</p></div>
       <div>
         <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
           <span l10nTranslate>{{ descriptionTitle }}</span>
@@ -27,8 +28,8 @@
   </div>
   <div class="search-result-container-btns">
     <button mat-fab color="primary" (click)="playPause(0)">
-      <mat-icon>{{ isPlay ? 'pause' : 'play_arrow'}}</mat-icon>
-    </button>
+     <mat-icon>{{ isPlay ? 'pause' : 'play_arrow'}}</mat-icon>
+   </button> 
     <button *ngIf="isLikeButtonShown" mat-fab extended color="primary" (click)="likeSearchResult()">
       <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
       <span

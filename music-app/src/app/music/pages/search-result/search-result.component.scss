@@ -40,6 +40,8 @@
   flex-grow: 1;
   line-height: 100%;
   text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .search-result-container-btns {
