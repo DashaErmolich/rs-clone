@@ -1,12 +1,10 @@
 import {
-  Component, Input,
+  Component, Input, OnInit, OnDestroy,
 } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { Subscription } from 'rxjs';
+import { ITrackResponse } from '../../../models/api-response.models';
 import { StateService } from '../../../services/state.service';
-import { AudioService } from '../../../services/audio.service';
-import { LocalStorageService } from '../../../services/local-storage.service';
-import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-current-track-list',
@@ -14,21 +12,37 @@ import { ThemeService } from '../../../services/theme.service';
   styleUrls: ['./current-track-list.component.scss'],
 })
 
-export class CurrentTrackListComponent {
+export class CurrentTrackListComponent implements OnInit, OnDestroy {
   @Input() isSmall!: boolean;
 
   @Input() isHandset!: boolean;
 
   @Input() isExtraSmall!: boolean;
 
-  @Input() isShown!: boolean;
+  @Input() trackList!: Partial<ITrackResponse>[];
+
+  @Input() activeTrackImageSrc!: string;
+
+  @Input() activeTrackTitle!: string;
+
+  @Input() activeTrackArtist!: string;
+
+  @Input() activeTrackArtistID!: number;
+
+  routerEventSubscription = new Subscription();
 
   constructor(
     private myState: StateService,
-    private myAudio: AudioService,
-    private myStorage: LocalStorageService,
-    private myTheme: ThemeService,
     private myRouter: Router,
-  ) {
+  ) { }
+
+  ngOnInit(): void {
+    this.routerEventSubscription = this.myRouter.events.subscribe(() => {
+      this.myState.setCurrentTrackListVisibility(false);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routerEventSubscription.unsubscribe();
   }
 }

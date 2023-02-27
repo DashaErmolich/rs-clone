@@ -274,11 +274,14 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
     );
   }
 
-  getTrackAlbumImageSrc(): string {
+  getTrackAlbumImageSrc(isBigImageNeeded: boolean = false): string {
     const imageSrcPlaceholder = '';
     let imageSrc = imageSrcPlaceholder;
     if (this.currentTrackIndex !== null && this.trackList.length) {
       imageSrc = this.trackList[this.currentTrackIndex].album?.cover!;
+      if (isBigImageNeeded) {
+        imageSrc = this.trackList[this.currentTrackIndex].album?.cover_big!;
+      }
     }
     return imageSrc;
   }
@@ -373,11 +376,15 @@ export class PlayerComponent extends ThemeHelper implements OnInit, OnDestroy {
   }
 
   isTrackLiked(): boolean {
-    const index = this.likedTracks
-      .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
-    const isLiked = index >= 0;
-    this.controlsState.isLiked = isLiked;
-    return index >= 0;
+    let result = false;
+    if (this.trackList.length && this.currentTrackIndex !== null) {
+      const index = this.likedTracks
+        .findIndex((trackId) => trackId === this.trackList[this.currentTrackIndex!]!.id);
+      const isLiked = index >= 0;
+      this.controlsState.isLiked = isLiked;
+      result = index >= 0;
+    }
+    return result;
   }
 
   likeTrack(): void {

@@ -1,1 +1,8 @@
-<p>current-track-list works!</p>
+<div class="playing-now-container">
+  <img [src]="activeTrackImageSrc" [alt]="activeTrackTitle">
+  <div class="playing-now-info">
+    <h3 class="track-title">{{ activeTrackTitle }}</h3>
+    <h3 class="artist-title less-opacity router-link" [routerLink]="['/music/artist', activeTrackArtistID]">{{ activeTrackArtist }}</h3>
+  </div>
+</div>
+<app-tracks [tracks]="trackList" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall, 'tracks-container_handset': isHandset}"></app-tracks>

@@ -24,12 +24,12 @@
   <div class="player__items-group flex-1" ngClass="isHandset ? 'flex-column-9' : flex-column-6" [ngClass]="{'': isExtraSmall}">
     <div class="flex-row player-controls" [ngClass]="{'player-controls_small': isSmall, 'player-controls_handset': isHandset, 'player-controls_extra-small': isExtraSmall}">
       <div class="flex-row player-buttons-group">
-        <button mat-mini-fab color="basic" (click)="likeTrack()">
+        <button mat-mini-fab color="basic" (click)="likeTrack()" [disabled]="!trackList.length">
           <mat-icon [color]="controlsState.isLiked ? 'warn' : 'basic'"
             >favorite</mat-icon
           >
         </button>
-        <button
+        <button [disabled]="!trackList.length"
           *ngIf="!isSmall"
           mat-mini-fab
           color="basic"
@@ -141,6 +141,9 @@
         <button *ngIf="isSmall" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
         </button>
+        <button *ngIf="isHandset" mat-mini-fab color="basic" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
+          <mat-icon>{{ isCurrentTrackListShown ? 'arrow_drop_down' : 'arrow_drop_up' }}</mat-icon>
+        </button>
         <!-- MENU START -->
         <mat-menu #menu="matMenu">
           <button mat-menu-item color="basic" (click)="shuffleTracks()">
@@ -208,14 +211,8 @@
   </div>
   <div *ngIf="!isHandset" class="player__items-group flex-column-3">
     <div class="flex-row audio-controls-container">
-      <span *ngIf="isSmall">{{ currentState.time }}</span>
-      <span *ngIf="isSmall">/</span>
-      <span *ngIf="isSmall">{{ currentState.durationTime }}</span>
       <button *ngIf="!isSmall" mat-mini-fab [color]="isEqualizerShown ? 'primary' : 'basic'" (click)="toggleEqualizerVisibility()" [disabled]="!isTrackReady">
         <mat-icon>equalizer</mat-icon>
-      </button>
-      <button *ngIf="!isSmall" mat-mini-fab color="basic" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
-        <mat-icon>{{ isCurrentTrackListShown ? 'arrow_drop_down' : 'arrow_drop_up' }}</mat-icon>
       </button>
       <div class="volume-container" [ngClass]="{ 'volume-container_small': isSmall }">
         <button *ngIf="!isSmall" mat-mini-fab color="basic" (click)="toggleMute()">
@@ -230,8 +227,12 @@
           />
         </mat-slider>
       </div>
+      <button mat-mini-fab color="basic" (click)="toggleCurrentTrackListVisibility()" [disabled]="!trackList.length">
+        <mat-icon>{{ isCurrentTrackListShown ? 'arrow_drop_down' : 'arrow_drop_up' }}</mat-icon>
+      </button>
     </div>
   </div>
+
 </div>
 <app-equalizer
   [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"
@@ -241,10 +242,13 @@
   [ngClass]="{'equalizer_small': isSmall, 'equalizer_handset': isHandset}"
 ></app-equalizer>
 <app-current-track-list
-  [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall" [isShown]="isCurrentTrackListShown"
+  [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"
+  [trackList]="trackList" [activeTrackImageSrc]="getTrackAlbumImageSrc(true)"
+  [activeTrackTitle]="getTrackTitle()" [activeTrackArtist]="getArtistTitle()"
+  [activeTrackArtistID]="getArtistId()"
   *ngIf="isCurrentTrackListShown"
   @showEqualizer
-  class="equalizer"
+  class="equalizer container accent-section height-100"
   [ngClass]="{'equalizer_small': isSmall, 'equalizer_handset': isHandset}"
   >
 </app-current-track-list>
