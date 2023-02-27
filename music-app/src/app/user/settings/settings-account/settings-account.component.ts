@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -49,7 +49,10 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     private myRouter: Router,
   ) {
     super(myTheme);
+    this.setPlaceholders();
   }
+  _snackbarPlaceholder = '';
+  _visibility = false;
 
   ngOnInit(): void {
     this.userName$ = this.myState.userName$.subscribe((data) => {
@@ -94,7 +97,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     localStorage.removeItem('volume');
     this.myState.resetPlayingTrackList();
 
-    this.snackBar.open('You are logged out!', '🔑', {
+    this.snackBar.open(this._snackbarPlaceholder, '🔑', {
       duration: 3000,
     });
     this.authServe.logout();
@@ -114,5 +117,23 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
       this.updateUserData();
     }
     this.myState.setUserData(this.userName, this.userIconId);
+  }
+
+  setPlaceholders() {
+    const { cookie } = document;
+
+    if (cookie.includes('ru-RU')) {
+      this._snackbarPlaceholder = 'Вы вышли из аккаунта!';
+    } else {
+      this._snackbarPlaceholder = 'You are logged out!';
+    }
+    this.checkEmailVerification();
+  }
+  checkEmailVerification() {
+      setTimeout(() => {
+        if (!this.myState.user.isActivated) {
+          this._visibility = true;
+        }
+      },800)
   }
 }

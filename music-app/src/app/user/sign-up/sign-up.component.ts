@@ -28,6 +28,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   _confirmPlaceholder = '';
 
+  _snackbarPlaceholder = '';
+
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.pattern(/^.{6,16}$/)]),
     email: new FormControl('', [Validators.required, Validators.pattern(/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/)]),
@@ -59,7 +61,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form: FormGroup) {
-    this.saving = true;
 
     const formValue = this.registerForm.value;
 
@@ -71,6 +72,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }
 
     if (form.valid) {
+      this.saving = true;
       if (formValue.name && formValue.email && formValue.password && formValue.confirm) {
         this.authApiServe.registration(formValue.name, formValue.email, formValue.password).pipe(
           take(1),
@@ -78,6 +80,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
             this.saving = false;
             if (err instanceof HttpErrorResponse) {
               if (err.status === StatusCodes.BadRequest) {
+                
+                
                 const errReason = err.error.message.split(' ')[0];
                 const emailField = this.registerForm.get('email');
                 switch (errReason) {
@@ -103,7 +107,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
           this.state.setAuthorized(true);
           this.state.setUserToState(res.user);
           this.state.updateState();
-          this.snackBar.open('Success! Please check the message that has been sent to your e-mail address', '✅', {
+          this.snackBar.open(this._snackbarPlaceholder, '✅', {
             duration: 3000,
           });
           setTimeout(() => {
@@ -122,11 +126,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
       this._emailPlaceholder = 'Почта';
       this._passwordPlaceholder = 'Пароль';
       this._confirmPlaceholder = 'Подтвердите пароль';
+      this._snackbarPlaceholder = 'Успех! Письмо для подтверждения почты было отправлено на ваш электронный адрес';
     } else {
       this._usernamePlaceholder = 'Username';
       this._emailPlaceholder = 'E-mail';
       this._passwordPlaceholder = 'Password';
       this._confirmPlaceholder = 'Conform password';
+      this._snackbarPlaceholder = 'Success! Please check the message that has been sent to your e-mail address';
     }
   }
 }
