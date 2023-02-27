@@ -17,7 +17,7 @@ input.example-right-align {
 
 .example-form {
   min-width: 150px;
-  max-width: 500px;
+  max-width: 700px;
   width: 100%;
 }
 .example-form mat-form-field {
@@ -27,12 +27,43 @@ input.example-right-align {
 .example-full-width {
   width: 100%;
 }
-.mt-30 {
-  margin-top: 30px;
+.sign-up__h3 {
+  margin-top: 10px;
+  font-size: 20px;
 }
 .container-center {
+  margin-top: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 5px;
+}
+.sign-up__h1 {
+  width: 850px;
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 40px;
+  @media screen and (max-width: 800px){
+    width: 400px;
+  }
+  @media screen and (max-width: 399px){
+    width: auto;
+  }
+}
+.sign-up__hr {
+  margin-top: 50px;
+}
+.sign-up__form-btn {
+  width: 100px;
+  height: 40px !important;
+  border-radius: 100px;
+}
+.sign-up__also-btn {
+  display: inline-block;
+  border-radius: 100px;
+}
+.sign-up__also {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
