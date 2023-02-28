@@ -48,12 +48,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private responsive: ResponsiveService,
-  ) { this.setPlaceholders(); }
+  ) { }
 
   ngOnInit(): void {
     this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
       this.isHandset = data;
     });
+    this.setPlaceholders();
   }
 
   ngOnDestroy(): void {
@@ -61,7 +62,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form: FormGroup) {
-
     const formValue = this.registerForm.value;
 
     if (formValue.password !== formValue.confirm) {
@@ -80,8 +80,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
             this.saving = false;
             if (err instanceof HttpErrorResponse) {
               if (err.status === StatusCodes.BadRequest) {
-                
-                
                 const errReason = err.error.message.split(' ')[0];
                 const emailField = this.registerForm.get('email');
                 switch (errReason) {

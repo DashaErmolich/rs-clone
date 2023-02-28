@@ -358,8 +358,6 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
   }
 
   isPlayThisTrackList() {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const tracks = this.tracks.sort((a, b) => a.id! - b.id!);
     const tracksOfState = this.tracksOfState.sort((a, b) => a.id! - b.id!);
     const isSame = (tracks.length === tracksOfState.length)

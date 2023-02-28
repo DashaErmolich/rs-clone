@@ -16,7 +16,7 @@
 <div>
   <h2 l10nTranslate>settings.account.userName</h2>
   <mat-form-field class="mb-large" appearance="outline">
-    <input matInput placeholder="Username" [value]="userName" (input)="setUserName($event)" [formControl]="userNameFormControl">
+    <input matInput [placeholder]="userNamePlaceholder" [value]="userName" (input)="setUserName($event)" [formControl]="userNameFormControl">
     <mat-error *ngIf="userNameFormControl.hasError('required')" l10nTranslate>
       settings.account.errors-messages.required
     </mat-error>

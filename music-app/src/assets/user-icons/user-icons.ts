@@ -43,4 +43,8 @@ export const userIconsData = [
     id: 10,
     path: '../../../assets/icons/user-icons-sprite.svg#icons8-futurama-bender',
   },
+  {
+    id: 11,
+    path: '../../../assets/icons/user-icons-sprite.svg#empty',
+  },
 ];

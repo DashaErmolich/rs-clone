@@ -16,7 +16,7 @@
         </button>
         <div *ngIf="isSearchRoute && isHandset && isSearchInputShown" class="width-100">
           <mat-form-field class="search-input width-100" appearance="outline">
-            <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+            <input matInput type="text" [placeholder]="searchPlaceholder" [formControl]="searchControl">
             <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
           </mat-form-field>
         </div>
@@ -24,7 +24,7 @@
       <div>
         <ng-container *ngIf="isSearchRoute && !isHandset">
           <mat-form-field class="search-input" appearance="outline">
-            <input matInput type="text" placeholder="Search" [formControl]="searchControl">
+            <input matInput type="text" [placeholder]="searchPlaceholder" [formControl]="searchControl">
             <mat-icon *ngIf="!searchValue" matSuffix class="search-btn">search</mat-icon>
             <mat-icon *ngIf="searchValue" matSuffix mat-icon-button (click)="searchControl.setValue('')" class="search-btn">close</mat-icon>
           </mat-form-field>

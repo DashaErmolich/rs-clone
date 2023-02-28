@@ -20,7 +20,9 @@ export class SignInComponent implements OnInit, OnDestroy {
   saving = false;
 
   _emailPlaceholder = '';
+
   _snackbarPlaceholder = '';
+
   _passwordPlaceholder = '';
 
   loginForm = new FormGroup({
@@ -39,17 +41,18 @@ export class SignInComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private responsive: ResponsiveService,
-  ) { this.setPlaceholders(); }
+  ) { }
 
   ngOnInit(): void {
     this.isHandset$ = this.responsive.isSmall$.subscribe((data) => {
       this.isHandset = data;
     });
+    this.setPlaceholders();
   }
 
   ngOnDestroy(): void {
     this.isHandset$.unsubscribe();
- }
+  }
 
   onSubmit(form: FormGroup) {
     this.saving = true;
@@ -106,11 +109,11 @@ export class SignInComponent implements OnInit, OnDestroy {
     if (cookie.includes('ru-RU')) {
       this._emailPlaceholder = 'Почта';
       this._passwordPlaceholder = 'Пароль';
-      this._snackbarPlaceholder = 'Авторизация прошла успешно!'
+      this._snackbarPlaceholder = 'Авторизация прошла успешно!';
     } else {
       this._emailPlaceholder = 'E-mail';
       this._passwordPlaceholder = 'Password';
-      this._snackbarPlaceholder = 'Successful login! Welcome'
+      this._snackbarPlaceholder = 'Successful login! Welcome';
     }
   }
 }

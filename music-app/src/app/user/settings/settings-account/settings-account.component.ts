@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+/* eslint-disable no-underscore-dangle */
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -19,11 +20,11 @@ import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../../constants/c
 })
 
 export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnDestroy {
-  userIcons: IUserIcons[] = userIconsData;
+  userIcons: IUserIcons[] = userIconsData.slice(0, -1);
 
-  userIconsPath: string[] = this.userIcons.map((icon) => icon.path);
+  userIconsPath: string[] = (this.userIcons.map((icon) => icon.path));
 
-  userIconsId: number[] = this.userIcons.map((icon) => icon.id);
+  userIconsId: number[] = (this.userIcons.map((icon) => icon.id));
 
   userName!: string;
 
@@ -39,6 +40,8 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
 
   userNameFormControl!: FormControl;
 
+  userNamePlaceholder = '';
+
   constructor(
     private myState: StateService,
     private snackBar: MatSnackBar,
@@ -51,7 +54,9 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     super(myTheme);
     this.setPlaceholders();
   }
+  // eslint-disable-next-line @typescript-eslint/lines-between-class-members
   _snackbarPlaceholder = '';
+  // eslint-disable-next-line @typescript-eslint/lines-between-class-members
   _visibility = false;
 
   ngOnInit(): void {
@@ -69,6 +74,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     this.userIcon$ = this.myState.userIconId$.subscribe((data) => {
       this.userIconId = data;
     });
+    this.setPlaceholders();
   }
 
   ngOnDestroy(): void {
@@ -97,6 +103,7 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     localStorage.removeItem('volume');
     this.myState.resetPlayingTrackList();
 
+    // eslint-disable-next-line no-underscore-dangle
     this.snackBar.open(this._snackbarPlaceholder, '🔑', {
       duration: 3000,
     });
@@ -123,17 +130,21 @@ export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnD
     const { cookie } = document;
 
     if (cookie.includes('ru-RU')) {
+      this.userNamePlaceholder = 'Имя пользователя';
       this._snackbarPlaceholder = 'Вы вышли из аккаунта!';
     } else {
+      this.userNamePlaceholder = 'Username';
       this._snackbarPlaceholder = 'You are logged out!';
     }
+
     this.checkEmailVerification();
   }
+
   checkEmailVerification() {
-      setTimeout(() => {
-        if (!this.myState.user.isActivated) {
-          this._visibility = true;
-        }
-      },800)
+    setTimeout(() => {
+      if (!this.myState.user.isActivated) {
+        this._visibility = true;
+      }
+    }, 800);
   }
 }

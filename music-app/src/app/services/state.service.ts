@@ -27,7 +27,7 @@ export class StateService {
 
   userName$ = new BehaviorSubject<string>('');
 
-  userIconId$ = new BehaviorSubject<number>(0);
+  userIconId$ = new BehaviorSubject<number>(11);
 
   searchValue$ = new BehaviorSubject<string>('');
 
