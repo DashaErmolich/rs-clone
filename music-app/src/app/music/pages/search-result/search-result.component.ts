@@ -105,6 +105,8 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
 
   isLikeButtonShown = true;
 
+  isSame!: boolean;
+
   isResultNotFound!: boolean;
 
   constructor(
@@ -147,6 +149,7 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
 
     this.trackList$ = this.myState.trackList$.subscribe((tracks) => {
       this.tracksOfState = tracks;
+      this.isPlayThisTrackList();
     });
     this.isPause$ = this.myAudio.isPause$.subscribe((res) => {
       this.isPause = res;
@@ -164,6 +167,9 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
       this.isHandset = data;
     });
     this.subscriptions.push(this.isHandset$);
+
+    this.isPlay$ = this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
+    this.subscriptions.push(this.isPlay$);
   }
 
   ngOnDestroy(): void {
@@ -203,6 +209,7 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
       .subscribe((res) => {
         this.tracks = res.data;
         this.loading = false;
+        this.isPlayThisTrackList();
       });
   }
 
@@ -224,6 +231,7 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
         this.albumRelease = res.release_date.slice(0, 4);
         this.artistId = Number(res.artist.id);
         this.isSearchResultLiked();
+        this.isPlayThisTrackList();
       } catch (error) {
         this.isResultNotFound = true;
       }
@@ -250,6 +258,7 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
           this.descriptionSubTitleInfo = `: ${res.nb_tracks}`;
           this.loading = false;
           this.isSearchResultLiked();
+          this.isPlayThisTrackList();
         } catch (error) {
           this.isResultNotFound = true;
         }
@@ -279,21 +288,22 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
       .subscribe((res) => {
         this.tracks = res.data;
         this.loading = false;
+        this.isPlayThisTrackList();
       });
   }
 
-  playPause(trackIndex: number) {
-    if (this.isFirstPlay) {
-      this.myState.setTrackListInfo(this.tracks, trackIndex);
-      this.myAudio.playTrack(String(this.tracksOfState[trackIndex].preview));
-      this.isFirstPlay = false;
-    }
-    this.myAudio.isPlay$.subscribe((res) => { this.isPlay = res; });
-
-    if (this.isPlay) {
+  playPause() {
+    if (this.isSame && this.isPlay) {
       this.myAudio.pause();
-    } else {
-      this.myAudio.play();
+    } else if (this.isSame
+      && !this.isPlay
+      && this.myState.playingTrackIndex$.value !== null) {
+      this.myAudio.playTrack(
+        String(this.tracksOfState[this.myState.playingTrackIndex$.value!].preview),
+      );
+    } else if (!this.isSame) {
+      this.myState.setTrackListInfo(this.tracks, 0);
+      this.myAudio.playTrack(String(this.tracksOfState[0].preview));
     }
   }
 
@@ -325,8 +335,9 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
           this.imgSrc = '../../../../assets/icons/note.svg';
           this.title = playlist.title;
           playlist.tracks.data.forEach((track) => {
-            this.deezerRestApiService.getTrack(track).subscribe((data) => {
+            this.tracks$ = this.deezerRestApiService.getTrack(track).subscribe((data) => {
               this.tracks.push(data);
+              this.isPlayThisTrackList();
             });
           });
           this.descriptionTitleInfo = `: ${this.myState.userName$.value}`;
@@ -344,5 +355,18 @@ export class SearchResultComponent extends RandomColorHelper implements OnInit, 
       this.myState.deleteCustomPlaylist(this.result.id);
       this.myRouter.navigate(['music/home']);
     }
+  }
+
+  isPlayThisTrackList() {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const tracks = this.tracks.sort((a, b) => a.id! - b.id!);
+    const tracksOfState = this.tracksOfState.sort((a, b) => a.id! - b.id!);
+    const isSame = (tracks.length === tracksOfState.length)
+    // eslint-disable-next-line array-callback-return, prefer-arrow-callback
+     && tracks.every(function (element, index) {
+       return element.id === tracksOfState[index].id;
+     });
+    this.isSame = isSame;
   }
 }
