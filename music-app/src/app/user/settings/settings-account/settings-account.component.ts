@@ -20,11 +20,11 @@ import { USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH } from '../../../constants/c
 })
 
 export class SettingsAccountComponent extends ThemeHelper implements OnInit, OnDestroy {
-  userIcons: IUserIcons[] = userIconsData;
+  userIcons: IUserIcons[] = userIconsData.slice(0, -1);
 
-  userIconsPath: string[] = this.userIcons.map((icon) => icon.path);
+  userIconsPath: string[] = (this.userIcons.map((icon) => icon.path));
 
-  userIconsId: number[] = this.userIcons.map((icon) => icon.id);
+  userIconsId: number[] = (this.userIcons.map((icon) => icon.id));
 
   userName!: string;
 
