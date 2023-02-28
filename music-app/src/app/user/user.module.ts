@@ -7,6 +7,7 @@ import { CookieModule } from 'ngx-cookie';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatDividerModule } from '@angular/material/divider';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SettingsPageComponent } from './settings/settings-page/settings-page.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -38,6 +39,7 @@ import { SettingsModule } from './settings/settings.module';
     L10nIntlModule,
     MatIconModule,
     MatButtonModule,
+    MatDividerModule,
   ],
   exports: [
     SignInComponent,

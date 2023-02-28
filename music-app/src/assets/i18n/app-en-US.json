@@ -35,7 +35,8 @@
       "errors-messages": {
         "required": "Username is required",
         "length": "Enter username from 6 to 16 symbols"
-      }
+      },
+      "confirm-email-message": "🔑 Please confirm your email address by clicking on the link in the email"
     }
   },
   "welcome": {
@@ -117,9 +118,16 @@
         "subscribe": "Subscribe",
         "subscribed": "Subscribed"
       },
-      "delete-button": "Delete"
+      "delete-button": "Delete",
+      "message": "Not found."
     },
-    "more-button": "Get more"
+    "more-button": "Get more",
+    "message": {
+       "tracks": "Not found tracks for your request.",
+       "albums": "Not found tracks for your request.",
+       "artists": "Not found artists for your request.",
+       "playlists": "Not found playlists for your request."
+    }
   },
   "library": {
     "artists": "Your favorite artists",
@@ -127,7 +135,11 @@
     "playlists": "Your favorite playlists",
     "tracks": "Your favorite tracks",
     "radios": "Your favorite radios",
-    "custom-playlists": "Your custom playlists"
+    "custom-playlists": "Your custom playlists",
+    "empty": "Here is empty.",
+    "create-playlist": "You can create your first playlist.",
+    "create-btn": "Create playlist",
+    "message": "You have not added tracks to favorites"
   },
   "core": {
     "header": {
@@ -147,7 +159,7 @@
     "more-button": "Get more tracks"
   },
   "sign-in": {
-    "greetings": "To continue, log in to RS Music App",
+    "greetings": "Log in to RS Music App to continue",
     "login-btn": "Log In",
     "also": "Don't have an account?",
     "register-btn": "Sign Up",
