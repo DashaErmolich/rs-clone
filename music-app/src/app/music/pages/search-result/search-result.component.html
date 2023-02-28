@@ -27,9 +27,9 @@
     </div>
   </div>
   <div class="search-result-container-btns">
-    <button mat-fab color="primary" (click)="playPause(0)">
-     <mat-icon>{{ isPlay ? 'pause' : 'play_arrow'}}</mat-icon>
-   </button> 
+    <button mat-fab color="primary" (click)="playPause()">
+      <mat-icon>{{ isPlay && isSame ? 'pause' : 'play_arrow'}}</mat-icon>
+    </button>
     <button *ngIf="isLikeButtonShown" mat-fab extended color="primary" (click)="likeSearchResult()">
       <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
       <span
