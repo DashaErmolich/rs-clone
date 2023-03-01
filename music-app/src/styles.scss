@@ -451,8 +451,8 @@ mat-error {
 }
 
 .message-not-found {
-  @include adaptive-font (24, 14);
-  height: 100%;
+  @include adaptive-font (18, 14);
+  line-height: 150%;
   display: flex;
   flex-direction: column;
   gap: $container-p-small;
