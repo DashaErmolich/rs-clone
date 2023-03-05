@@ -32,10 +32,29 @@ Total list of app features available via [link](https://github.com/DashaErmolich
 ### Technologies we have used
   
 - Angular with Angular Material UI component library
+- Angular routing, animations, reactive forms, etc.
+- Angular-Material-Dynamic-Themes
+- Angular l10n
 - Node.js
+- Deezer REST API
 - Web Audio API
-- Canvas
-- SVG animations
+- Canvas Element
+- SVG sprites and animations
+- RxJS
+- Moment
+- Guid Typescript
+- Express framework
+- cors
+- Сors-anywhere proxy
+- cookie-parser
+- dotenv
+- mongoose
+- JsonWebToken
+- nodemailer
+- bcrypt
+- uuid
+- express-validator
+- nodemon
 
 ## App usage
 
