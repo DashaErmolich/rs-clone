@@ -1,0 +1,35 @@
+<mat-card *ngFor="let track of tracks; index as i">
+  <mat-card-content [attr.class]="(isTrackPlaying(i) && !isEnd)
+    ? theme + '-border' + ' theme-primary'+ ' track' : 'track'" (dblclick)="setTracksInfo(i)">
+    <div class="track-number-wrapper">
+      <p class="track-number" *ngIf="!isTrackPlaying(i) ||
+        (isTrackPlaying(i) && (isPlay$ | async)===false && isEnd)">{{ i+1 }}</p>
+      <mat-icon aria-hidden="false" class="track-play"
+        *ngIf="!isTrackPlaying(i) || (!isTrackPlaying(i) && (isPlay$ | async) === false) || (isTrackPlaying(i) && (isPlay$ | async) === false && isEnd)"
+        (click)="setTracksInfo(i)">play_arrow</mat-icon>
+      <mat-icon aria-hidden="false" class="track-pause" *ngIf="isTrackPlaying(i) && !isEnd" (click)="playPause()">
+        {{(isPlay$ | async)? 'pause_arrow' : 'play_arrow'}}</mat-icon>
+    </div>
+    <div class="track-img-wrapper">
+      <img class="track-img" src="{{track.album?.cover_small ? track.album?.cover_small : defaultImg}}"
+        alt={{track.title}}>
+    </div>
+    <div class="track-description">
+      <p class="track-title">{{track.title | titlecase}}</p>
+      <div class="track-artist">
+        <p class="less-opacity router-link" [routerLink]="['/music/artist', track.artist?.id]">{{track.artist?.name | titlecase}}</p>
+      </div>
+    </div>
+    <div class="track-btn-wrapper">
+      <div [attr.class]="isLiked(i) ? 'like-btn-liked' : 'like-btn'">
+        <button mat-icon-button color="basic" (click)="likeTrack(i)">
+          <mat-icon [color]="isLiked(i) ? 'warn' : 'basic'" class="material-symbols-outlined">favorite_border</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="track-album">
+      <p class="router-link less-opacity" [routerLink]="['/music/album', track.album?.id]">{{track.album?.title | titlecase}}</p>
+    </div>
+    <div>00:30</div>
+  </mat-card-content>
+</mat-card>

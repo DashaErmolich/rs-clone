@@ -1,0 +1,32 @@
+@import '../../../sass/abstracts/constants';
+
+.welcome-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .welcome-page__title {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2.1rem;
+    line-height: 120%;
+    @media screen and (max-width: 600px) {
+      width: 250px;
+    }
+  }
+
+  .welcome-page__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $container-p-small;
+
+    button {
+      display: block;
+    }
+  }
+  .container-mg-top {
+    margin-top: 50px;
+  }
+}

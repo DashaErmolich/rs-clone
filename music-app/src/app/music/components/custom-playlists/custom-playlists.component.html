@@ -1,0 +1,6 @@
+<mat-card *ngFor="let playlist of customPlaylists; let i=index" class="card-square" [style.background]="randomColor(i)"
+  [routerLink]="['/music/user-play-list', playlist.id]">
+  <mat-card-content><p class="card-square-title-h1">{{playlist.title | titlecase}}</p></mat-card-content>
+  <img class="card-img" src="../../../../assets/icons/note.svg"
+    alt={{playlist.title}}>
+</mat-card>

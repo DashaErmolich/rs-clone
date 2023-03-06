@@ -1,0 +1,29 @@
+<nav class="flex-column mb-small navigation-container">
+  <a mat-button color="basic" routerLink="/music/home" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon>home</mat-icon>
+    <span l10nTranslate>aside.nav.home</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/search" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon>search</mat-icon>
+    <span l10nTranslate>aside.nav.search</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/library" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon>library_music</mat-icon>
+    <span l10nTranslate>aside.nav.library</span>
+  </a>
+</nav>
+
+<div class="flex-column navigation-container">
+  <a mat-button color="basic" routerLink="/music/custom-playlist" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon>library_add</mat-icon>
+    <span l10nTranslate>aside.buttons.create-play-list</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/liked-tracks" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon color="warn">favorite</mat-icon>
+    <span l10nTranslate>aside.buttons.liked-songs</span>
+  </a>
+  <a mat-button color="basic" routerLink="/music/created-playlists" routerLinkActive="active" ariaCurrentWhenActive="page" class="navigation-link" (click)="toggleNavigationMenuVisibility()">
+    <mat-icon color="accent">queue_music</mat-icon>
+    <span l10nTranslate>aside.buttons.custom-playlists</span>
+  </a>
+</div>

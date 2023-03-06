@@ -1,0 +1,19 @@
+@import '../../../../sass/abstracts/constants';
+
+.spinner {
+  margin: 0 auto;
+  max-width: 2rem;
+  flex: 1 1 0;
+}
+
+.titles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.genre-main-title {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: normal;
+}

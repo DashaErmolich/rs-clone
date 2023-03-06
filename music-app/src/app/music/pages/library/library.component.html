@@ -1,0 +1,35 @@
+<div *ngIf="!loading">
+  <div *ngIf="artists.length !== 0" class="mb-large">
+    <h2 l10nTranslate class="title-h2">{{ favoritesCategories.artists.title }}</h2>
+    <app-artists [artists]="artists" class="result-container"
+      [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-artists>
+  </div>
+
+  <div class="mb-large">
+    <app-liked-tracks [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"></app-liked-tracks>
+  </div>
+
+  <div *ngIf="albums.length !== 0" class="mb-large">
+    <h2 l10nTranslate class="title-h2">{{ favoritesCategories.albums.title }}</h2>
+    <app-albums [albums]="albums" class="result-container"
+      [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-albums>
+  </div>
+
+  <div *ngIf="playlists.length !== 0" class="mb-large">
+    <h2 l10nTranslate class="title-h2">{{ favoritesCategories.playlists.title }}</h2>
+    <app-playlists [playlists]="playlists" class="result-container"
+      [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-playlists>
+  </div>
+
+  <div *ngIf="radios.length !== 0" class="mb-large">
+    <h2 l10nTranslate class="title-h2">{{ favoritesCategories.radios.title }}</h2>
+    <app-radios [radios]="radios" class="result-container"
+      [ngClass]="{'result-container_small': isSmall, 'result-container_handset': isHandset}"></app-radios>
+  </div>
+
+  <div class="mb-large">
+    <app-created-playlists [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall">
+    </app-created-playlists>
+  </div>
+</div>
+

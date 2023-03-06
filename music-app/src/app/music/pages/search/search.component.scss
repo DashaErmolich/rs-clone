@@ -1,0 +1,25 @@
+@import '../../../../sass/abstracts/constants';
+@import '../../../../sass/abstracts/mixins';
+
+.search-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.spinner {
+  margin: 0 auto;
+  max-width: 2rem;
+  flex: 1 1 0;
+}
+
+.chips-container {
+  width: 100%;
+  margin-bottom: $container-p-large;
+}
+
+.more-btn {
+  margin: $container-p-large 0;
+  float: right;
+}

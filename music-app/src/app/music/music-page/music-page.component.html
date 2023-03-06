@@ -1,0 +1,21 @@
+<div class="flex-column height-100" [ngClass]="!isSmall ? 'music-page-container' : 'music-page-container_small'">
+  <div class="flex-row flex-1 height-100">
+    <div *ngIf="!isHandset" class="flex-column-2 content-wrapper height-100">
+      <div class="scrollable-container position-relative container">
+        <app-aside></app-aside>
+      </div>
+    </div>
+    <button *ngIf="isHandset" mat-icon-button aria-label="Navigation menu" class="aside-menu-button" (click)="toggleNavigationMenuVisibility()">
+      <mat-icon>{{ isNavigationMenuShown ? 'close' : 'menu' }}</mat-icon>
+    </button>
+    <mat-drawer-container *ngIf="isHandset && isNavigationMenuShown" class="navigation-container_handset aside-container_handset container" @showNavigationMenu>
+      <app-aside [isNavigationMenuShown]="isNavigationMenuShown"></app-aside>
+    </mat-drawer-container>
+    <div class="flex-column-10 content-wrapper accent-wrapper" [ngClass]="{'flex-column-12': isHandset, 'content-wrapper_handset': isHandset}">
+      <div class="scrollable-container position-relative container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+<app-player [isSmall]="isSmall" [isHandset]="isHandset" [isExtraSmall]="isExtraSmall"></app-player>

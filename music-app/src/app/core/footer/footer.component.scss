@@ -1,0 +1,25 @@
+@import '../../../sass/abstracts/constants';
+
+footer {
+  height: $footer-height;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: $z-index-top;
+
+  nav ul {
+    display: flex;
+    gap: $container-p-small;
+    align-items: center;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.rss-logo {
+  width: 50px;
+}

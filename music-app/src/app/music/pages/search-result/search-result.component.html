@@ -1,0 +1,45 @@
+<div *ngIf="isResultNotFound" class="message-not-found" l10nTranslate>search.results.message</div>
+<div *ngIf="!isResultNotFound && !loading" class="search-result-wrapper">
+  <div [ngSwitch]="resultType" class="flex-row search-result-container"
+    [ngClass]="{'search-result-container_small': isSmall}">
+    <div class="search-result__image" [style.background]="randomColor(1)">
+      <img [src]="imgSrc" [alt]="title">
+    </div>
+    <div class="search-result-block">
+      <div class="search-result-type one-line-text" l10nTranslate>{{ typeToShow }}</div>
+      <div><p class="search-result-title text-wrap">{{ title }}</p></div>
+      <div>
+        <div *ngIf="descriptionTitle && descriptionSubTitle" class="search-result-description less-opacity">
+          <span l10nTranslate>{{ descriptionTitle }}</span>
+          <span l10nTranslate class="one-line-text">{{ descriptionTitleInfo }}</span>
+        </div>
+
+        <div *ngIf="descriptionSubTitle && descriptionSubTitle" class="search-result-description less-opacity">
+          <span l10nTranslate>{{ descriptionSubTitle }}</span>
+          <span l10nTranslate class="one-line-text">{{ descriptionSubTitleInfo }}</span>
+        </div>
+        <div *ngSwitchCase="'album'" class="search-result-description">
+          <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
+          <div class="artist-name less-opacity" [routerLink]="['/music/artist', artistId]">{{ artistName }}</div>
+          <div *ngIf="albumRelease" class="album-release less-opacity">{{albumRelease}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search-result-container-btns">
+    <button mat-fab color="primary" (click)="playPause()">
+      <mat-icon>{{ isPlay && isSame ? 'pause' : 'play_arrow'}}</mat-icon>
+    </button>
+    <button *ngIf="isLikeButtonShown" mat-fab extended color="primary" (click)="likeSearchResult()">
+      <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
+      <span
+        l10nTranslate>{{isLiked ? 'search.results.subscription.subscribed' : 'search.results.subscription.subscribe' }}</span>
+    </button>
+    <button *ngIf="!isLikeButtonShown" mat-fab extended color="warn" (click)="deleteCustomPlayList()">
+      <mat-icon *ngIf="isLiked" color="basic">check</mat-icon>
+      <span l10nTranslate>search.results.delete-button</span>
+    </button>
+  </div>
+  <app-tracks *ngIf="!loading" [tracks]="tracks" class="tracks-container"
+    [ngClass]="{'tracks-container_small': isSmall}"></app-tracks>
+</div>

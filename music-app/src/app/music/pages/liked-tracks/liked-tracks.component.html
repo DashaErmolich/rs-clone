@@ -1,0 +1,5 @@
+<h2 l10nTranslate class="title-h2">library.tracks</h2>
+<div *ngIf="trackList && trackList.length === 0" class="message-not-found" l10nTranslate>
+  <p class="message less-opacity"> library.message</p>
+</div>
+<app-tracks [tracks]="trackList" class="tracks-container" [ngClass]="{'tracks-container_small': isSmall, 'tracks-container_handset': isHandset}"></app-tracks>

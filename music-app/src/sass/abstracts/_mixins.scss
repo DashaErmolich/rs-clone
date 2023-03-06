@@ -1,0 +1,20 @@
+@import './constants';
+
+@mixin flex-column($size) {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% / 12 * $size);
+}
+
+@mixin grid-horizontal-scroll($total-col-num, $col-num, $col-gap) {
+  overflow: scroll;
+  grid-gap: $col-gap;
+  grid-template-columns: repeat($total-col-num, calc((100% / $col-num) - 0.25 * $col-num * $col-gap));
+  grid-template-rows: 1fr;
+}
+
+@mixin adaptive-font($pcSize, $mobSize) {
+ $addSize: $pcSize - $mobSize;
+ $maxWidth: $maxWidth - 320;
+ font-size: calc(#{$mobSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth})) !important;
+}

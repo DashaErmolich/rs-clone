@@ -1,0 +1,14 @@
+@import '../../../sass/abstracts/_constants.scss';
+
+.music-page-container {
+  max-height: calc(100% - $player-height);
+  height: 100%;
+}
+
+.music-page-container_small {
+  max-height: calc(100% - $player-height-small);
+}
+
+.navigation-container_handset {
+  bottom: calc($player-height-small + $footer-height);
+}
