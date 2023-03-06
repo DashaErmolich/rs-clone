@@ -18,10 +18,10 @@
           <span l10nTranslate>{{ descriptionSubTitle }}</span>
           <span l10nTranslate class="one-line-text">{{ descriptionSubTitleInfo }}</span>
         </div>
-        <div *ngSwitchCase="'album'" class="search-result-description less-opacity">
+        <div *ngSwitchCase="'album'" class="search-result-description">
           <div class="artist-img"><img [src]="artistImg" [alt]="artistName"></div>
-          <div class="artist-name" [routerLink]="['/music/artist', artistId]">{{ artistName }}</div>
-          <div *ngIf="albumRelease" class="album-release">{{albumRelease}}</div>
+          <div class="artist-name less-opacity" [routerLink]="['/music/artist', artistId]">{{ artistName }}</div>
+          <div *ngIf="albumRelease" class="album-release less-opacity">{{albumRelease}}</div>
         </div>
       </div>
     </div>
